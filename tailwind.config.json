@@ -1,3 +1,0 @@
-{
-  "purge": ["./pages/**/*.tsx", "./components/**/*.tsx"]
-}
