@@ -1,14 +1,5 @@
-import Head from "next/head";
-import React from "react";
+import React, { FC } from "react";
 
-export default function Home() {
-  return (
-    <div>
-      <Head>
-        <title>DOJO Online Judge Orchestrator</title>
-        <link rel="stylesheet" href="/favicon.ico" />
-      </Head>
-      <main>DOJO Online Judge Orchestrator</main>
-    </div>
-  );
-}
+const Home: FC = () => <div className="bg-white p-2 h-64" />;
+
+export default Home;
