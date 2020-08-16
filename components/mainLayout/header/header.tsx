@@ -11,7 +11,7 @@ const Header: FC = () => {
 
   return (
     <Layout.Header className="flex items-center justify-between md:px-16 px-6">
-      <div className="mr-4 flex flex-1">
+      <div className="mr-6 flex flex-1">
         <Link href="/">
           <a className="flex text-3xl font-bold text-white">
             <span role="img" aria-label="DOJO Logo">

@@ -20,6 +20,11 @@ const LeftMenu: FC<MenuProps> = (props) => (
         <a>Competições</a>
       </Link>
     </Menu.Item>
+    <Menu.Item key="about">
+      <Link href="/about">
+        <a>Sobre</a>
+      </Link>
+    </Menu.Item>
   </Menu>
 );
 
