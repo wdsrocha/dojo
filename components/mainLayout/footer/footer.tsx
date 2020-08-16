@@ -3,7 +3,7 @@ import { Layout } from "antd";
 
 const Footer: FC = () => (
   <Layout.Footer className="text-center">
-    DOJO ©2020 Created by Wesley Rocha
+    DOJO © 2020 Created by Wesley Rocha
   </Layout.Footer>
 );
 
