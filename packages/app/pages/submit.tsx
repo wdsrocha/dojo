@@ -25,12 +25,15 @@ const Submitter: FC = () => {
       validateMessages={{ required: "Campo obrigatório" }}
       onFinish={async (values) => {
         setIsLoading(true);
-        const response = await fetch("/api/submit", {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-        console.log(JSON.stringify(await response.json(), null, 2));
-        setIsLoading(false);
+        try {
+          const response = await fetch("/api/submit", {
+            method: "POST",
+            body: JSON.stringify(values),
+          });
+          console.log(JSON.stringify(await response.json(), null, 2));
+        } finally {
+          setIsLoading(false);
+        }
       }}
     >
       <Item label="Problema">
