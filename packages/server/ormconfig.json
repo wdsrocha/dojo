@@ -1,0 +1,11 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "admin",
+  "password": "admin",
+  "database": "postgres",
+  "synchronize": true,
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "migrations": ["src/migrations/**/*.ts"]
+}

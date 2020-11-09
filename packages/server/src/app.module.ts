@@ -19,6 +19,8 @@ import { SubmissionsModule } from './submissions/submissions.module';
       password: 'admin',
       database: 'postgres',
       synchronize: true,
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      migrations: ['src/migrations/**/*.ts'],
     }),
     SubmissionsModule,
   ],
