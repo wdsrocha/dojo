@@ -1,4 +1,5 @@
 export interface OnlineJudge {
+  getProblem(problemId: string): Promise<{ title: string }>;
   submit(
     problemId: string,
     languageId: string,
