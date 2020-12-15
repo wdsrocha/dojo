@@ -1,6 +1,9 @@
-import { OnlineJudge } from './../online-judge.interface';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
+import * as fetch from 'node-fetch';
+import * as cheerio from 'cheerio';
+
+import { OnlineJudge } from './../online-judge.interface';
 
 import { Page, ClickOptions, NavigationOptions, Response } from 'puppeteer';
 
@@ -35,7 +38,19 @@ async function login(page: Page) {
   await clickAndWaitForNavigation(page, 'input.send-green');
 }
 
+// TODO: Verificar qual o melhor pp (adapter ta com mt responsa, ver facade)
 export class UriAdapter implements OnlineJudge {
+  async getProblem(problemId: string) {
+    const rawProblemUrl = `${BASE_URL}/repository/UOJ_${problemId}.html`;
+    const response = await fetch(rawProblemUrl);
+
+    const $ = cheerio.load(await response.text());
+
+    const title = $('h1').text();
+
+    return { title };
+  }
+
   async submit(
     problemId: string,
     languageId: string,
