@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { OnlineJudgesService } from 'src/online-judges/online-judges.service';
+
+import { OnlineJudgesService } from '../online-judges/online-judges.service';
 import { CreateSubmissionRequestBody } from './submissions.dto';
 
 @Injectable()

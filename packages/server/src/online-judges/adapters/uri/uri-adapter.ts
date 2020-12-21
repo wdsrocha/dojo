@@ -1,8 +1,9 @@
-import { OnlineJudge } from './../online-judge.interface';
+
 import { HttpException, HttpStatus } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
+import { ClickOptions, NavigationOptions, Page, Response } from 'puppeteer';
 
-import { Page, ClickOptions, NavigationOptions, Response } from 'puppeteer';
+import { OnlineJudge } from './../online-judge.interface';
 
 function clickAndWaitForNavigation(
   page: Page,
