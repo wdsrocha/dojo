@@ -1,9 +1,11 @@
-import { UriAdapter } from './../../../../online-judges/adapters/uri/uri-adapter';
-jest.mock('node-fetch');
 import fetch from 'node-fetch';
-import { problemPage, problemPageNotFound } from './uri-adapter.mock';
+
 import { stubBrowser, stubPage } from '../../../puppeteer.mock';
+import { UriAdapter } from './../../../../online-judges/adapters/uri/uri-adapter';
+import { problemPage, problemPageNotFound } from './uri-adapter.mock';
 const { Response } = jest.requireActual('node-fetch');
+
+jest.mock('node-fetch');
 
 jest.mock('puppeteer', () => ({
   launch() {
