@@ -4,13 +4,15 @@
     "project": "tsconfig.json",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint/eslint-plugin", "import"],
+  "plugins": ["@typescript-eslint/eslint-plugin", "import", "jest"],
   "extends": [
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/typescript",
     "plugin:import/errors",
     "plugin:import/warnings",
+    "plugin:jest/recommended",
+    "plugin:jest/style",
     "prettier",
     "prettier/@typescript-eslint"
   ],
@@ -20,6 +22,9 @@
     "jest": true
   },
   "rules": {
+    "jest/consistent-test-it": "warn",
+    "jest/lowercase-name": "warn",
+    "jest/prefer-todo": "warn",
     "import/order": [
       "error",
       {
