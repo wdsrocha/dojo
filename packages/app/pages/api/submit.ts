@@ -12,7 +12,7 @@ function clickAndWaitForNavigation(
   page: puppeteer.Page,
   selector: string,
   clickOptions?: puppeteer.ClickOptions,
-  waitOptions?: puppeteer.NavigationOptions
+  waitOptions?: puppeteer.NavigationOptions,
 ): Promise<puppeteer.Response> {
   return Promise.all([
     page.waitForNavigation(waitOptions),
@@ -61,8 +61,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const runId = runUrl.split("/").pop();
 
-    console.log(runUrl);
-    console.log(runId);
+    // console.log(runUrl);
+    // console.log(runId);
 
     return response.status(200).json({ runId, runUrl });
   } finally {

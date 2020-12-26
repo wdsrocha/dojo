@@ -22,7 +22,6 @@
     "jest": true
   },
   "rules": {
-    "jest/consistent-test-it": "warn",
     "jest/lowercase-name": "warn",
     "jest/prefer-todo": "warn",
     "import/order": [
