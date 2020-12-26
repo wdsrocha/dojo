@@ -2,12 +2,12 @@ import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src/__tests__',
+  rootDir: 'src',
   testRegex: '.test.ts$',
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
-  collectCoverageFrom: ['**/*.ts'],
+  collectCoverageFrom: ['**/*.ts', '!__tests__/**'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
 };
