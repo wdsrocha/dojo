@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext js,jsx,ts,tsx .",
+    "test": "echo 'not implemented'",
     "format": "prettier --write ."
   },
   "dependencies": {

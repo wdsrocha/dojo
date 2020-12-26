@@ -3,5 +3,11 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "husky": "^5.0.6"
+  },
+  "scripts": {
+    "postinstall": "husky install"
+  }
 }

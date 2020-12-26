@@ -1,5 +1,7 @@
 import React, { FC, useState } from "react";
-import { Form, Button, Select, Input } from "antd";
+import {
+ Form, Button, Select, Input,
+} from "antd";
 import { SendOutlined } from "@ant-design/icons";
 
 const { Item } = Form;
@@ -30,6 +32,7 @@ const Submitter: FC = () => {
             method: "POST",
             body: JSON.stringify(values),
           });
+          // eslint-disable-next-line no-console
           console.log(JSON.stringify(await response.json(), null, 2));
         } finally {
           setIsLoading(false);
