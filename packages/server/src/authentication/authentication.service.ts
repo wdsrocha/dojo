@@ -1,22 +1,23 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 import { PostgresErrorCode } from '../database/postgres-error-codes.enum';
 import { User } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
+import { RegisterDto } from './authentication.dto';
 
+@Injectable()
 export class AuthenticationService {
   constructor(private readonly usersService: UsersService) {}
 
-  public async register(registrationData: RegisterDto) {
+  public async register(registrationData: RegisterDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
         password: hashedPassword,
       });
-      createdUser.password = undefined;
-      return createdUser;
+      return { ...createdUser, password: undefined };
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
         throw new HttpException(
@@ -42,7 +43,7 @@ export class AuthenticationService {
     } catch (error) {
       throw new HttpException(
         'Wrong credentials provided',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.BAD_REQUEST,
       );
     }
   }
@@ -58,7 +59,7 @@ export class AuthenticationService {
     if (!isPasswordMatching) {
       throw new HttpException(
         'Wrong credentials provided',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.BAD_REQUEST,
       );
     }
   }

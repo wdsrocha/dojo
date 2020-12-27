@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthenticationModule } from './authentication/authentication.module';
 import { DatabaseModule } from './database/database.module';
 import { SubmissionsModule } from './submissions/submissions.module';
 
@@ -20,6 +21,7 @@ import { SubmissionsModule } from './submissions/submissions.module';
         PORT: Joi.number(),
       }),
     }),
+    AuthenticationModule,
     DatabaseModule,
     SubmissionsModule,
   ],
