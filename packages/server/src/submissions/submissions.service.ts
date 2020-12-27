@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { OnlineJudgesService } from '../online-judges/online-judges.service';
-import { CreateSubmissionRequestBody } from './submissions.dto';
+import { CreateSubmissionRequestBody, SubmissionDto } from './submissions.dto';
 import { SubmissionEntity } from './submissions.entity';
 
 @Injectable()
@@ -15,12 +15,12 @@ export class SubmissionsService {
     private readonly onlineJudgesService: OnlineJudgesService,
   ) {}
 
-  async submit({
+  async create({
     onlineJudgeId,
     problemId,
     languageId,
     code,
-  }: CreateSubmissionRequestBody): Promise<{ submissionId: string }> {
+  }: CreateSubmissionRequestBody): Promise<SubmissionDto> {
     const createdDate = new Date().toISOString();
     const { submissionId } = await this.onlineJudgesService.submit(
       onlineJudgeId,
@@ -28,7 +28,8 @@ export class SubmissionsService {
       languageId,
       code,
     );
-    this.submissionsRepository.save({
+
+    const submission = this.submissionsRepository.create({
       onlineJudgeId,
       remoteSubmissionId: submissionId,
       remoteProblemId: problemId,
@@ -36,6 +37,17 @@ export class SubmissionsService {
       code,
       createdDate,
     });
-    return { submissionId };
+
+    return await this.submissionsRepository.save(submission);
+  }
+
+  async findOne(
+    onlineJudgeId: string,
+    remoteSubmissionId: string,
+  ): Promise<SubmissionDto> {
+    return await this.submissionsRepository.findOne({
+      onlineJudgeId,
+      remoteSubmissionId,
+    });
   }
 }
