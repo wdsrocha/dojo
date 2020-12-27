@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 
+import JwtAuthenticationGuard from './../authentication/jwt/jwt.guard';
 import { CreateSubmissionRequestBody, SubmissionDto } from './submissions.dto';
 import { SubmissionsService } from './submissions.service';
 
@@ -8,6 +9,7 @@ export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
 
   @Post()
+  @UseGuards(JwtAuthenticationGuard)
   async create(
     @Body() body: CreateSubmissionRequestBody,
   ): Promise<SubmissionDto> {
