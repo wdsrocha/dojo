@@ -78,4 +78,8 @@ export class AuthenticationService {
       );
     }
   }
+
+  public getLogoutCookie(): string {
+    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+  }
 }
