@@ -6,14 +6,14 @@ import { UriAdapter } from './adapters/uri/uri-adapter';
 export class OnlineJudgesService {
   constructor(private readonly uriAdapter: UriAdapter) {}
 
-  async submit(
+  submit(
     onlineJudgeId: string,
     problemId: string,
     languageId: string,
     code: string,
   ): Promise<{ submissionId: string }> {
     if (onlineJudgeId === 'uri') {
-      return await this.uriAdapter.submit(problemId, languageId, code);
+      return this.uriAdapter.submit(problemId, languageId, code);
     } else {
       throw new HttpException(
         `Online Judge "${onlineJudgeId}" was not found.`,

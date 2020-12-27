@@ -38,14 +38,14 @@ export class SubmissionsService {
       createdDate,
     });
 
-    return await this.submissionsRepository.save(submission);
+    return this.submissionsRepository.save(submission);
   }
 
-  async findOne(
+  findOne(
     onlineJudgeId: string,
     remoteSubmissionId: string,
   ): Promise<SubmissionDto> {
-    return await this.submissionsRepository.findOne({
+    return this.submissionsRepository.findOne({
       onlineJudgeId,
       remoteSubmissionId,
     });

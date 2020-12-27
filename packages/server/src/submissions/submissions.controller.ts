@@ -10,20 +10,15 @@ export class SubmissionsController {
 
   @Post()
   @UseGuards(JwtAuthenticationGuard)
-  async create(
-    @Body() body: CreateSubmissionRequestBody,
-  ): Promise<SubmissionDto> {
-    return await this.submissionsService.create(body);
+  create(@Body() body: CreateSubmissionRequestBody): Promise<SubmissionDto> {
+    return this.submissionsService.create(body);
   }
 
   @Get(':oj/:id')
-  async findOne(
+  findOne(
     @Param('oj') onlineJudgeId: string,
     @Param('id') remoteSubmissionId: string,
   ): Promise<SubmissionDto> {
-    return await this.submissionsService.findOne(
-      onlineJudgeId,
-      remoteSubmissionId,
-    );
+    return this.submissionsService.findOne(onlineJudgeId, remoteSubmissionId);
   }
 }

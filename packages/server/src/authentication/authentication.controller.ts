@@ -24,14 +24,14 @@ export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Post('register')
-  async register(@Body() registrationData: RegisterDto) {
+  register(@Body() registrationData: RegisterDto): Promise<User> {
     return this.authenticationService.register(registrationData);
   }
 
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
   @Post('login')
-  async login(@Req() request: RequestWithUser) {
+  login(@Req() request: RequestWithUser): User {
     const { user } = request;
     request.res.setHeader(
       'Set-Cookie',
@@ -43,7 +43,7 @@ export class AuthenticationController {
   @HttpCode(200)
   @UseGuards(JwtAuthenticationGuard)
   @Post('logout')
-  async logout(@Req() request: Request) {
+  logout(@Req() request: Request): void {
     request.res.setHeader(
       'Set-Cookie',
       this.authenticationService.getLogoutCookie(),

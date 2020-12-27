@@ -5,7 +5,7 @@ import { BaseExceptionFilter } from '@nestjs/core';
 export class ExceptionsLoggerFilter extends BaseExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     // eslint-disable-next-line no-console
-    console.log('Exception thrown', exception);
+    console.log(exception);
     super.catch(exception, host);
   }
 }
