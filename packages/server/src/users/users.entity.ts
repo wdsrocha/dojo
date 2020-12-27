@@ -1,5 +1,7 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Submission } from '../submissions/submissions.entity';
 
 @Entity()
 export class User {
@@ -15,4 +17,7 @@ export class User {
   @Column()
   @Exclude()
   public password: string;
+
+  @OneToMany(() => Submission, (submission: Submission) => submission.author)
+  public submissions: Submission[];
 }

@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { OnlineJudgesService } from '../online-judges/online-judges.service';
-import { CreateSubmissionRequestBody, SubmissionDto } from './submissions.dto';
+import { User } from '../users/users.entity';
+import { CreateSubmissionRequestBody } from './submissions.dto';
 import { Submission } from './submissions.entity';
 
 @Injectable()
@@ -15,12 +16,10 @@ export class SubmissionsService {
     private readonly onlineJudgesService: OnlineJudgesService,
   ) {}
 
-  async create({
-    onlineJudgeId,
-    problemId,
-    languageId,
-    code,
-  }: CreateSubmissionRequestBody): Promise<SubmissionDto> {
+  async create(
+    { onlineJudgeId, problemId, languageId, code }: CreateSubmissionRequestBody,
+    user: User,
+  ): Promise<Submission> {
     const createdDate = new Date().toISOString();
     const { submissionId } = await this.onlineJudgesService.submit(
       onlineJudgeId,
@@ -36,6 +35,7 @@ export class SubmissionsService {
       remoteLanguageId: languageId,
       code,
       createdDate,
+      author: user,
     });
 
     return this.submissionsRepository.save(submission);
@@ -44,10 +44,13 @@ export class SubmissionsService {
   findOne(
     onlineJudgeId: string,
     remoteSubmissionId: string,
-  ): Promise<SubmissionDto> {
-    return this.submissionsRepository.findOne({
-      onlineJudgeId,
-      remoteSubmissionId,
-    });
+  ): Promise<Submission> {
+    return this.submissionsRepository.findOne(
+      {
+        onlineJudgeId,
+        remoteSubmissionId,
+      },
+      { relations: ['author'] },
+    );
   }
 }
