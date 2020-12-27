@@ -5,10 +5,9 @@ import {
   HttpCode,
   Post,
   UseGuards,
-  Res,
   Get,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request } from 'express';
 
 import { User } from '../users/users.entity';
 import { RegisterDto } from './authentication.dto';
@@ -25,35 +24,35 @@ export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Post('register')
-  async register(@Body() registrationData: RegisterDto) {
-    console.log('controller');
+  register(@Body() registrationData: RegisterDto): Promise<User> {
     return this.authenticationService.register(registrationData);
   }
 
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
   @Post('login')
-  async login(@Req() { user }: RequestWithUser, @Res() response: Response) {
-    response.setHeader(
+  login(@Req() request: RequestWithUser): User {
+    const { user } = request;
+    request.res.setHeader(
       'Set-Cookie',
       this.authenticationService.getCookieWithJwtToken(user.id),
     );
-    return response.send({ ...user, password: undefined });
+    return user;
   }
 
+  @HttpCode(200)
   @UseGuards(JwtAuthenticationGuard)
   @Post('logout')
-  async logout(@Res() response: Response) {
-    response.setHeader(
+  logout(@Req() request: Request): void {
+    request.res.setHeader(
       'Set-Cookie',
       this.authenticationService.getLogoutCookie(),
     );
-    return response.sendStatus(200);
   }
 
   @UseGuards(JwtAuthenticationGuard)
   @Get()
   authenticate(@Req() { user }: RequestWithUser): User {
-    return { ...user, password: undefined };
+    return user;
   }
 }
