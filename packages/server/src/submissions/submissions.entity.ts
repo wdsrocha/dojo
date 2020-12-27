@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import { User } from '../users/users.entity';
 
 export enum Verdict {
   PENDING = 'Pending',
@@ -10,29 +12,32 @@ export enum Verdict {
   MEMORY_LIMIT_EXCEEDED = 'Memory limit exceeded',
 }
 
-@Entity({ name: 'submission' })
-export class SubmissionEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+@Entity()
+export class Submission {
+  @PrimaryGeneratedColumn()
+  public id: number;
 
   @Column()
-  onlineJudgeId: string;
+  public onlineJudgeId: string;
 
   @Column()
-  remoteSubmissionId: string;
+  public remoteSubmissionId: string;
 
   @Column()
-  remoteProblemId: string;
+  public remoteProblemId: string;
 
   @Column()
-  remoteLanguageId: string;
+  public remoteLanguageId: string;
 
   @Column()
-  code: string;
+  public code: string;
 
   @Column({ type: 'enum', enum: Verdict, default: Verdict.PENDING })
-  verdict: Verdict;
+  public verdict: Verdict;
 
   @Column({ type: 'timestamp' })
-  createdDate: Date;
+  public createdDate: Date;
+
+  @ManyToOne(() => User, (author: User) => author.submissions)
+  public author: User;
 }

@@ -4,11 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UriAdapter } from '../online-judges/adapters/uri/uri-adapter';
 import { OnlineJudgesService } from '../online-judges/online-judges.service';
 import { SubmissionsController } from './submissions.controller';
-import { SubmissionEntity } from './submissions.entity';
+import { Submission } from './submissions.entity';
 import { SubmissionsService } from './submissions.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SubmissionEntity])],
+  imports: [TypeOrmModule.forFeature([Submission])],
   controllers: [SubmissionsController],
   providers: [SubmissionsService, OnlineJudgesService, UriAdapter],
 })

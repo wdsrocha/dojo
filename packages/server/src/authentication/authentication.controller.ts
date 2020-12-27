@@ -14,10 +14,7 @@ import { RegisterDto } from './authentication.dto';
 import { AuthenticationService } from './authentication.service';
 import JwtAuthenticationGuard from './jwt/jwt.guard';
 import { LocalAuthenticationGuard } from './local/local.guard';
-
-interface RequestWithUser extends Request {
-  user: User;
-}
+import { RequestWithUser } from './request-with-user.interface';
 
 @Controller('authentication')
 export class AuthenticationController {
