@@ -9,5 +9,9 @@
   },
   "scripts": {
     "postinstall": "husky install"
-  }
+  },
+  "nohoist": [
+    "**/typeorm",
+    "**/typeorm/**"
+  ]
 }
