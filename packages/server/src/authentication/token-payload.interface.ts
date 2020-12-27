@@ -1,3 +1,3 @@
-interface TokenPayload {
+export interface TokenPayload {
   userId: number;
 }

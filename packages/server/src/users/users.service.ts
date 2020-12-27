@@ -12,7 +12,18 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async getByEmail(email: string) {
+  async getById(id: number): Promise<User> {
+    const user = await this.usersRepository.findOne({ id });
+    if (!user) {
+      throw new HttpException(
+        'User with this id does not exist',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return user;
+  }
+
+  async getByEmail(email: string): Promise<User> {
     const user = await this.usersRepository.findOne({ email });
     if (!user) {
       throw new HttpException(
