@@ -4,13 +4,13 @@ import { Repository } from 'typeorm';
 
 import { OnlineJudgesService } from '../online-judges/online-judges.service';
 import { CreateSubmissionRequestBody, SubmissionDto } from './submissions.dto';
-import { SubmissionEntity } from './submissions.entity';
+import { Submission } from './submissions.entity';
 
 @Injectable()
 export class SubmissionsService {
   constructor(
-    @InjectRepository(SubmissionEntity)
-    private submissionsRepository: Repository<SubmissionEntity>,
+    @InjectRepository(Submission)
+    private submissionsRepository: Repository<Submission>,
 
     private readonly onlineJudgesService: OnlineJudgesService,
   ) {}

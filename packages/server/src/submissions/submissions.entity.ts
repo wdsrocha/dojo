@@ -10,8 +10,8 @@ export enum Verdict {
   MEMORY_LIMIT_EXCEEDED = 'Memory limit exceeded',
 }
 
-@Entity({ name: 'submission' })
-export class SubmissionEntity {
+@Entity()
+export class Submission {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
