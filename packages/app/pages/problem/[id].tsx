@@ -1,12 +1,11 @@
-/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/no-danger */
-// eslint-disable-next-line object-curly-newline
-import { Button, Card, Table, Typography } from "antd";
+import {
+ Button, Card, Table, Typography,
+} from "antd";
 import Meta from "antd/lib/card/Meta";
 import Column from "antd/lib/table/Column";
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/dist/client/router";
-import React from "react";
 import Paragraph from "antd/lib/typography/Paragraph";
 
 const { Title, Link: TypographyLink } = Typography;
@@ -51,14 +50,14 @@ const Problem = ({
   return (
     <Card
       title={<Title level={2}>{data.title}</Title>}
-      extra={
+      extra={(
         <Button size="large" type="primary" href={`/submit/?id=${id}`}>
           Submeter
         </Button>
-      }
+      )}
     >
       <Meta
-        description={
+        description={(
           <Paragraph>
             <TypographyLink href={data.link} target="_blank">
               {id}
@@ -66,7 +65,7 @@ const Problem = ({
             <br />
             Timelimit: {data.timelimit}
           </Paragraph>
-        }
+        )}
       />
       <Card style={{ marginTop: 16 }} type="inner" title="Descrição">
         <div dangerouslySetInnerHTML={{ __html: data.description }} />
@@ -87,7 +86,7 @@ const Problem = ({
         type="inner"
         title="Saída"
       >
-        <div dangerouslySetInnerHTML={{ __html: data.input }} />
+        <div dangerouslySetInnerHTML={{ __html: data.output }} />
       </Card>
       <Table
         size="small"
