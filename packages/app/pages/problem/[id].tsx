@@ -7,6 +7,7 @@ import Column from "antd/lib/table/Column";
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/dist/client/router";
 import Paragraph from "antd/lib/typography/Paragraph";
+import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 
 const { Title, Link: TypographyLink } = Typography;
 
@@ -37,6 +38,12 @@ export const getServerSideProps = async () => ({
           input: "<p>15<br>-7</p>",
           output: "<p>X = 8</p>",
         },
+        {
+          key: 4,
+          input: `<pre id="id0003800066481584352">50
+1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1 1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1
+</pre>`,
+        },
       ],
     },
   },
@@ -46,15 +53,21 @@ const Problem = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const { id } = router.query;
+  const screens = useBreakpoint()
 
   return (
     <Card
       title={<Title level={2}>{data.title}</Title>}
-      extra={(
+      extra={screens.sm ? (
         <Button size="large" type="primary" href={`/submit/?id=${id}`}>
           Submeter
         </Button>
-      )}
+      ) : null}
+      actions={[
+        <Button size="large" type="primary" href={`/submit/?id=${id}`}>
+          Submeter
+        </Button>,
+      ]}
     >
       <Meta
         description={(
@@ -85,6 +98,7 @@ const Problem = ({
         </Card>
         <Table
           size="small"
+          tableLayout="fixed"
           dataSource={data.examples}
           pagination={{ hideOnSinglePage: true }}
         >
@@ -92,7 +106,7 @@ const Problem = ({
             title="Exemplos de Entrada"
             dataIndex="input"
             key="input"
-            render={(input) => (
+            render={(input: string) => (
               <div dangerouslySetInnerHTML={{ __html: input }} />
             )}
           />
@@ -100,7 +114,7 @@ const Problem = ({
             title="Exemplos de Saída"
             dataIndex="output"
             key="output"
-            render={(output) => (
+            render={(output: string) => (
               <div dangerouslySetInnerHTML={{ __html: output }} />
             )}
           />
