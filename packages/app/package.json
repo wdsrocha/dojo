@@ -12,12 +12,14 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@ant-design/icons": "^4.2.2",
-    "antd": "^4.5.4",
+    "@ant-design/icons": "^4.5.0",
+    "antd": "^4.14.0",
+    "dayjs": "^1.8.30",
     "next": "9.5.1",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-preset-env": "^6.7.0",
     "puppeteer": "^5.2.1",
+    "rc-util": "^5.8.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "tailwindcss": "^1.6.2"
