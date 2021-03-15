@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 import {
- Button, Card, Table, Typography,
+ Button, Card, Space, Table, Typography,
 } from "antd";
 import Meta from "antd/lib/card/Meta";
 import Column from "antd/lib/table/Column";
@@ -67,50 +67,45 @@ const Problem = ({
           </Paragraph>
         )}
       />
-      <Card style={{ marginTop: 16 }} type="inner" title="Descrição">
-        <div dangerouslySetInnerHTML={{ __html: data.description }} />
-      </Card>
-      <Card
-        style={{
-          marginTop: 16,
-        }}
-        type="inner"
-        title="Entrada"
-      >
-        <div dangerouslySetInnerHTML={{ __html: data.input }} />
-      </Card>
-      <Card
-        style={{
-          marginTop: 16,
-        }}
-        type="inner"
-        title="Saída"
-      >
-        <div dangerouslySetInnerHTML={{ __html: data.output }} />
-      </Card>
-      <Table
-        size="small"
-        style={{ marginTop: 16 }}
-        dataSource={data.examples}
-        pagination={{ hideOnSinglePage: true }}
-      >
-        <Column
-          title="Exemplos de Entrada"
-          dataIndex="input"
-          key="input"
-          render={(input) => (
-            <div dangerouslySetInnerHTML={{ __html: input }} />
-          )}
-        />
-        <Column
-          title="Exemplos de Saída"
-          dataIndex="output"
-          key="output"
-          render={(output) => (
-            <div dangerouslySetInnerHTML={{ __html: output }} />
-          )}
-        />
-      </Table>
+      <Space direction="vertical">
+        <Card type="inner" title="Descrição">
+          <div dangerouslySetInnerHTML={{ __html: data.description }} />
+        </Card>
+        <Card
+          type="inner"
+          title="Entrada"
+        >
+          <div dangerouslySetInnerHTML={{ __html: data.input }} />
+        </Card>
+        <Card
+          type="inner"
+          title="Saída"
+        >
+          <div dangerouslySetInnerHTML={{ __html: data.output }} />
+        </Card>
+        <Table
+          size="small"
+          dataSource={data.examples}
+          pagination={{ hideOnSinglePage: true }}
+        >
+          <Column
+            title="Exemplos de Entrada"
+            dataIndex="input"
+            key="input"
+            render={(input) => (
+              <div dangerouslySetInnerHTML={{ __html: input }} />
+            )}
+          />
+          <Column
+            title="Exemplos de Saída"
+            dataIndex="output"
+            key="output"
+            render={(output) => (
+              <div dangerouslySetInnerHTML={{ __html: output }} />
+            )}
+          />
+        </Table>
+      </Space>
     </Card>
   );
 };
