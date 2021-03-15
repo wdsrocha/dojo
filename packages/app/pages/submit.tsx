@@ -1,8 +1,8 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from 'react';
 import {
  Form, Button, Select, Input,
-} from "antd";
-import { SendOutlined } from "@ant-design/icons";
+} from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 
 const { Item } = Form;
 const { Option } = Select;

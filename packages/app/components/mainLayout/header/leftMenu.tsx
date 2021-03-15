@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Menu } from "antd";
 import { MenuProps } from "antd/lib/menu";
 import Link from "next/link";

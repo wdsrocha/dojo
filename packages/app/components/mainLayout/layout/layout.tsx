@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Layout as AntLayout } from "antd";
 import { LayoutProps } from "antd/lib/layout";
 

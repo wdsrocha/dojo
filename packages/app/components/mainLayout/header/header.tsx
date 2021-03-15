@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Drawer, Button, Layout } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import Link from "next/link";
