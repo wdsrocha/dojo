@@ -3,15 +3,34 @@ import {
  Button, Card, Space, Table, Typography,
 } from "antd";
 import Meta from "antd/lib/card/Meta";
-import Column from "antd/lib/table/Column";
-import { InferGetServerSidePropsType } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/dist/client/router";
 import Paragraph from "antd/lib/typography/Paragraph";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
+import { ColumnsType } from "antd/lib/table";
 
 const { Title, Link: TypographyLink } = Typography;
 
-export const getServerSideProps = async () => ({
+interface Example {
+  input: string;
+  output: string;
+}
+
+interface Problem {
+  link: string;
+  title: string;
+  timelimit: string;
+  description: string;
+  input: string;
+  output: string;
+  examples: Array<Example>;
+}
+
+interface ProblemResponse {
+  data: Problem;
+}
+
+export const getServerSideProps: GetServerSideProps<ProblemResponse> = async () => ({
   props: {
     data: {
       link: "https://www.urionlinejudge.com.br/repository/UOJ_1001.html",
@@ -24,45 +43,62 @@ export const getServerSideProps = async () => ({
         '<p>Imprima a mensagem "X = " (letra X maiúscula) seguido pelo valor da variável <strong> X </strong> e pelo final de linha. Cuide para que tenha um espaço antes e depois do sinal de igualdade, conforme o exemplo abaixo.</p>',
       examples: [
         {
-          key: 1,
           input: "<p>10<br>9</p>",
           output: "<p>X = 19</p>",
         },
         {
-          key: 2,
           input: "<p>-10<br>4</p>",
           output: "<p>X = -6</p>",
         },
         {
-          key: 3,
           input: "<p>15<br>-7</p>",
           output: "<p>X = 8</p>",
         },
         {
-          key: 4,
           input: `<pre id="id0003800066481584352">50
 1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1 1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1
 </pre>`,
+          output: "",
         },
       ],
     },
   },
 });
+
 const Problem = ({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const { id } = router.query;
-  const screens = useBreakpoint()
+  const screens = useBreakpoint();
+
+  const columns: ColumnsType<Example> = [
+    {
+      title: "Exemplos de Entrada",
+      dataIndex: "input",
+      render: (text: string) => (
+        <div dangerouslySetInnerHTML={{ __html: text }} />
+      ),
+    },
+    {
+      title: "Exemplos de Saída",
+      dataIndex: "output",
+      render: (text: string) => (
+        <div dangerouslySetInnerHTML={{ __html: text }} />
+      ),
+    },
+  ];
 
   return (
     <Card
       title={<Title level={2}>{data.title}</Title>}
-      extra={screens.sm ? (
-        <Button size="large" type="primary" href={`/submit/?id=${id}`}>
-          Submeter
-        </Button>
-      ) : null}
+      extra={
+        screens.sm ? (
+          <Button size="large" type="primary" href={`/submit/?id=${id}`}>
+            Submeter
+          </Button>
+        ) : null
+      }
       actions={[
         <Button size="large" type="primary" href={`/submit/?id=${id}`}>
           Submeter
@@ -84,41 +120,23 @@ const Problem = ({
         <Card type="inner" title="Descrição">
           <div dangerouslySetInnerHTML={{ __html: data.description }} />
         </Card>
-        <Card
-          type="inner"
-          title="Entrada"
-        >
+        <Card type="inner" title="Entrada">
           <div dangerouslySetInnerHTML={{ __html: data.input }} />
         </Card>
-        <Card
-          type="inner"
-          title="Saída"
-        >
+        <Card type="inner" title="Saída">
           <div dangerouslySetInnerHTML={{ __html: data.output }} />
         </Card>
-        <Table
-          size="small"
+        <Table<Example>
+          size="middle"
           tableLayout="fixed"
-          dataSource={data.examples}
+          bordered
+          columns={columns}
+          dataSource={data.examples.map((example, index) => ({
+            key: index,
+            ...example,
+          }))}
           pagination={{ hideOnSinglePage: true }}
-        >
-          <Column
-            title="Exemplos de Entrada"
-            dataIndex="input"
-            key="input"
-            render={(input: string) => (
-              <div dangerouslySetInnerHTML={{ __html: input }} />
-            )}
-          />
-          <Column
-            title="Exemplos de Saída"
-            dataIndex="output"
-            key="output"
-            render={(output: string) => (
-              <div dangerouslySetInnerHTML={{ __html: output }} />
-            )}
-          />
-        </Table>
+        />
       </Space>
     </Card>
   );
