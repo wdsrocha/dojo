@@ -10,6 +10,11 @@ const LeftMenu: FC<MenuProps> = (props) => (
         <a>Home</a>
       </Link>
     </Menu.Item>
+    <Menu.Item key="problem">
+      <Link href="/problem">
+        <a>Problemas</a>
+      </Link>
+    </Menu.Item>
     <Menu.Item key="submit">
       <Link href="/submit">
         <a>Submeter</a>

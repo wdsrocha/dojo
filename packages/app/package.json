@@ -22,6 +22,7 @@
     "rc-util": "^5.8.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "swr": "^0.5.3",
     "tailwindcss": "^1.6.2"
   },
   "devDependencies": {
