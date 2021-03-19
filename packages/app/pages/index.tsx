@@ -1,15 +1,15 @@
-import React, { FC } from "react";
+import { Card } from "antd";
+import Paragraph from "antd/lib/typography/Paragraph";
 
-const Home: FC = () => (
-  <div className="bg-white px-4 pt-4 pb-8">
-    <p>
+const Home = () => (
+  <Card>
+    <Paragraph>
       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam pariatur
       eius, praesentium omnis ullam expedita laboriosam ipsum, magni, earum
       perspiciatis quod ipsam! Mollitia non ex repellendus tenetur temporibus,
       quibusdam iste.
-    </p>
-    <br />
-    <p>
+    </Paragraph>
+    <Paragraph>
       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta, sapiente!
       Expedita quod nulla commodi libero perferendis alias magni ad similique
       veritatis est repellendus facere incidunt, numquam laborum ratione
@@ -38,16 +38,14 @@ const Home: FC = () => (
       quia corrupti! Molestias, voluptatem. Eos debitis, quia pariatur quas
       quae, non nam modi illum numquam sapiente recusandae rerum unde, quis
       labore.
-    </p>
-    <br />
-    <p>
+    </Paragraph>
+    <Paragraph>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero quibusdam
       saepe ipsa, laborum sint et est officiis, tempora ut nesciunt molestias?
       Quas culpa error sint id quidem aperiam, nostrum fugiat?
-    </p>
-    <br />
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-  </div>
-);
+    </Paragraph>
+    <Paragraph>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</Paragraph>
+  </Card>
+)
 
 export default Home;

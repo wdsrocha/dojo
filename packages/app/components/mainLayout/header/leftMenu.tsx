@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Menu } from "antd";
 import { MenuProps } from "antd/lib/menu";
 import Link from "next/link";
@@ -8,6 +8,11 @@ const LeftMenu: FC<MenuProps> = (props) => (
     <Menu.Item key="home">
       <Link href="/">
         <a>Home</a>
+      </Link>
+    </Menu.Item>
+    <Menu.Item key="problem">
+      <Link href="/problem">
+        <a>Problemas</a>
       </Link>
     </Menu.Item>
     <Menu.Item key="submit">

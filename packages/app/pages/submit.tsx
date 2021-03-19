@@ -1,8 +1,8 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from 'react';
 import {
  Form, Button, Select, Input,
-} from "antd";
-import { SendOutlined } from "@ant-design/icons";
+} from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -24,12 +24,12 @@ const Submitter: FC = () => {
     <Form
       {...layout}
       name="submit"
-      validateMessages={{ required: "Campo obrigatório" }}
+      validateMessages={{ required: 'Campo obrigatório' }}
       onFinish={async (values) => {
         setIsLoading(true);
         try {
-          const response = await fetch("/api/submit", {
-            method: "POST",
+          const response = await fetch('/api/submit', {
+            method: 'POST',
             body: JSON.stringify(values),
           });
           // eslint-disable-next-line no-console
@@ -41,11 +41,11 @@ const Submitter: FC = () => {
     >
       <Item label="Problema">
         <Group compact>
-          <Item name={["problem", "oj"]} noStyle>
+          <Item name={['problem', 'oj']} noStyle>
             <Select
               showSearch
               placeholder="Filtre por um OJ"
-              style={{ width: "30%" }}
+              style={{ width: '30%' }}
             >
               <Option value="codeforces">Codeforces</Option>
               <Option value="uva">UVA</Option>
@@ -53,12 +53,12 @@ const Submitter: FC = () => {
             </Select>
           </Item>
           <Item
-            name={["problem", "id"]}
+            name={['problem', 'id']}
             noStyle
-            rules={[{ required: true, message: "Escolha um problema" }]}
+            rules={[{ required: true, message: 'Escolha um problema' }]}
           >
             <Select
-              style={{ width: "70%" }}
+              style={{ width: '70%' }}
               showSearch
               placeholder="Nome ou ID do problema"
             >
