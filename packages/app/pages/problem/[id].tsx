@@ -91,6 +91,7 @@ const Problem = ({
 
   return (
     <Card
+      className="card"
       title={<Title level={2}>{data.title}</Title>}
       extra={
         screens.sm ? (

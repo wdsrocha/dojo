@@ -2,7 +2,7 @@ import { Card } from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
 
 const Home = () => (
-  <Card>
+  <Card className="card">
     <Paragraph>
       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam pariatur
       eius, praesentium omnis ullam expedita laboriosam ipsum, magni, earum

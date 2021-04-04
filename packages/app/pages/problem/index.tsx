@@ -214,7 +214,7 @@ const Problem = () => {
   };
 
   return (
-    <Card title={<Title level={2}>Problemas</Title>}>
+    <Card className="card" title={<Title level={2}>Problemas</Title>}>
       <Table<Problem>
         size="middle"
         bordered

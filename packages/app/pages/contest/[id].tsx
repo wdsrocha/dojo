@@ -103,7 +103,10 @@ const ContestHeader = ({
   useInterval(() => setNow(dayjs()), contestStatus !== "ended" ? 1000 : null);
 
   return (
-    <Card title={<Title level={1}>{title}</Title>}>
+    <Card
+      className="card"
+      title={<Title level={1}>{title}</Title>}
+    >
       <Progress percent={percentage} showInfo={false} />
       <div className="flex flex-col md:flex-row md:justify-between md:items-center">
         <div>
