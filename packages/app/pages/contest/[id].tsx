@@ -1,10 +1,12 @@
 import { Card, Progress } from "antd";
+import { ColumnsType } from "antd/lib/table";
 import Text from "antd/lib/typography/Text";
 import Title from "antd/lib/typography/Title";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useEffect, useRef, useState } from "react";
+import { useTwoPassRendering } from "../../hooks/useTwoPassRendering";
 
 dayjs.extend(duration);
 
@@ -49,6 +51,8 @@ const ContestHeader = ({
   endDate: rawEndDate,
   title,
 }: Contest) => {
+  const isClient = useTwoPassRendering()
+
   const startDate = dayjs(rawStartDate);
   const endDate = dayjs(rawEndDate);
   const formattedStartDate = startDate.format("YYYY-MM-DD HH:mm Z UTC");
@@ -107,14 +111,14 @@ const ContestHeader = ({
       className="card"
       title={<Title level={1}>{title}</Title>}
     >
-      <Progress percent={percentage} showInfo={false} />
+      <Progress percent={isClient ? percentage : 0} showInfo={false} />
       <div className="flex flex-col md:flex-row md:justify-between md:items-center">
         <div>
           <Text strong>Início: </Text>
           {formattedStartDate}
         </div>
         <div className="order-first md:order-none">
-          <Title level={5}>{relativeTimeInfo}</Title>
+          <Title level={5}>{isClient ? relativeTimeInfo : '...'}</Title>
         </div>
         <div>
           <Text strong>Término: </Text>
