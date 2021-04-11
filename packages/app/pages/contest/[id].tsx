@@ -5,26 +5,11 @@ import Title from "antd/lib/typography/Title";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useInterval } from "../../hooks/useInterval";
 import { useTwoPassRendering } from "../../hooks/useTwoPassRendering";
 
 dayjs.extend(duration);
-
-function useInterval(callback: () => void, delay: number | null) {
-  const savedCallback = useRef<typeof callback>();
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (delay !== null) {
-      const id = setInterval(() => savedCallback.current?.(), delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
 
 interface Contest {
   title: string;
