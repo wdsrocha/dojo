@@ -1,5 +1,7 @@
 #!/bin/sh
 . "$(dirname $0)/_/husky.sh"
 
-yarn workspaces run lint
-yarn workspaces run test
+# disabling husky until I find a way to
+# run the scripts only on the changed package
+# yarn workspaces run lint
+# yarn workspaces run test
