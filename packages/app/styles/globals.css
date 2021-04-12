@@ -16,7 +16,9 @@ body {
   white-space: pre-line;
 }
 
-.card {
-  @apply rounded-md;
-  @apply shadow-md;
+@media  (min-width: 768px) {
+  .card {
+    @apply rounded-md;
+    @apply shadow-md;
+  }
 }
