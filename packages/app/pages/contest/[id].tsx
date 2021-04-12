@@ -1,13 +1,9 @@
-import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { Card, Tabs } from "antd";
-import Table, { ColumnsType } from "antd/lib/table";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { HTMLAttributes } from "react";
 import classNames from "classnames";
-import { Hyperlink } from "../../components/Hyperlink";
 import { ContestHeader } from "../../components/ContestHeader";
-
-type ProblemStatus = "not submitted" | "accepted" | "rejected";
+import { ContestProblems } from "../../components/ContestProblems";
 
 const { TabPane } = Tabs;
 
@@ -131,79 +127,6 @@ export const getServerSideProps: GetServerSideProps<ContestResponse> = async () 
     },
   },
 });
-
-interface ContestProblemsProps {
-  problems: ProblemOverview[];
-}
-
-const renderStatus = (status: ProblemStatus) => {
-  if (status === "accepted") {
-    return <CheckCircleFilled style={{ fontSize: 20, color: "green" }} />;
-  }
-  if (status === "rejected") {
-    return <CloseCircleFilled style={{ fontSize: 20, color: "red" }} />;
-  }
-  return null;
-};
-
-const ContestProblems = ({ problems }: ContestProblemsProps) => {
-  const columns: ColumnsType<ProblemOverview> = [
-    {
-      title: "#",
-      dataIndex: "id",
-      render: (_, { id }) => (
-        <Hyperlink href="/" strong>
-          {id}
-        </Hyperlink>
-      ),
-      width: 50,
-      align: "center",
-    },
-    {
-      title: "Origem",
-      dataIndex: "origin",
-      render: (_, { origin }) => <Hyperlink href="/">{origin}</Hyperlink>,
-      responsive: ["sm"],
-      width: 200,
-    },
-    {
-      title: "Título",
-      dataIndex: "title",
-      render: (_, { title, status }) => (
-        <div className="flex items-center justify-between">
-          <Hyperlink href="/">{title}</Hyperlink>
-          <Hyperlink href="/">{renderStatus(status)}</Hyperlink>
-        </div>
-      ),
-      width: 600,
-    },
-    {
-      title: "Resolvidos / tentados",
-      render: (_, { solvedCount, attemptedCount }) => {
-        const solvedProportion = attemptedCount
-          ? (100 * (solvedCount / attemptedCount)).toFixed(0)
-          : 0;
-        return (
-          <Hyperlink href="/">
-            {`${solvedCount} / ${attemptedCount} (${solvedProportion}%)`}
-          </Hyperlink>
-        );
-      },
-      responsive: ["sm"],
-      width: 175,
-    },
-  ];
-
-  return (
-    <Table<ProblemOverview>
-      bordered
-      rowKey={(record) => record.id}
-      columns={columns}
-      dataSource={problems}
-      pagination={{ hideOnSinglePage: true, defaultPageSize: 26 }}
-    />
-  );
-};
 
 type ContestBodyProps = Pick<Contest, "problems"> &
   HTMLAttributes<HTMLDivElement>;
