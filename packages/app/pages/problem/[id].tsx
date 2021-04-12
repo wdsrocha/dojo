@@ -12,8 +12,8 @@ import { ColumnsType } from "antd/lib/table";
 const { Title, Link: TypographyLink } = Typography;
 
 interface Example {
-  input: string;
-  output: string;
+  input: Array<string>;
+  output: Array<string>;
 }
 
 interface Problem {
@@ -43,22 +43,23 @@ export const getServerSideProps: GetServerSideProps<ProblemResponse> = async () 
         '<p>Imprima a mensagem "X = " (letra X maiúscula) seguido pelo valor da variável <strong> X </strong> e pelo final de linha. Cuide para que tenha um espaço antes e depois do sinal de igualdade, conforme o exemplo abaixo.</p>',
       examples: [
         {
-          input: "<p>10<br>9</p>",
-          output: "<p>X = 19</p>",
+          input: ["10", "9"],
+          output: ["X = 19"],
         },
         {
-          input: "<p>-10<br>4</p>",
-          output: "<p>X = -6</p>",
+          input: ["-10", "4"],
+          output: ["X = -6"],
         },
         {
-          input: "<p>15<br>-7</p>",
-          output: "<p>X = 8</p>",
+          input: ["15", "-7"],
+          output: ["X = 8"],
         },
         {
-          input: `<pre id="id0003800066481584352">50
-1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1 1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1
-</pre>`,
-          output: "",
+          input: [
+            "50",
+            "1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1 1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1",
+          ],
+          output: [""],
         },
       ],
     },
@@ -76,21 +77,22 @@ const Problem = ({
     {
       title: "Exemplos de Entrada",
       dataIndex: "input",
-      render: (text: string) => (
-        <div dangerouslySetInnerHTML={{ __html: text }} />
-      ),
+      onCell: () => ({ className: "align-top" }),
+      // eslint-disable-next-line react/no-array-index-key
+      render: (lines: Example["input"]) => lines.map((line, index) => <pre key={index}>{line}</pre>),
     },
     {
       title: "Exemplos de Saída",
       dataIndex: "output",
-      render: (text: string) => (
-        <div dangerouslySetInnerHTML={{ __html: text }} />
-      ),
+      onCell: () => ({ className: "align-top" }),
+      // eslint-disable-next-line react/no-array-index-key
+      render: (lines: Example["output"]) => <div className="min-h-full">{lines.map((line, index) => <pre key={index}>{line}</pre>)}</div>,
     },
   ];
 
   return (
     <Card
+      className="card"
       title={<Title level={2}>{data.title}</Title>}
       extra={
         screens.sm ? (
