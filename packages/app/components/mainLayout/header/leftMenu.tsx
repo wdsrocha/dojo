@@ -1,24 +1,24 @@
 import { FC } from "react";
 import { Menu } from "antd";
 import { MenuProps } from "antd/lib/menu";
-import Link from "next/link";
+import { Hyperlink } from "../../Hyperlink";
 
 const LeftMenu: FC<MenuProps> = (props) => (
   <Menu {...props} selectable={false}>
     <Menu.Item key="home">
-      <Link href="/">
-        <a>Home</a>
-      </Link>
+      <Hyperlink href="/">
+        Home
+      </Hyperlink>
     </Menu.Item>
     <Menu.Item key="problem">
-      <Link href="/problem">
-        <a>Problemas</a>
-      </Link>
+      <Hyperlink href="/problem">
+        Problemas
+      </Hyperlink>
     </Menu.Item>
     <Menu.Item key="submit">
-      <Link href="/submit">
-        <a>Submeter</a>
-      </Link>
+      <Hyperlink href="/submit">
+        Submeter
+      </Hyperlink>
     </Menu.Item>
   </Menu>
 );
