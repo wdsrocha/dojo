@@ -7,6 +7,7 @@ import { Router } from "next/dist/client/router";
 
 import MainLayout from "../components/mainLayout";
 import "../styles/globals.css";
+import { AuthProvider } from "../contexts/auth";
 
 function MyApp({ Component, pageProps }: AppProps) {
   Router.events.on("routeChangeStart", start);
@@ -15,9 +16,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ConfigProvider locale={ptBR}>
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
+      <AuthProvider>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </AuthProvider>
     </ConfigProvider>
   );
 }
