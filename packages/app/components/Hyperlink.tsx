@@ -13,6 +13,13 @@ interface TextLinkProps extends NextLinkProps, TypographyLinkProps {
 
 /**
  * Next.js Link functionalities + Ant Design Link visuals
+ *
+ * @example
+ * ```jsx
+ * <Hyperlink href="/">
+ *   Back to home
+ * </Hyperlink>
+ * ```
  */
 export const Hyperlink = ({
   children,
