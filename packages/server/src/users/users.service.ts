@@ -34,6 +34,17 @@ export class UsersService {
     return user;
   }
 
+  async getByUsername(username: string): Promise<User> {
+    const user = await this.usersRepository.findOne({ username });
+    if (!user) {
+      throw new HttpException(
+        'User with this username does not exist',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return user;
+  }
+
   async create(userData: CreateUserDto) {
     const newUser = await this.usersRepository.create(userData);
     await this.usersRepository.save(newUser);

@@ -48,17 +48,17 @@ export class AuthenticationService {
   }
 
   public async getAuthenticatedUser(
-    email: string,
+    username: string,
     plainTextPassword: string,
   ): Promise<User> {
     try {
-      const user = await this.usersService.getByEmail(email);
+      const user = await this.usersService.getByUsername(username);
       await this.verifyPassword(plainTextPassword, user.password);
       return user;
     } catch (error) {
       throw new HttpException(
         'Wrong credentials provided',
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.UNAUTHORIZED,
       );
     }
   }
