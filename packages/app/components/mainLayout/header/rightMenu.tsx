@@ -21,6 +21,7 @@ const User = () => {
   if (!session) {
     return (
       <a
+        data-test="login-open"
         className="flex items-center px-5"
         href="#"
         onClick={() => setModalVisible(true)}
@@ -66,7 +67,7 @@ const User = () => {
         Configurar perfil
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="logout" className="flex items-center">
+      <Menu.Item data-test="user-menu-logout" key="logout" className="flex items-center">
         <LogoutOutlined />
         Sair
       </Menu.Item>
@@ -75,7 +76,7 @@ const User = () => {
 
   return (
     <Dropdown className="px-5" overlay={menu}>
-      <span className="inline-block cursor-pointer">
+      <span data-test="user-menu" className="inline-block cursor-pointer">
         <Avatar
           size="small"
           className="mr-2"

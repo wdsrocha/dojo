@@ -38,6 +38,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     <div>
       {statusCode ? (
         <Alert
+          data-test="login-alert"
           type="error"
           showIcon
           className="mb-4"
@@ -50,6 +51,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       ) : null}
       <Form form={form} onFinish={onFinish} labelCol={{ span: 4 }}>
         <Form.Item
+          data-test="login-username"
           label="Usuário"
           name="username"
           rules={[
@@ -62,6 +64,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <Input />
         </Form.Item>
         <Form.Item
+          data-test="login-password"
           label="Senha"
           name="password"
           rules={[{ required: true, message: "Por favor, insira sua senha!" }]}
@@ -79,6 +82,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         </Form.Item> */}
         <Form.Item>
           <Button
+            data-test="login-submit"
             block
             size="large"
             type="primary"
