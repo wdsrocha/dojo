@@ -44,8 +44,10 @@ const Home = () => (
       saepe ipsa, laborum sint et est officiis, tempora ut nesciunt molestias?
       Quas culpa error sint id quidem aperiam, nostrum fugiat?
     </Paragraph>
-    <Paragraph>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</Paragraph>
+    <Paragraph>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+    </Paragraph>
   </Card>
-)
+);
 
 export default Home;

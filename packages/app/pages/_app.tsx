@@ -5,11 +5,11 @@ import { start, done } from "nprogress";
 import "nprogress/nprogress.css";
 import { Router } from "next/dist/client/router";
 
-import MainLayout from "../components/mainLayout";
+import { MainLayout } from "../components/mainLayout/MainLayout";
 import "../styles/globals.css";
 import { AuthProvider } from "../contexts/auth";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   Router.events.on("routeChangeStart", start);
   Router.events.on("routeChangeComplete", done);
   Router.events.on("routeChangeError", done);
@@ -23,6 +23,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       </AuthProvider>
     </ConfigProvider>
   );
-}
+};
 
-export default MyApp;
+export default App;

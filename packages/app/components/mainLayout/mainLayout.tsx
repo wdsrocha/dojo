@@ -1,11 +1,9 @@
 import Head from "next/head";
 import { FC } from "react";
-import Layout from "./layout";
-import Header from "./header";
-import Content from "./content";
-import Footer from "./footer";
+import { Layout } from "antd";
+import { Header } from "./header/Header";
 
-const MainLayout: FC = ({ children }) => (
+export const MainLayout: FC = ({ children }) => (
   <div>
     <Head>
       <title>DOJO Online Judge Orchestrator</title>
@@ -14,11 +12,16 @@ const MainLayout: FC = ({ children }) => (
     <main>
       <Layout>
         <Header />
-        <Content>{children}</Content>
-        <Footer />
+        <Layout.Content
+          className="md:mt-3 md:mb-4 mx-auto"
+          style={{ width: "100%", maxWidth: "1200px" }}
+        >
+          {children}
+        </Layout.Content>
+        <Layout.Footer className="text-center">
+          DOJO © 2020-2021 Wesley Rocha
+        </Layout.Footer>
       </Layout>
     </main>
   </div>
 );
-
-export default MainLayout;

@@ -1,12 +1,12 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import { Drawer, Button, Layout } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
-import LeftMenu from "./leftMenu";
-import RightMenu from "./rightMenu";
+import { LeftMenu } from "./LeftMenu";
+import { RightMenu } from "./RightMenu";
 
-const Header: FC = () => {
+export const Header = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState<boolean>(false);
 
   return (
@@ -44,5 +44,3 @@ const Header: FC = () => {
     </Layout.Header>
   );
 };
-
-export default Header;

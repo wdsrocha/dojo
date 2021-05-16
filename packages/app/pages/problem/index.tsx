@@ -188,9 +188,7 @@ const Problem = () => {
         { onlineJudge, id }: { onlineJudge: string; id: string },
       ) => (
         <Link href={`/problem/${onlineJudge}-${id}`}>
-          <TypographyLink>
-            {text}
-          </TypographyLink>
+          <TypographyLink>{text}</TypographyLink>
         </Link>
       ),
       align: "left",

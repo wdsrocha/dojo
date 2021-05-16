@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import {
  Avatar, Dropdown, Menu, Modal,
 } from "antd";
@@ -91,12 +91,10 @@ const User = () => {
   );
 };
 
-const RightMenu: FC<MenuProps> = (props) => (
+export const RightMenu = (props: MenuProps) => (
   <Menu selectedKeys={[]} {...props}>
     <Menu.Item key="user" style={{ padding: 0 }}>
       <User />
     </Menu.Item>
   </Menu>
 );
-
-export default RightMenu;

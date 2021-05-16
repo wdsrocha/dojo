@@ -3,7 +3,7 @@ import { Menu } from "antd";
 import { MenuProps } from "antd/lib/menu";
 import { Hyperlink } from "../../Hyperlink";
 
-const LeftMenu: FC<MenuProps> = (props) => (
+export const LeftMenu: FC<MenuProps> = (props) => (
   <Menu {...props} selectable={false}>
     <Menu.Item key="home">
       <Hyperlink href="/">
@@ -22,5 +22,3 @@ const LeftMenu: FC<MenuProps> = (props) => (
     </Menu.Item>
   </Menu>
 );
-
-export default LeftMenu;
