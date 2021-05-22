@@ -20,14 +20,16 @@ const User = () => {
 
   if (!session) {
     return (
-      <a
-        data-test="login-open"
-        className="flex items-center px-5"
-        href="#"
-        onClick={() => setModalVisible(true)}
-      >
-        <LoginOutlined style={{ fontSize: 18, marginRight: 8 }} />
-        <span>Entrar</span>
+      <>
+        <a
+          data-test="login-open"
+          className="flex items-center px-5"
+          href="#"
+          onClick={() => setModalVisible(true)}
+        >
+          <LoginOutlined style={{ fontSize: 18, marginRight: 8 }} />
+          <span>Entrar</span>
+        </a>
         <Modal
           centered
           title="Entrar"
@@ -39,7 +41,7 @@ const User = () => {
         >
           <LoginForm onSuccess={() => setModalVisible(false)} />
         </Modal>
-      </a>
+      </>
     );
   }
 
@@ -67,7 +69,11 @@ const User = () => {
         Configurar perfil
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item data-test="user-menu-logout" key="logout" className="flex items-center">
+      <Menu.Item
+        data-test="user-menu-logout"
+        key="logout"
+        className="flex items-center"
+      >
         <LogoutOutlined />
         Sair
       </Menu.Item>
