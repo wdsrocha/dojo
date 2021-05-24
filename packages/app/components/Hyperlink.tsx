@@ -4,12 +4,10 @@ import { ComponentProps, PropsWithChildren } from "react";
 
 const { Link: TypographyLink } = Typography;
 
-type NextLinkProps = Omit<ComponentProps<typeof NextLink>, "href">;
+type NextLinkProps = ComponentProps<typeof NextLink>;
 type TypographyLinkProps = Omit<ComponentProps<typeof TypographyLink>, "href">;
 
-interface TextLinkProps extends NextLinkProps, TypographyLinkProps {
-  href: string;
-}
+interface HyperlinkProps extends NextLinkProps, TypographyLinkProps {}
 
 /**
  * Next.js Link functionalities + Ant Design Link visuals
@@ -25,10 +23,8 @@ export const Hyperlink = ({
   children,
   href,
   ...props
-}: PropsWithChildren<TextLinkProps>) => (
-  <NextLink href={href} {...props}>
-    <TypographyLink href={href} {...props}>
-      {children}
-    </TypographyLink>
+}: PropsWithChildren<HyperlinkProps>) => (
+  <NextLink href={href} passHref {...props}>
+    <TypographyLink {...props}>{children}</TypographyLink>
   </NextLink>
 );
