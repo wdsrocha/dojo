@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { OnlineJudgesService } from '../online-judges/online-judges.service';
 import { User } from '../users/users.entity';
 import { CreateSubmissionRequestBody } from './submissions.dto';
-import { Submission } from './submissions.entity';
+import { Submission, Verdict } from './submissions.entity';
 
 @Injectable()
 export class SubmissionsService {
@@ -41,16 +41,29 @@ export class SubmissionsService {
     return this.submissionsRepository.save(submission);
   }
 
-  findOne(
+  async findOne(
     onlineJudgeId: string,
     remoteSubmissionId: string,
   ): Promise<Submission> {
-    return this.submissionsRepository.findOne(
+    const submission = await this.submissionsRepository.findOne(
       {
         onlineJudgeId,
         remoteSubmissionId,
       },
       { relations: ['author'] },
     );
+
+    if (submission.verdict !== Verdict.PENDING) {
+      return submission;
+    }
+
+    const verdict = await this.onlineJudgesService.getSubmissionVerdict(
+      onlineJudgeId,
+      remoteSubmissionId,
+    );
+
+    await this.submissionsRepository.update({ onlineJudgeId, remoteSubmissionId }, { verdict })
+
+    return { ...submission, verdict };
   }
 }

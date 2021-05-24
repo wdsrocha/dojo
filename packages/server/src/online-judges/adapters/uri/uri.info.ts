@@ -1,22 +1,16 @@
-export enum Verdict {
-  PENDING = 'Pending',
-  ACCEPTED = 'Accepted',
-  COMPILATION_ERROR = 'Compilation error',
-  TIME_LIMIT_EXCEEDED = 'Time limit exceeded',
-  PRESENTATION_ERROR = 'Presentation error',
-  WRONG_ANSWER = 'Wrong answer',
-  MEMORY_LIMIT_EXCEEDED = 'Memory limit exceeded',
-}
+import { Verdict } from "../../../submissions/submissions.entity";
 
-export const info: {
-  name: string;
+interface OnlineJudgeInfo {
+  name: string
   languages: {
     [key: string]: string;
-  };
+  }
   verdicts: {
-    [key: string]: Verdict;
-  };
-} = {
+    [key: string]: Verdict
+  }
+}
+
+export const info: OnlineJudgeInfo = {
   name: 'URI',
   languages: {
     'C (gcc 4.8.5, -O2 -lm) [+0s]': '1',

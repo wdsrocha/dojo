@@ -4,7 +4,9 @@ import * as fetch from 'node-fetch';
 import * as puppeteer from 'puppeteer';
 import { ClickOptions, NavigationOptions, Page, Response } from 'puppeteer';
 
+import { Verdict } from '../../../submissions/submissions.entity';
 import { OnlineJudge } from './../online-judge.interface';
+import { info } from './uri.info';
 
 function clickAndWaitForNavigation(
   page: Page,
@@ -84,6 +86,33 @@ export class UriAdapter implements OnlineJudge {
 
       const submissionId = runUrl.split('/').pop();
       return { submissionId };
+    } finally {
+      browser.close();
+    }
+  }
+
+  async getSubmissionVerdict(submissionId: string) {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    try {
+      await login(page);
+
+      await page.goto(`${BASE_URL}/judge/pt/runs/code/${submissionId}`);
+      const rawVerdict = await page.$eval('.answer', (el) => el.textContent);
+      const formattedVerdict = rawVerdict?.trim().toUpperCase() ?? '';
+      const validUriVerdict = Object.keys(info.verdicts).find((verdict) =>
+        formattedVerdict.includes(verdict),
+      );
+
+      if (!validUriVerdict) {
+        const errorMessage = `The scrapped verdict "${rawVerdict}" isn't a valid verdict. Valid verdicts are: ${Object.keys(
+          info.verdicts,
+        )}. Make sure that the Online Judge hasn't changed the verdict names or if there is a bug in the server.`;
+        throw new HttpException(errorMessage, 500);
+      }
+
+      const verdict: Verdict = info.verdicts[validUriVerdict as keyof typeof info.verdicts];
+      return verdict;
     } finally {
       browser.close();
     }
