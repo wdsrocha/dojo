@@ -29,10 +29,23 @@ export class UriAdapter implements OnlineJudge {
   page: puppeteer.Page;
   constructor() {
     (async () => {
-      this.browser = await puppeteer.launch();
+      this.browser = await puppeteer.launch({
+        args: ['--disable-dev-shm-usage'],
+      });
       this.page = (await this.browser.pages())[0];
       this.login();
     })();
+  }
+
+  async getPage() {
+    console.log('Getting page...');
+    try {
+      return this.page;
+    } catch (error) {
+      console.log('Page failed, creating a new one');
+      console.error({ error })
+      this.page = await this.browser.newPage();
+    }
   }
 
   async login() {
@@ -44,11 +57,13 @@ export class UriAdapter implements OnlineJudge {
       );
     }
 
-    await this.page.goto(`${BASE_URL}/${LOGIN_PAGE_PATH}`);
-    await this.page.type('#email', URI_BOT_EMAIL);
-    await this.page.type('#password', URI_BOT_PASSWORD);
-    await this.page.click('#remember-me');
-    await clickAndWaitForNavigation(this.page, 'input.send-green');
+    const page = await this.getPage();
+
+    await page.goto(`${BASE_URL}/${LOGIN_PAGE_PATH}`);
+    await page.type('#email', URI_BOT_EMAIL);
+    await page.type('#password', URI_BOT_PASSWORD);
+    await page.click('#remember-me');
+    await clickAndWaitForNavigation(page, 'input.send-green');
   }
 
   async getProblem(problemId: string) {
@@ -62,26 +77,33 @@ export class UriAdapter implements OnlineJudge {
     return { title };
   }
 
-  async submit(problemId: string, languageId: string, code: string, retryCount = 2) {
+  async submit(
+    problemId: string,
+    languageId: string,
+    code: string,
+    retryCount = 2,
+  ) {
+    const page = await this.getPage();
+
     const problemUrl = `${BASE_URL}/judge/pt/problems/view/${problemId}`;
-    await this.page.goto(problemUrl);
-    if (await this.page.$('#error')) {
+    await page.goto(problemUrl);
+    if (await page.$('#error')) {
       throw new HttpException(
         `Problem "${problemId}" was not found at ${problemUrl}.`,
         HttpStatus.NOT_FOUND,
       );
     }
 
-    await this.page.type('#editor > textarea', code);
-    await this.page.click('.selectize-input');
-    await this.page.click(`[data-value="${languageId}"]`);
-    await clickAndWaitForNavigation(this.page, 'input.send-green');
+    await page.type('#editor > textarea', code);
+    await page.click('.selectize-input');
+    await page.click(`[data-value="${languageId}"]`);
+    await clickAndWaitForNavigation(page, 'input.send-green');
 
-    const runUrl = await this.page.url();
+    const runUrl = await page.url();
     if (runUrl.includes('login')) {
       if (retryCount > 0) {
         await this.login();
-        return this.submit(problemId, languageId, code, retryCount - 1)
+        return this.submit(problemId, languageId, code, retryCount - 1);
       } else {
         throw new HttpException(
           'Bot is not logged in URI Online Judge.',
@@ -95,13 +117,14 @@ export class UriAdapter implements OnlineJudge {
   }
 
   async getSubmissionVerdict(submissionId: string, retryCount = 2) {
-    await this.page.goto(`${BASE_URL}/judge/pt/runs/code/${submissionId}`);
+    const page = await this.getPage();
+    await page.goto(`${BASE_URL}/judge/pt/runs/code/${submissionId}`);
 
-    const runUrl = await this.page.url();
+    const runUrl = await page.url();
     if (runUrl.includes('login')) {
       if (retryCount > 0) {
         await this.login();
-        return this.getSubmissionVerdict(submissionId, retryCount - 1)
+        return this.getSubmissionVerdict(submissionId, retryCount - 1);
       } else {
         throw new HttpException(
           'Bot is not logged in URI Online Judge.',
@@ -110,7 +133,7 @@ export class UriAdapter implements OnlineJudge {
       }
     }
 
-    const rawVerdict = await this.page.$eval('.answer', (el) => el.textContent);
+    const rawVerdict = await page.$eval('.answer', (el) => el.textContent);
     const formattedVerdict = rawVerdict?.trim().toUpperCase() ?? '';
     const validUriVerdict = Object.keys(info.verdicts).find((verdict) =>
       formattedVerdict.includes(verdict),
