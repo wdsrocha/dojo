@@ -8,6 +8,7 @@ import { useRouter } from "next/dist/client/router";
 import Paragraph from "antd/lib/typography/Paragraph";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 import { ColumnsType } from "antd/lib/table";
+import Link from "next/link";
 
 const { Title, Link: TypographyLink } = Typography;
 
@@ -85,8 +86,14 @@ const Problem = ({
       title: "Exemplos de Saída",
       dataIndex: "output",
       onCell: () => ({ className: "align-top" }),
-      // eslint-disable-next-line react/no-array-index-key
-      render: (lines: Example["output"]) => <div className="min-h-full">{lines.map((line, index) => <pre key={index}>{line}</pre>)}</div>,
+      render: (lines: Example["output"]) => (
+        <div className="min-h-full">
+          {lines.map((line, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <pre key={index}>{line}</pre>
+          ))}
+        </div>
+      ),
     },
   ];
 
@@ -96,15 +103,19 @@ const Problem = ({
       title={<Title level={2}>{data.title}</Title>}
       extra={
         screens.sm ? (
-          <Button size="large" type="primary" href={`/submit/${id}`}>
-            Submeter
-          </Button>
+          <Link href={`/submit/${id}`} passHref>
+            <Button size="large" type="primary">
+              Submeter
+            </Button>
+          </Link>
         ) : null
       }
       actions={[
-        <Button size="large" type="primary" href={`/submit/${id}`}>
-          Submeter
-        </Button>,
+        <Link href={`/submit/${id}`} passHref>
+          <Button size="large" type="primary">
+            Submeter
+          </Button>
+        </Link>,
       ]}
     >
       <Meta

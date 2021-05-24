@@ -56,7 +56,6 @@ const User = () => {
           router.push("config");
         } else if (key === "logout") {
           await logout();
-          router.push("/");
         }
       }}
     >

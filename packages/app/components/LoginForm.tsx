@@ -19,7 +19,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { login } = useSession();
   const [form] = Form.useForm();
 
-  const onFinish = async ({ username, password }: FormTypes) => {
+  const handleFinish = async ({ username, password }: FormTypes) => {
     setLoading(true);
     setStatusCode(null);
 
@@ -49,7 +49,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           }
         />
       ) : null}
-      <Form form={form} onFinish={onFinish} labelCol={{ span: 4 }}>
+      <Form form={form} onFinish={handleFinish} labelCol={{ span: 4 }}>
         <Form.Item
           data-test="login-username"
           label="Usuário"
