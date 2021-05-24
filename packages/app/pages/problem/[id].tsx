@@ -96,13 +96,13 @@ const Problem = ({
       title={<Title level={2}>{data.title}</Title>}
       extra={
         screens.sm ? (
-          <Button size="large" type="primary" href={`/submit/?id=${id}`}>
+          <Button size="large" type="primary" href={`/submit/${id}`}>
             Submeter
           </Button>
         ) : null
       }
       actions={[
-        <Button size="large" type="primary" href={`/submit/?id=${id}`}>
+        <Button size="large" type="primary" href={`/submit/${id}`}>
           Submeter
         </Button>,
       ]}
