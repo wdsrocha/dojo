@@ -62,8 +62,14 @@ export class SubmissionsService {
       remoteSubmissionId,
     );
 
-    await this.submissionsRepository.update({ onlineJudgeId, remoteSubmissionId }, { verdict })
+    await this.submissionsRepository.update(
+      { onlineJudgeId, remoteSubmissionId },
+      { verdict },
+    );
 
-    return { ...submission, verdict };
+    return this.submissionsRepository.findOne(
+      { onlineJudgeId, remoteSubmissionId },
+      { relations: ['author'] },
+    );
   }
 }
