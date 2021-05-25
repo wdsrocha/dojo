@@ -42,34 +42,45 @@ interface SubmissionResponse {
   data: Submission;
 }
 
-export const getServerSideProps: GetServerSideProps<SubmissionResponse> = async () => ({
-  props: {
-    data: {
-      id: 13,
-      onlineJudgeId: "uri",
-      remoteSubmissionId: "22945197",
-      remoteProblemId: "1001",
-      remoteLanguageId: "20",
-      code: "print('Hello World!')",
-      verdict: "Wrong answer",
-      createdDate: "2021-05-24T01:25:42.165Z",
-      author: {
-        id: 11,
-        email: "simple.user.3@mailinator.com",
-        username: "user3",
-      },
+export const getServerSideProps: GetServerSideProps<SubmissionResponse> = async ({
+  params,
+}) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/submissions/${params?.id}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
     },
-  },
-});
+  );
+
+  const data = await response.json();
+
+  if (response.status === 404) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: { data },
+  };
+};
 
 const Submission = ({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const displayVerdict = () => (
-    <Text type={data.verdict === Verdict.ACCEPTED ? "success" : "danger"}>
-      {data.verdict}
-    </Text>
-  );
+  const displayVerdict = () => {
+    // eslint-disable-next-line no-nested-ternary
+    const type = data.verdict === Verdict.PENDING
+        ? "secondary"
+        : data.verdict === Verdict.ACCEPTED
+        ? "success"
+        : "danger";
+    return <Text type={type}>{data.verdict}</Text>;
+  };
 
   return (
     <Card
@@ -83,21 +94,21 @@ const Submission = ({
         <Descriptions.Item label="Problema">
           {data.remoteProblemId}
         </Descriptions.Item>
-        <Descriptions.Item label="Veredito">{displayVerdict()}</Descriptions.Item>
+        <Descriptions.Item label="Veredito">
+          {displayVerdict()}
+        </Descriptions.Item>
         <Descriptions.Item label="Linguagem">
           {data.remoteLanguageId}
         </Descriptions.Item>
         <Descriptions.Item label="Autor">
-          {data.author.username}
+          {data.author?.username}
         </Descriptions.Item>
         <Descriptions.Item label="Submetido em">
           {data.createdDate}
         </Descriptions.Item>
       </Descriptions>
       <Card title="Código fonte">
-        <Text code>
-          {data.code}
-        </Text>
+        <Text code>{data.code}</Text>
       </Card>
     </Card>
   );
