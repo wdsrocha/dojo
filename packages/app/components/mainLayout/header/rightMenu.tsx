@@ -51,9 +51,9 @@ const User = () => {
       selectedKeys={[]}
       onClick={async ({ key }) => {
         if (key === "profile") {
-          router.push("profile");
+          router.push("/profile");
         } else if (key === "config") {
-          router.push("config");
+          router.push("/config");
         } else if (key === "logout") {
           await logout();
         }
