@@ -27,11 +27,10 @@ export class SubmissionsController {
     return this.submissionsService.create(body, request.user);
   }
 
-  @Get(':oj/:id')
-  findOne(
-    @Param('oj') onlineJudgeId: string,
-    @Param('id') remoteSubmissionId: string,
+  @Get(':id')
+  findById(
+    @Param('id') id: string
   ): Promise<Submission> {
-    return this.submissionsService.findOne(onlineJudgeId, remoteSubmissionId);
+    return this.submissionsService.findById(id);
   }
 }

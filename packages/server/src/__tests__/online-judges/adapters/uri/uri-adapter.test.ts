@@ -1,11 +1,9 @@
-import fetch from 'node-fetch';
+import fetchMock from 'jest-fetch-mock';
 
 import { stubBrowser, stubPage } from '../../../puppeteer.mock';
 import { UriAdapter } from './../../../../online-judges/adapters/uri/uri-adapter';
-import { problemPage, problemPageNotFound } from './uri-adapter.mock';
+import { problemPage } from './uri-adapter.mock';
 const { Response } = jest.requireActual('node-fetch');
-
-jest.mock('node-fetch');
 
 jest.mock('puppeteer', () => ({
   launch() {
@@ -18,14 +16,14 @@ process.env.URI_BOT_PASSWORD = 'password';
 
 it('should get the problem title', async () => {
   const uriAdapter = new UriAdapter();
-  fetch.mockReturnValue(Promise.resolve(new Response(problemPage)));
+  fetchMock.mockReturnValue(Promise.resolve(new Response(problemPage)))
   const { title } = await uriAdapter.getProblem('1001');
   expect(title).toBe('Extremamente Básico');
 });
 
 it('should throw 404 error when getting the problem title for an unknown problem', async () => {
   const uriAdapter = new UriAdapter();
-  fetch.mockReturnValue(Promise.resolve(new Response(problemPageNotFound)));
+  fetchMock.mockReturnValue(Promise.resolve(new Response(problemPage)))
   const { title } = await uriAdapter.getProblem('999');
   expect(title).toBeFalsy();
 });

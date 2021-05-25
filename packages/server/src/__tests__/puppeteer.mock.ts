@@ -14,6 +14,7 @@ export const stubPage = ({
 export const stubBrowser = ({
   newPage: () => Promise.resolve(stubPage),
   close: () => Promise.resolve(),
+  pages: () => Promise.resolve([stubPage]),
 } as unknown) as Browser;
 
 export const stubPuppeteer = ({

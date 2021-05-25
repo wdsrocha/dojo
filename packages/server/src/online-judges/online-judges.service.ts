@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { Verdict } from '../submissions/submissions.entity';
 import { OnlineJudge } from './adapters/online-judge.interface';
 import { UriAdapter } from './adapters/uri/uri-adapter';
 

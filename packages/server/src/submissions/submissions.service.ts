@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -41,35 +41,31 @@ export class SubmissionsService {
     return this.submissionsRepository.save(submission);
   }
 
-  async findOne(
-    onlineJudgeId: string,
-    remoteSubmissionId: string,
-  ): Promise<Submission> {
-    const submission = await this.submissionsRepository.findOne(
-      {
-        onlineJudgeId,
-        remoteSubmissionId,
-      },
-      { relations: ['author'] },
-    );
+  async findById(id: string): Promise<Submission> {
+    const submission = await this.submissionsRepository.findOne(id, {
+      relations: ['author'],
+    });
+
+    if (!submission) {
+      throw new HttpException(`Submission ${id} not found`, 404)
+    }
 
     if (submission.verdict !== Verdict.PENDING) {
       return submission;
     }
 
     const verdict = await this.onlineJudgesService.getSubmissionVerdict(
-      onlineJudgeId,
-      remoteSubmissionId,
+      submission.onlineJudgeId,
+      submission.remoteSubmissionId,
     );
 
-    await this.submissionsRepository.update(
-      { onlineJudgeId, remoteSubmissionId },
-      { verdict },
-    );
+    await this.submissionsRepository.update(id, { verdict });
+    const updatedSubmission = await this.submissionsRepository.findOne(id, { relations: ['author'] });
 
-    return this.submissionsRepository.findOne(
-      { onlineJudgeId, remoteSubmissionId },
-      { relations: ['author'] },
-    );
+    if (!updatedSubmission) {
+      throw new HttpException(`Submission ${id} not found after updated`, 404)
+    }
+
+    return updatedSubmission
   }
 }

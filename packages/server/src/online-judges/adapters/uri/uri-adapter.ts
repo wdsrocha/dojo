@@ -1,11 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
-import * as fetch from 'node-fetch';
+import fetch from 'node-fetch';
 import * as puppeteer from 'puppeteer';
-import { ClickOptions, NavigationOptions, Page, Response } from 'puppeteer';
+import {
+  Browser,
+  ClickOptions,
+  NavigationOptions,
+  Page,
+  Response,
+} from 'puppeteer';
 
+import { Verdict } from '../../../submissions/submissions.entity';
 import { OnlineJudge } from './../online-judge.interface';
-import { info } from './uri.info';
+import { uriInfo } from './uri.info';
 
 function clickAndWaitForNavigation(
   page: Page,
@@ -25,8 +32,8 @@ const LOGIN_PAGE_PATH = '/judge/pt/login';
 // TODO: Verificar qual o melhor pp (adapter ta com mt responsa, ver facade)
 @Injectable()
 export class UriAdapter implements OnlineJudge {
-  browser: puppeteer.Browser;
-  page: puppeteer.Page;
+  browser: Browser | undefined;
+  page: Page | undefined;
   constructor() {
     (async () => {
       this.browser = await puppeteer.launch({
@@ -37,15 +44,19 @@ export class UriAdapter implements OnlineJudge {
     })();
   }
 
-  async getPage() {
-    console.log('Getting page...');
-    try {
-      return this.page;
-    } catch (error) {
-      console.log('Page failed, creating a new one');
-      console.error({ error })
-      this.page = await this.browser.newPage();
+  async getPage(): Promise<Page> {
+    if (!this.page) {
+      this.page = await this.browser?.newPage();
     }
+
+    if (!this.page) {
+      throw new HttpException(
+        'Failed to to create a new puppeteer page',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return this.page;
   }
 
   async login() {
@@ -82,7 +93,7 @@ export class UriAdapter implements OnlineJudge {
     languageId: string,
     code: string,
     retryCount = 2,
-  ) {
+  ): Promise<{ submissionId: string }> {
     const page = await this.getPage();
 
     const problemUrl = `${BASE_URL}/judge/pt/problems/view/${problemId}`;
@@ -113,10 +124,21 @@ export class UriAdapter implements OnlineJudge {
     }
 
     const submissionId = runUrl.split('/').pop();
+
+    if (!submissionId) {
+      throw new HttpException(
+        'Failed to retrieve the submission id',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     return { submissionId };
   }
 
-  async getSubmissionVerdict(submissionId: string, retryCount = 2) {
+  async getSubmissionVerdict(
+    submissionId: string,
+    retryCount = 2,
+  ): Promise<Verdict> {
     const page = await this.getPage();
     await page.goto(`${BASE_URL}/judge/pt/runs/code/${submissionId}`);
 
@@ -133,21 +155,29 @@ export class UriAdapter implements OnlineJudge {
       }
     }
 
-    const rawVerdict = await page.$eval('.answer', (el) => el.textContent);
-    const formattedVerdict = rawVerdict?.trim().toUpperCase() ?? '';
-    const validUriVerdict = Object.keys(info.verdicts).find((verdict) =>
-      formattedVerdict.includes(verdict),
-    );
+    const rawUriVerdict = await page?.$eval('.answer', (el) => el.textContent);
+    const formattedUriVerdict = rawUriVerdict?.trim().toUpperCase() ?? '';
 
-    if (!validUriVerdict) {
-      const errorMessage = `The scrapped verdict "${rawVerdict}" isn't a valid verdict. Valid verdicts are: ${Object.keys(
-        info.verdicts,
-      )}. Make sure that the Online Judge hasn't changed the verdict names or if there is a bug in the server.`;
-      throw new HttpException(errorMessage, 500);
+    let dojoVerdict: Verdict | undefined;
+    if (formattedUriVerdict === '') {
+      dojoVerdict = Verdict.PENDING;
+    }
+    Object.keys(uriInfo.verdicts).forEach((validUriVerdict) => {
+      if (formattedUriVerdict.includes(validUriVerdict)) {
+        dojoVerdict = uriInfo.verdicts[validUriVerdict];
+      }
+    });
+
+    if (!dojoVerdict) {
+      // eslint-disable-next-line no-console
+      console.warn({
+        message:
+          "The scrapped verdict wasn't identified and defaulted to PENDING verdict",
+        rawUriVerdict,
+        formattedUriVerdict,
+      });
     }
 
-    const verdict =
-      info.verdicts[validUriVerdict as keyof typeof info.verdicts];
-    return verdict;
+    return dojoVerdict ?? Verdict.PENDING;
   }
 }

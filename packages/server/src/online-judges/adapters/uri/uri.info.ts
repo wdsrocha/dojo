@@ -10,7 +10,7 @@ interface OnlineJudgeInfo {
   }
 }
 
-export const info: OnlineJudgeInfo = {
+export const uriInfo: OnlineJudgeInfo = {
   name: 'URI',
   languages: {
     'C (gcc 4.8.5, -O2 -lm) [+0s]': '1',
