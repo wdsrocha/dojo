@@ -32,7 +32,7 @@ export class AuthenticationService {
         ...registrationData,
         password: hashedPassword,
       });
-      return { ...createdUser, password: undefined };
+      return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
         throw new HttpException(

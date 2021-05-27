@@ -30,7 +30,9 @@ export class AuthenticationController {
   @Post('login')
   login(@Req() request: RequestWithUser): User {
     const { user } = request;
-    request.res.setHeader(
+    // TODO: find out why res can be undefined and if this is the correct way to
+    // do it
+    request.res?.setHeader(
       'Set-Cookie',
       this.authenticationService.getCookieWithJwtToken(user.id),
     );
@@ -41,7 +43,7 @@ export class AuthenticationController {
   @UseGuards(JwtAuthenticationGuard)
   @Post('logout')
   logout(@Req() request: Request): void {
-    request.res.setHeader(
+    request.res?.setHeader(
       'Set-Cookie',
       this.authenticationService.getLogoutCookie(),
     );

@@ -6,7 +6,7 @@ import { Submission } from '../submissions/submissions.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  public id?: number;
+  public id: number;
 
   @Column({ unique: true })
   public email: string;
