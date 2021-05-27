@@ -78,6 +78,18 @@ export class UriAdapter implements OnlineJudge {
     await clickAndWaitForNavigation(page, 'input.send-green');
   }
 
+  _handleExample(cheerioObject: cheerio.Cheerio) {
+    return (
+      cheerioObject
+        .text()
+        .trim()
+        // remove duplicated new lines
+        .split('\n')
+        .filter(Boolean)
+        .join('\n')
+    );
+  }
+
   async getProblem(problemId: string): Promise<Omit<Problem, 'id'>> {
     const rawProblemUrl = `${BASE_URL}/repository/UOJ_${problemId}.html`;
     const response = await fetch(rawProblemUrl);
@@ -86,7 +98,7 @@ export class UriAdapter implements OnlineJudge {
 
     const title = $('h1').text();
     const timelimit = $('strong').first().text().split(' ')[1];
-    const description = cheerio.html($('.description').children())
+    const description = cheerio.html($('.description').children());
     const input = cheerio.html($('.input').children());
     const output = cheerio.html($('.output').children());
 
@@ -99,9 +111,9 @@ export class UriAdapter implements OnlineJudge {
       }
 
       if (index % 2 == 0) {
-        inputExamples.push($(element).text().trim());
+        inputExamples.push(this._handleExample($(element)));
       } else {
-        outputExamples.push($(element).text().trim());
+        outputExamples.push(this._handleExample($(element)));
       }
     });
 
