@@ -10,6 +10,7 @@ import {
   Response,
 } from 'puppeteer';
 
+import { Problem } from '../../../problems/problems.entity';
 import { Verdict } from '../../../submissions/submissions.entity';
 import { OnlineJudge } from './../online-judge.interface';
 import { uriInfo } from './uri.info';
@@ -77,15 +78,45 @@ export class UriAdapter implements OnlineJudge {
     await clickAndWaitForNavigation(page, 'input.send-green');
   }
 
-  async getProblem(problemId: string) {
+  async getProblem(problemId: string): Promise<Omit<Problem, 'id'>> {
     const rawProblemUrl = `${BASE_URL}/repository/UOJ_${problemId}.html`;
     const response = await fetch(rawProblemUrl);
 
     const $ = cheerio.load(await response.text());
 
     const title = $('h1').text();
+    const timelimit = $('strong').first().text().split(' ')[1];
+    const description = cheerio.html($('.description').children())
+    const input = cheerio.html($('.input').children());
+    const output = cheerio.html($('.output').children());
 
-    return { title };
+    const inputExamples: string[] = [];
+    const outputExamples: string[] = [];
+
+    $('tr td').each((index, element) => {
+      if (index < 2) {
+        return;
+      }
+
+      if (index % 2 == 0) {
+        inputExamples.push($(element).text().trim());
+      } else {
+        outputExamples.push($(element).text().trim());
+      }
+    });
+
+    return {
+      onlineJudgeId: 'uri',
+      remoteProblemId: problemId,
+      remoteLink: rawProblemUrl,
+      title,
+      timelimit,
+      description,
+      input,
+      output,
+      inputExamples,
+      outputExamples,
+    };
   }
 
   async submit(

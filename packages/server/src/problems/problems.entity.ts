@@ -4,13 +4,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export class Example {
-  input: string;
-  output: string;
-}
-
 @Entity()
 export class Problem {
+  // TODO: make onlineJudgeId and remoteProblemId be the real id
   @PrimaryGeneratedColumn() id: number;
   @Column() onlineJudgeId: string;
   @Column() remoteProblemId: string;
@@ -20,6 +16,6 @@ export class Problem {
   @Column() description: string;
   @Column() input: string;
   @Column() output: string;
-  // @OneToMany(() => Example, (example) => example.problem) examples: Example[];
-  @Column('simple-array') examples: Example[];
+  @Column('simple-array') inputExamples: string[]
+  @Column('simple-array') outputExamples: string[]
 }

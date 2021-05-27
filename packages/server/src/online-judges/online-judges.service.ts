@@ -7,6 +7,17 @@ import { UriAdapter } from './adapters/uri/uri-adapter';
 export class OnlineJudgesService {
   constructor(private readonly uriAdapter: UriAdapter) {}
 
+  getProblem(onlineJudgeId: string, problemId: string): ReturnType<OnlineJudge['getProblem']> {
+    if (onlineJudgeId === 'uri') {
+      return this.uriAdapter.getProblem(problemId);
+    } else {
+      throw new HttpException(
+        `Online Judge "${onlineJudgeId}" was not found.`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
   submit(
     onlineJudgeId: string,
     problemId: string,

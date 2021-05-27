@@ -47,7 +47,7 @@ export class SubmissionsService {
     });
 
     if (!submission) {
-      throw new HttpException(`Submission ${id} not found`, 404)
+      throw new HttpException(`Submission ${id} was not found`, 404)
     }
 
     if (submission.verdict !== Verdict.PENDING) {
