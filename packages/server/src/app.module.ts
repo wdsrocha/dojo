@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DatabaseModule } from './database/database.module';
+import { ProblemsModule } from './problems/problems.module';
 import { SubmissionsModule } from './submissions/submissions.module';
 import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
 
@@ -28,6 +29,7 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
     AuthenticationModule,
     DatabaseModule,
     SubmissionsModule,
+    ProblemsModule
   ],
   controllers: [AppController],
   providers: [
