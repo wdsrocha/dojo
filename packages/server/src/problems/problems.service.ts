@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { OnlineJudgesService } from '../online-judges/online-judges.service';
+import { ProblemList } from './problems.dto';
 import { Problem } from './problems.entity';
 
 @Injectable()
@@ -49,5 +50,14 @@ export class ProblemsService {
       );
     }
     return problem;
+  }
+
+  async getAll(): Promise<ProblemList> {
+    const problems = await this.problemsRepository.find();
+    return problems.map(({ onlineJudgeId, remoteProblemId, title }) => ({
+      onlineJudgeId,
+      remoteProblemId,
+      title,
+    }));
   }
 }

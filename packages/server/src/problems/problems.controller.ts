@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Post } from '@nestjs/common';
 
+import { ProblemList } from './problems.dto';
 import { Problem } from './problems.entity';
 import { ProblemsService } from './problems.service';
 
@@ -21,5 +22,10 @@ export class ProblemsController {
     @Param('remoteProblemId') remoteProblemId: string,
   ): Promise<Problem> {
     return this.problemsService.findOne(onlineJudgeId, remoteProblemId);
+  }
+
+  @Get()
+  getAll(): Promise<ProblemList> {
+    return this.problemsService.getAll()
   }
 }
