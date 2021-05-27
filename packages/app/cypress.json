@@ -1,5 +1,9 @@
 {
   "baseUrl": "http://localhost:3000/",
   "projectId": "omrx6c",
+  "retries": {
+    "runMode": 2,
+    "openMode": 4
+  },
   "$schema": "https://raw.githubusercontent.com/cypress-io/cypress/develop/cli/schema/cypress.schema.json"
 }
