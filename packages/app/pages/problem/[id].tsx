@@ -13,59 +13,64 @@ import Link from "next/link";
 const { Title, Link: TypographyLink } = Typography;
 
 interface Example {
-  input: Array<string>;
-  output: Array<string>;
+  input: string;
+  output: string;
 }
 
-interface Problem {
-  link: string;
+interface ProblemType {
+  onlineJudgeId: string;
+  remoteProblemId: string;
+  remoteLink: string;
   title: string;
   timelimit: string;
   description: string;
   input: string;
   output: string;
-  examples: Array<Example>;
+  inputExamples: string[];
+  outputExamples: string[];
 }
 
 interface ProblemResponse {
-  data: Problem;
+  data: ProblemType;
 }
 
-export const getServerSideProps: GetServerSideProps<ProblemResponse> = async () => ({
-  props: {
-    data: {
-      link: "https://www.urionlinejudge.com.br/repository/UOJ_1001.html",
-      title: "Extremamente Básico",
-      timelimit: "1",
-      description:
-        '<p>Leia 2 valores inteiros e armazene-os nas variáveis <strong>A</strong> e <strong>B</strong>. Efetue a soma de <strong>A</strong> e <strong>B</strong> atribuindo o seu resultado na variável <strong>X</strong>. Imprima <strong>X</strong> conforme exemplo apresentado abaixo. Não apresente mensagem alguma além daquilo que está sendo especificado e não esqueça de imprimir o fim de linha após o resultado, caso contrário, você receberá "<em>Presentation Error</em>".</p>',
-      input: "<p>A entrada contém 2 valores inteiros.</p>",
-      output:
-        '<p>Imprima a mensagem "X = " (letra X maiúscula) seguido pelo valor da variável <strong> X </strong> e pelo final de linha. Cuide para que tenha um espaço antes e depois do sinal de igualdade, conforme o exemplo abaixo.</p>',
-      examples: [
-        {
-          input: ["10", "9"],
-          output: ["X = 19"],
-        },
-        {
-          input: ["-10", "4"],
-          output: ["X = -6"],
-        },
-        {
-          input: ["15", "-7"],
-          output: ["X = 8"],
-        },
-        {
-          input: [
-            "50",
-            "1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1 1 2 4 6 6 4 2 1 3 5 5 3 1 2 4 4 2 1 3 3 1 2 2 1 1",
-          ],
-          output: [""],
-        },
-      ],
+function isString(x: any): x is string {
+  return typeof x === "string";
+}
+
+export const getServerSideProps: GetServerSideProps<ProblemResponse> = async ({
+  params,
+  res,
+}) => {
+  if (!isString(params?.id)) {
+    res.statusCode = 400;
+    return { props: { data: {} } };
+  }
+
+  const [onlineJudgeId, remoteProblemId] = params?.id?.split("-") ?? [];
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/problems/${onlineJudgeId}/${remoteProblemId}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
     },
-  },
-});
+  );
+
+  const data = await response.json();
+
+  if (response.status === 404) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: { data },
+  };
+};
 
 const Problem = ({
   data,
@@ -74,25 +79,32 @@ const Problem = ({
   const { id } = router.query;
   const screens = useBreakpoint();
 
+  // TODO: fix this on backend
+  const examples: Example[] = [];
+  const { inputExamples: inp, outputExamples: out } = data;
+  const n = inp.length > out.length ? inp.length : out.length;
+  for (let i = 0; i < n; i += 1) {
+    examples.push({
+      input: inp[i] ?? "",
+      output: out[i] ?? "",
+    });
+  }
+
   const columns: ColumnsType<Example> = [
     {
       title: "Exemplos de Entrada",
       dataIndex: "input",
       onCell: () => ({ className: "align-top" }),
-      // eslint-disable-next-line react/no-array-index-key
-      render: (lines: Example["input"]) => lines.map((line, index) => <pre key={index}>{line}</pre>),
+      render: (input: string) => (
+        <pre dangerouslySetInnerHTML={{ __html: input }} />
+      ),
     },
     {
       title: "Exemplos de Saída",
       dataIndex: "output",
       onCell: () => ({ className: "align-top" }),
-      render: (lines: Example["output"]) => (
-        <div className="min-h-full">
-          {lines.map((line, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <pre key={index}>{line}</pre>
-          ))}
-        </div>
+      render: (output: string) => (
+        <pre dangerouslySetInnerHTML={{ __html: output }} />
       ),
     },
   ];
@@ -120,9 +132,9 @@ const Problem = ({
     >
       <Meta
         description={(
-          <Paragraph>
-            <TypographyLink href={data.link} target="_blank">
-              {id}
+          <Paragraph className="px-6">
+            <TypographyLink href={data.remoteLink} target="_blank">
+              {(id as string)?.toUpperCase()}
             </TypographyLink>
             <br />
             Timelimit: {data.timelimit}
@@ -130,21 +142,20 @@ const Problem = ({
         )}
       />
       <Space direction="vertical">
-        <Card type="inner" title="Descrição">
+        <Card type="inner" bordered={false} title="Descrição">
           <div dangerouslySetInnerHTML={{ __html: data.description }} />
         </Card>
-        <Card type="inner" title="Entrada">
+        <Card type="inner" bordered={false} title="Entrada">
           <div dangerouslySetInnerHTML={{ __html: data.input }} />
         </Card>
-        <Card type="inner" title="Saída">
+        <Card type="inner" bordered={false} title="Saída">
           <div dangerouslySetInnerHTML={{ __html: data.output }} />
         </Card>
         <Table<Example>
-          size="middle"
           tableLayout="fixed"
-          bordered
+          bordered={false}
           columns={columns}
-          dataSource={data.examples.map((example, index) => ({
+          dataSource={examples.map((example, index) => ({
             key: index,
             ...example,
           }))}
