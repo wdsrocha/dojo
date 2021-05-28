@@ -18,10 +18,11 @@ interface FormTypes {
 interface Props {
   onlineJudgeId: string;
   remoteProblemId: string;
+  title: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const SubmissionForm = ({ onlineJudgeId, remoteProblemId }: Props) => {
+export const SubmissionForm = ({ onlineJudgeId, remoteProblemId, title }: Props) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -38,10 +39,10 @@ export const SubmissionForm = ({ onlineJudgeId, remoteProblemId }: Props) => {
           "Content-Type": "application/json",
         }),
         body: JSON.stringify({
-          onlineJudgeId: "uri",
-          problemId: "1001",
+          onlineJudgeId,
+          problemId: remoteProblemId,
           languageId: "20",
-          code: "print('Hello World!')",
+          code,
         }),
       },
     );
@@ -81,7 +82,7 @@ export const SubmissionForm = ({ onlineJudgeId, remoteProblemId }: Props) => {
         validateMessages={{ required: "Campo obrigatório" }}
         onFinish={handleFinish}
       >
-        <Item label="Problema">Hello world</Item>
+        <Item label="Problema">{`${onlineJudgeId.toUpperCase()} - ${remoteProblemId} - ${title}`}</Item>
         <Item name="language" label="Linguagem" wrapperCol={{ span: 4 }}>
           <Select>
             <Option value="cpp">C++</Option>

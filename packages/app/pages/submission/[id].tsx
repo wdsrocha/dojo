@@ -1,14 +1,6 @@
 /* eslint-disable react/no-danger */
-import {
- Button, Card, Descriptions, Space, Table, Typography,
-} from "antd";
-import Meta from "antd/lib/card/Meta";
+import { Card, Descriptions, Typography } from "antd";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useRouter } from "next/dist/client/router";
-import Paragraph from "antd/lib/typography/Paragraph";
-import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
-import { ColumnsType } from "antd/lib/table";
-import Link from "next/link";
 
 const { Title, Text } = Typography;
 
@@ -20,6 +12,7 @@ export enum Verdict {
   PRESENTATION_ERROR = "Presentation error",
   WRONG_ANSWER = "Wrong answer",
   MEMORY_LIMIT_EXCEEDED = "Memory limit exceeded",
+  RUNTIME_ERROR = "Runtime error",
 }
 
 interface Submission {
@@ -85,7 +78,12 @@ const Submission = ({
   return (
     <Card
       className="card"
-      title={<Title level={2}>Submissão #{data.id}</Title>}
+      title={(
+        <Title level={2}>
+          Submissão #{data.id} | {data.onlineJudgeId.toUpperCase()} -{" "}
+          {data.remoteProblemId}{" "}
+        </Title>
+      )}
     >
       <Descriptions>
         <Descriptions.Item label="Juíz online">

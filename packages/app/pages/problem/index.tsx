@@ -1,10 +1,10 @@
 import { Card, Table, Typography } from "antd";
 import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
+import { Hyperlink } from "../../components/Hyperlink";
 
-const { Title, Link: TypographyLink } = Typography;
+const { Title } = Typography;
 
 interface ProblemType {
   onlineJudgeId: string;
@@ -64,12 +64,12 @@ const columns: ColumnsType<ProblemType> = [
     title: "Título",
     dataIndex: "title",
     render: (
-      text: string,
+      title: string,
       { onlineJudgeId, remoteProblemId }: ProblemType,
     ) => (
-      <Link href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
-        <TypographyLink>{text}</TypographyLink>
-      </Link>
+      <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
+        {title}
+      </Hyperlink>
     ),
     align: "left",
   },

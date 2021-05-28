@@ -133,8 +133,9 @@ const Problem = ({
       <Meta
         description={(
           <Paragraph className="px-6">
+            Link original:{" "}
             <TypographyLink href={data.remoteLink} target="_blank">
-              {(id as string)?.toUpperCase()}
+              {data.onlineJudgeId.toUpperCase()}-{data.remoteProblemId}
             </TypographyLink>
             <br />
             Timelimit: {data.timelimit}

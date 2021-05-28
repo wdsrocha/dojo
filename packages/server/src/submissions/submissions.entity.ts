@@ -10,6 +10,7 @@ export enum Verdict {
   PRESENTATION_ERROR = 'Presentation error',
   WRONG_ANSWER = 'Wrong answer',
   MEMORY_LIMIT_EXCEEDED = 'Memory limit exceeded',
+  RUNTIME_ERROR = 'Runtime error'
 }
 
 @Entity()
