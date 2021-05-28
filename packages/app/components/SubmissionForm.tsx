@@ -5,6 +5,8 @@ import {
 import { SendOutlined } from "@ant-design/icons";
 import Title from "antd/lib/typography/Title";
 import { useRouter } from "next/dist/client/router";
+import { getLanguageOptions } from "../utils/onlineJudgeData";
+import { Hyperlink } from "./Hyperlink";
 
 const { Item } = Form;
 const { Option } = Select;
@@ -18,13 +20,18 @@ interface FormTypes {
 interface Props {
   onlineJudgeId: string;
   remoteProblemId: string;
-  title: string
+  title: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const SubmissionForm = ({ onlineJudgeId, remoteProblemId, title }: Props) => {
+export const SubmissionForm = ({
+  onlineJudgeId,
+  remoteProblemId,
+  title,
+}: Props) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const languageOptions = getLanguageOptions(onlineJudgeId);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleFinish = async ({ language, code }: FormTypes) => {
@@ -41,14 +48,13 @@ export const SubmissionForm = ({ onlineJudgeId, remoteProblemId, title }: Props)
         body: JSON.stringify({
           onlineJudgeId,
           problemId: remoteProblemId,
-          languageId: "20",
+          languageId: language,
           code,
         }),
       },
     );
 
     if (!response.ok) {
-      console.log({ response });
       if (response.status === 401) {
         Modal.error({
           title: "Permissão negada",
@@ -61,14 +67,12 @@ export const SubmissionForm = ({ onlineJudgeId, remoteProblemId, title }: Props)
         });
       }
       setLoading(false);
-      return
+      return;
     }
 
     const data = await response.json();
 
-    console.log({ data });
-
-    router.push(`/submission/${data.id}`)
+    router.push(`/submission/${data.id}`);
 
     setLoading(false);
   };
@@ -82,11 +86,18 @@ export const SubmissionForm = ({ onlineJudgeId, remoteProblemId, title }: Props)
         validateMessages={{ required: "Campo obrigatório" }}
         onFinish={handleFinish}
       >
-        <Item label="Problema">{`${onlineJudgeId.toUpperCase()} - ${remoteProblemId} - ${title}`}</Item>
-        <Item name="language" label="Linguagem" wrapperCol={{ span: 4 }}>
-          <Select>
-            <Option value="cpp">C++</Option>
-            <Option value="python">Python</Option>
+        <Item label="Problema">
+          <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
+            {`${onlineJudgeId.toUpperCase()}-${remoteProblemId} - ${title}`}
+          </Hyperlink>
+        </Item>
+        <Item name="language" label="Linguagem" wrapperCol={{ span: 8 }}>
+          <Select defaultValue={languageOptions[0].value}>
+            {languageOptions.map(({ value, label }) => (
+              <Option key={value} value={value}>
+                {label}
+              </Option>
+            ))}
           </Select>
         </Item>
         <Item name="code" label="Código">

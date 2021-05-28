@@ -1,6 +1,9 @@
 /* eslint-disable react/no-danger */
 import { Card, Descriptions, Typography } from "antd";
+import dayjs from "dayjs";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { Hyperlink } from "../../components/Hyperlink";
+import { getLanguageById } from "../../utils/onlineJudgeData";
 
 const { Title, Text } = Typography;
 
@@ -78,34 +81,32 @@ const Submission = ({
   return (
     <Card
       className="card"
-      title={(
-        <Title level={2}>
-          Submissão #{data.id} | {data.onlineJudgeId.toUpperCase()} -{" "}
-          {data.remoteProblemId}{" "}
-        </Title>
-      )}
+      title={<Title level={2}>Submissão #{data.id}</Title>}
     >
-      <Descriptions>
-        <Descriptions.Item label="Juíz online">
-          {data.onlineJudgeId}
-        </Descriptions.Item>
+      <Descriptions className="max-w-lg" size="small" column={1} bordered>
         <Descriptions.Item label="Problema">
-          {data.remoteProblemId}
+          <Hyperlink
+            href={`/problem/${data.onlineJudgeId}-${data.remoteProblemId}`}
+          >
+            {`${data.onlineJudgeId.toUpperCase()}-${data.remoteProblemId}`}
+          </Hyperlink>
         </Descriptions.Item>
         <Descriptions.Item label="Veredito">
           {displayVerdict()}
         </Descriptions.Item>
         <Descriptions.Item label="Linguagem">
-          {data.remoteLanguageId}
+          {getLanguageById(data.onlineJudgeId, data.remoteLanguageId)}
         </Descriptions.Item>
         <Descriptions.Item label="Autor">
-          {data.author?.username}
+          {/* TODO: link to user profile */}
+          <Hyperlink href="/">{data.author.username}</Hyperlink>
         </Descriptions.Item>
-        <Descriptions.Item label="Submetido em">
-          {data.createdDate}
+        <Descriptions.Item label="Data">
+          {/* TODO: handle time zone */}
+          {dayjs(data.createdDate).format("DD/MM/YYYY HH:mm")}
         </Descriptions.Item>
       </Descriptions>
-      <Card title="Código fonte">
+      <Card className="mt-4" title="Código fonte">
         <Text code>{data.code}</Text>
       </Card>
     </Card>
