@@ -107,7 +107,9 @@ const Submission = ({
         </Descriptions.Item>
       </Descriptions>
       <Card className="mt-4" title="Código fonte">
-        <Text code>{data.code}</Text>
+        <pre>
+          <code>{data.code}</code>
+        </pre>
       </Card>
     </Card>
   );
