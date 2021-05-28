@@ -154,6 +154,7 @@ export class UriAdapter implements OnlineJudge {
     await clickAndWaitForNavigation(page, 'input.send-green');
 
     const runUrl = await page.url();
+    const expectedUrl = `${BASE_URL}/judge/pt/runs/code/`;
     if (runUrl.includes('login')) {
       if (retryCount > 0) {
         await this.login();
@@ -164,6 +165,11 @@ export class UriAdapter implements OnlineJudge {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
+    } else if (!runUrl.startsWith(expectedUrl)) {
+      throw new HttpException(
+        `Failed to retrieve the submission id. The page were redirected to a URL different from expected. Expected URL: ${expectedUrl}. Received URL: ${runUrl}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     const submissionId = runUrl.split('/').pop();
@@ -197,8 +203,7 @@ export class UriAdapter implements OnlineJudge {
         );
       }
     }
-
-    const rawUriVerdict = await page?.$eval('.answer', (el) => el.textContent);
+    const rawUriVerdict = await page.$eval('.answer', (el) => el.textContent);
     const formattedUriVerdict = rawUriVerdict?.trim().toUpperCase() ?? '';
 
     let dojoVerdict: Verdict | undefined;
