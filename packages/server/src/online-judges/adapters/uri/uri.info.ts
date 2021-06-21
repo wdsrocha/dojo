@@ -45,6 +45,7 @@ export const uriInfo: OnlineJudgeInfo = {
     'PRESENTATION ERROR': Verdict.PRESENTATION_ERROR,
     'WRONG ANSWER': Verdict.WRONG_ANSWER,
     'MEMORY LIMIT EXCEEDED': Verdict.MEMORY_LIMIT_EXCEEDED,
+    // TODO: check why DB crashes on Runtime Error
     'RUNTIME ERROR': Verdict.RUNTIME_ERROR,
   },
 };

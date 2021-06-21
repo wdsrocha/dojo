@@ -140,6 +140,9 @@ export class UriAdapter implements OnlineJudge {
     const page = await this.getPage();
 
     const problemUrl = `${BASE_URL}/judge/pt/problems/view/${problemId}`;
+    // With JS on, URI will use the ACE Editor for the source code textarea,
+    // which don't allow puppeteer to paste the code
+    await page.setJavaScriptEnabled(false);
     await page.goto(problemUrl);
     if (await page.$('#error')) {
       throw new HttpException(
@@ -148,9 +151,17 @@ export class UriAdapter implements OnlineJudge {
       );
     }
 
-    await page.type('#editor > textarea', code);
-    await page.click('.selectize-input');
-    await page.click(`[data-value="${languageId}"]`);
+    await page.type('#source-code', code);
+    await page.evaluate((languageId: string) => {
+    // selecting option with "correct" value will fail due to weird logic while
+    // not enabiling JS on the page, so selecting the n-th+1 option is needed
+      (document.querySelector(
+        // TODO: add linter rule to catch when there is a operation between
+        // different data types 🤪
+        `select option:nth-child(${(+languageId) + 1})`,
+      ) as HTMLOptionElement).selected = true;
+    }, languageId);
+    await page.setJavaScriptEnabled(true);
     await clickAndWaitForNavigation(page, 'input.send-green');
 
     const runUrl = await page.url();
