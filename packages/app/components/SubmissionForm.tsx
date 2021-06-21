@@ -7,6 +7,7 @@ import Title from "antd/lib/typography/Title";
 import { useRouter } from "next/dist/client/router";
 import { getLanguageOptions } from "../utils/onlineJudgeData";
 import { Hyperlink } from "./Hyperlink";
+import { useSession } from "../contexts/auth";
 
 const { Item } = Form;
 const { Option } = Select;
@@ -31,6 +32,7 @@ export const SubmissionForm = ({
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { logout } = useSession()
   const languageOptions = getLanguageOptions(onlineJudgeId);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -60,6 +62,7 @@ export const SubmissionForm = ({
           title: "Permissão negada",
           content: "Entre na sua conta para submeter.",
         });
+        logout()
       } else {
         Modal.error({
           title: "Desculpe, um erro inesperado ocorreu",
@@ -85,6 +88,9 @@ export const SubmissionForm = ({
         name="submit"
         validateMessages={{ required: "Campo obrigatório" }}
         onFinish={handleFinish}
+        initialValues={{
+          language: languageOptions[0].value,
+        }}
       >
         <Item label="Problema">
           <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
@@ -92,7 +98,7 @@ export const SubmissionForm = ({
           </Hyperlink>
         </Item>
         <Item name="language" label="Linguagem" wrapperCol={{ span: 8 }}>
-          <Select defaultValue={languageOptions[0].value}>
+          <Select>
             {languageOptions.map(({ value, label }) => (
               <Option key={value} value={value}>
                 {label}
