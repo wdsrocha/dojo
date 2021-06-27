@@ -9,6 +9,8 @@ export const stubPage = ({
   waitForNavigation: (_navigationOptions: NavigationOptions) =>
     Promise.resolve(),
   url: (): Promise<string> => Promise.resolve(''),
+  setJavaScriptEnabled: () => Promise.resolve(),
+  evaluate: () => Promise.resolve()
 } as unknown) as Page;
 
 export const stubBrowser = ({
