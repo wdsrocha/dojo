@@ -11,7 +11,7 @@ export const LeftMenu: FC<MenuProps> = (props) => (
       </Hyperlink>
     </Menu.Item>
     <Menu.Item key="problem">
-      <Hyperlink href="/problem">
+      <Hyperlink data-test="nav-problem" href="/problem">
         Problemas
       </Hyperlink>
     </Menu.Item>

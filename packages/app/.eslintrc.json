@@ -9,6 +9,10 @@
   "rules": {
     "import/no-default-export": "error",
     "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["cypress/**/*.ts"] }
+    ],
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
     "react/require-default-props": "off",

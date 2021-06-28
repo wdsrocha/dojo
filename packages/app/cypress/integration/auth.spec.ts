@@ -1,9 +1,11 @@
-describe("Auth", () => {
-  const VALID_USERNAME = "user1";
-  const INVALID_USERNAME = "invalid_user1";
-  const VALID_PASSWORD = "1234";
-  const INVALID_PASSWORD = "asdf";
+import {
+  VALID_USERNAME,
+  VALID_PASSWORD,
+  INVALID_USERNAME,
+  INVALID_PASSWORD,
+} from "../support/constants";
 
+describe("Auth", () => {
   beforeEach(() => {
     cy.visit("/");
   });

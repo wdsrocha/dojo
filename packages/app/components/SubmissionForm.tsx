@@ -109,7 +109,7 @@ export const SubmissionForm = ({
         <Item name="code" label="Código">
           <TextArea rows={16} />
         </Item>
-        <Item wrapperCol={{ sm: { offset: 4 } }}>
+        <Item name="send" wrapperCol={{ sm: { offset: 4 } }}>
           <Button
             icon={<SendOutlined />}
             htmlType="submit"

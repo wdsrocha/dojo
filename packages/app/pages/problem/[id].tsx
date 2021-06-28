@@ -116,7 +116,7 @@ const Problem = ({
       extra={
         screens.sm ? (
           <Link href={`/submit/${id}`} passHref>
-            <Button size="large" type="primary">
+            <Button data-test="problem-submit" size="large" type="primary">
               Submeter
             </Button>
           </Link>
@@ -124,7 +124,7 @@ const Problem = ({
       }
       actions={[
         <Link href={`/submit/${id}`} passHref>
-          <Button size="large" type="primary">
+          <Button data-test="problem-footer-submit" size="large" type="primary">
             Submeter
           </Button>
         </Link>,
