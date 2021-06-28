@@ -1,3 +1,5 @@
+export const LOGIN_URL = "http://localhost:2000/authentication/login"
+
 export const VALID_USERNAME = "user1";
 export const VALID_PASSWORD = "1234";
 

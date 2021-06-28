@@ -2,6 +2,7 @@ import {
   VALID_USERNAME,
   VALID_PASSWORD,
   VALID_SOLUTION_TO_URI_1000,
+  LOGIN_URL,
 } from "../support/constants";
 
 describe("Main paths", () => {
@@ -10,10 +11,10 @@ describe("Main paths", () => {
   });
 
   it("should submit a correct solution and check its verdict", () => {
-    cy.getByTestId("login-open").click();
-    cy.getByTestId("login-username").type(VALID_USERNAME);
-    cy.getByTestId("login-password").type(VALID_PASSWORD);
-    cy.getByTestId("login-submit").click();
+    cy.request("POST", LOGIN_URL, {
+      username: VALID_USERNAME,
+      password: VALID_PASSWORD,
+    });
 
     cy.getByTestId("nav-problem").click();
     cy.contains("Hello World!").click();

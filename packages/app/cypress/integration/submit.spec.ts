@@ -2,6 +2,7 @@ import {
   VALID_USERNAME,
   VALID_PASSWORD,
   VALID_SOLUTION_TO_URI_1000,
+  LOGIN_URL,
 } from "../support/constants";
 
 describe("Submit", () => {
@@ -10,10 +11,10 @@ describe("Submit", () => {
   });
 
   it("should submit a solution", () => {
-    cy.getByTestId("login-open").click();
-    cy.getByTestId("login-username").type(VALID_USERNAME);
-    cy.getByTestId("login-password").type(VALID_PASSWORD);
-    cy.getByTestId("login-submit").click();
+    cy.request("POST", LOGIN_URL, {
+      username: VALID_USERNAME,
+      password: VALID_PASSWORD,
+    });
 
     cy.get("#submit_language").click({ force: true });
     cy.contains("C++").click();
