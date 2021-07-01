@@ -153,12 +153,10 @@ export class UriAdapter implements OnlineJudge {
 
     await page.type('#source-code', code);
     await page.evaluate((languageId: string) => {
-    // selecting option with "correct" value will fail due to weird logic while
-    // not enabiling JS on the page, so selecting the n-th+1 option is needed
+      // selecting with the "correct" value will fail due to weird logic while
+      // not enabiling JS on the page, so selecting the nth+1 option is needed
       (document.querySelector(
-        // TODO: add linter rule to catch when there is a operation between
-        // different data types 🤪
-        `select option:nth-child(${(+languageId) + 1})`,
+        `select option:nth-child(${Number(languageId) + 1})`,
       ) as HTMLOptionElement).selected = true;
     }, languageId);
     await page.setJavaScriptEnabled(true);
