@@ -21,8 +21,10 @@ export class Submission {
   @Column()
   public onlineJudgeId: string;
 
-  @Column()
-  public remoteSubmissionId: string;
+  @Column({
+    nullable: true
+  })
+  public remoteSubmissionId?: string;
 
   @Column()
   public remoteProblemId: string;
