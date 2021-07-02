@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DatabaseModule } from './database/database.module';
 import { ProblemsModule } from './problems/problems.module';
+import { QueueModule } from './queue/queue.module';
 import { SubmissionsModule } from './submissions/submissions.module';
 import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
 
@@ -16,6 +17,8 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
+        QUEUE_HOST: Joi.string().required(),
+        QUEUE_PORT: Joi.number().required(),
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PORT: Joi.number().required(),
         POSTGRES_USER: Joi.string().required(),
@@ -27,6 +30,7 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
       }),
     }),
     AuthenticationModule,
+    QueueModule,
     DatabaseModule,
     SubmissionsModule,
     ProblemsModule
