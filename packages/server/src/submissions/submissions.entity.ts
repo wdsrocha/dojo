@@ -10,7 +10,7 @@ export enum Verdict {
   PRESENTATION_ERROR = 'Presentation error',
   WRONG_ANSWER = 'Wrong answer',
   MEMORY_LIMIT_EXCEEDED = 'Memory limit exceeded',
-  RUNTIME_ERROR = 'Runtime error'
+  RUNTIME_ERROR = 'Runtime error',
 }
 
 @Entity()
@@ -21,10 +21,8 @@ export class Submission {
   @Column()
   public onlineJudgeId: string;
 
-  @Column({
-    nullable: true
-  })
-  public remoteSubmissionId?: string;
+  @Column({ type: 'varchar', nullable: true })
+  public remoteSubmissionId: string | null;
 
   @Column()
   public remoteProblemId: string;

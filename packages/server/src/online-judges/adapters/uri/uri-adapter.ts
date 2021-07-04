@@ -36,12 +36,12 @@ export class UriAdapter implements OnlineJudge {
   browser: Browser | undefined;
   page: Page | undefined;
   constructor() {
-    (async () => {
+    void (async () => {
       this.browser = await puppeteer.launch({
         args: ['--disable-dev-shm-usage'],
       });
       this.page = (await this.browser.pages())[0];
-      this.login();
+      await this.login();
     })();
   }
 
