@@ -19,6 +19,7 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
       validationSchema: Joi.object({
         QUEUE_HOST: Joi.string().required(),
         QUEUE_PORT: Joi.number().required(),
+        QUEUE_PASSWORD: Joi.string(),
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PORT: Joi.number().required(),
         POSTGRES_USER: Joi.string().required(),

@@ -1,0 +1,1 @@
+web: sh -c 'cd packages/server && yarn build && yarn start:prod'

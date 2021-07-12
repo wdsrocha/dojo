@@ -38,7 +38,13 @@ export class UriAdapter implements OnlineJudge {
   constructor() {
     void (async () => {
       this.browser = await puppeteer.launch({
-        args: ['--disable-dev-shm-usage'],
+        args: [
+          '--disable-dev-shm-usage',
+          // This is for Heroku deployment
+          // https://stackoverflow.com/a/55090914/7651928
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
       });
       this.page = (await this.browser.pages())[0];
       await this.login();
@@ -51,6 +57,7 @@ export class UriAdapter implements OnlineJudge {
     }
 
     if (!this.page) {
+      // TODO: remove all HttpExceptions for 500 errors and throw normally with stack trace instead
       throw new HttpException(
         'Failed to to create a new puppeteer page',
         HttpStatus.INTERNAL_SERVER_ERROR,

@@ -9,8 +9,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         redis: {
+          tls: {
+            rejectUnauthorized: false,
+          },
           host: configService.get('QUEUE_HOST'),
-          port: configService.get('QUEUE_PORT')
+          port: configService.get('QUEUE_PORT'),
+          password: configService.get('QUEUE_PASSWORD')
         }
       })
     }),
