@@ -1,53 +1,74 @@
-import { Card } from "antd";
+import { GithubOutlined } from "@ant-design/icons";
+import { Card, Col, Row } from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
+import Title from "antd/lib/typography/Title";
+import Link from "antd/lib/typography/Link";
+import { Hyperlink } from "../components/Hyperlink";
 
 const Home = () => (
-  <Card className="card">
-    <Paragraph>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam pariatur
-      eius, praesentium omnis ullam expedita laboriosam ipsum, magni, earum
-      perspiciatis quod ipsam! Mollitia non ex repellendus tenetur temporibus,
-      quibusdam iste.
-    </Paragraph>
-    <Paragraph>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta, sapiente!
-      Expedita quod nulla commodi libero perferendis alias magni ad similique
-      veritatis est repellendus facere incidunt, numquam laborum ratione
-      consectetur consequuntur error itaque sint odit dolores. Dolore animi ad
-      aut quae asperiores esse maxime autem officiis, ratione sunt tenetur dicta
-      tempora voluptatum incidunt sit saepe doloribus id magni corporis nemo
-      consequatur quaerat quibusdam alias! Perferendis porro animi neque vitae
-      laudantium dolorem! Tenetur magni recusandae quia, animi velit delectus
-      labore? Dolor sed quos, sunt eos quaerat minima officiis cum nemo magnam
-      asperiores! Assumenda corporis repellendus molestiae placeat atque! Neque
-      consequuntur minus laudantium atque quis vero ut veritatis ex! Modi sint
-      pariatur in laborum voluptas, exercitationem non. Saepe obcaecati,
-      deleniti perspiciatis temporibus quo commodi vero sunt quis reiciendis
-      assumenda explicabo nisi quibusdam, aliquam nam eveniet nulla minima
-      incidunt doloribus pariatur quod id dolorum! Dignissimos quo dolores
-      reiciendis blanditiis tempore voluptatibus! Fuga asperiores quasi, dolores
-      sed in dicta suscipit quisquam tempora? Dolorem et architecto similique,
-      velit quam explicabo adipisci porro placeat temporibus libero unde sit
-      minus quia soluta repudiandae fugiat sint ipsam laudantium, aperiam culpa
-      facere est optio? Consequatur ipsam necessitatibus dolorum id et aperiam
-      officia alias ab sint minus exercitationem quod, aut maiores, neque hic
-      iste quo perspiciatis explicabo qui, voluptas incidunt perferendis
-      cupiditate. Veritatis assumenda doloribus itaque necessitatibus est
-      adipisci consequuntur modi facere id, voluptas aperiam reiciendis nisi
-      voluptatem omnis placeat magni, dolore consequatur culpa quasi eligendi,
-      quia corrupti! Molestias, voluptatem. Eos debitis, quia pariatur quas
-      quae, non nam modi illum numquam sapiente recusandae rerum unde, quis
-      labore.
-    </Paragraph>
-    <Paragraph>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero quibusdam
-      saepe ipsa, laborum sint et est officiis, tempora ut nesciunt molestias?
-      Quas culpa error sint id quidem aperiam, nostrum fugiat?
-    </Paragraph>
-    <Paragraph>
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-    </Paragraph>
-  </Card>
+  <>
+    <Row justify="center" gutter={[16, 16]}>
+      <Col md={{ span: 16 }}>
+        <Card
+          className="card"
+          title={(
+            <span className="text-center block -mb-4">
+              <Title level={1}>DOJO Orquestrador de Juiz Online</Title>
+            </span>
+          )}
+        >
+          <Paragraph>
+            O DOJO facilita o treinamento para competições de programação ao
+            reunir seus juizes onlines favoritos em um só lugar. Escolha um
+            problema, leia o enuciado, submeta a solução e receba seu veredito.
+          </Paragraph>
+          <Hyperlink href="/problem">
+            Comece a treinar<span className="ml-2">&#8594;</span>
+          </Hyperlink>
+        </Card>
+      </Col>
+    </Row>
+    <Row justify="center" gutter={[16, 16]} className="mt-4">
+      <Col md={{ span: 8 }} flex="auto">
+        <Card className="card" title="Juizes suportados">
+          <Paragraph>
+            <ul>
+              <li>
+                <Link href="https://urionlinejudge.com.br/">
+                  URI Online Judge
+                </Link>
+              </li>
+            </ul>
+            <p>Em breve...</p>
+            <ul>
+              <li>
+                <Link href="https://vjudge.net/">VJudge</Link>
+              </li>
+              <li>
+                <Link href="https://cses.fi/">CSES</Link>
+              </li>
+            </ul>
+          </Paragraph>
+        </Card>
+      </Col>
+      <Col md={{ span: 8 }} flex="auto">
+        <Card
+          className="card min-h-full"
+          title={<i>Open-source software</i>}
+          extra={(
+            <a aria-label="GitHub icon" href="https://github.com/wdsrocha/dojo">
+              <GithubOutlined style={{ fontSize: 22 }} />
+            </a>
+          )}
+        >
+          <Paragraph>
+            DOJO é <i>OSS</i>! Acompanhe e contribua com o projeto{" "}
+            <Link>no repositório do GitHub</Link>.
+          </Paragraph>
+        </Card>
+      </Col>
+    </Row>
+  </>
 );
 
 export default Home;

@@ -1,16 +1,17 @@
 import Head from "next/head";
 import { FC } from "react";
 import { Layout } from "antd";
+import Link from "antd/lib/typography/Link";
 import { Header } from "./header/Header";
 
 export const MainLayout: FC = ({ children }) => (
-  <div>
+  <div className="min-h-screen">
     <Head>
       <title>DOJO Online Judge Orchestrator</title>
       <link rel="stylesheet" href="/favicon.ico" />
     </Head>
-    <main>
-      <Layout>
+    <main className="min-h-screen">
+      <Layout className="min-h-screen">
         <Header />
         <Layout.Content
           className="md:mt-3 md:mb-4 mx-auto"
@@ -18,8 +19,8 @@ export const MainLayout: FC = ({ children }) => (
         >
           {children}
         </Layout.Content>
-        <Layout.Footer className="text-center">
-          DOJO © 2020-2021 Wesley Rocha
+        <Layout.Footer className="text-center mb-3">
+          DOJO © 2020-2021 <Link href="https://github.com/wdsrocha">Wesley Rocha</Link>
         </Layout.Footer>
       </Layout>
     </main>

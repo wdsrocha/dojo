@@ -25,3 +25,7 @@ body {
 
 /* https://github.com/ant-design/ant-design/issues/13074#issuecomment-671093258 */
 svg { vertical-align: baseline; }
+
+#__next {
+  min-height: 100vh;
+}
