@@ -63,7 +63,10 @@ const Home = () => (
         >
           <Paragraph>
             DOJO é <i>OSS</i>! Acompanhe e contribua com o projeto{" "}
-            <Link>no repositório do GitHub</Link>.
+            <Link href="https://github.com/wdsrocha/dojo">
+              no repositório do GitHub
+            </Link>
+            .
           </Paragraph>
         </Card>
       </Col>
