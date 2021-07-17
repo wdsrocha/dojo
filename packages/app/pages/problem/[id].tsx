@@ -1,13 +1,13 @@
 /* eslint-disable react/no-danger */
 import {
- Button, Card, Space, Table, Typography,
+  Button, Card, Space, Table, Typography,
 } from "antd";
 import Meta from "antd/lib/card/Meta";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useRouter } from "next/dist/client/router";
-import Paragraph from "antd/lib/typography/Paragraph";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 import { ColumnsType } from "antd/lib/table";
+import Paragraph from "antd/lib/typography/Paragraph";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 
 const { Title, Link: TypographyLink } = Typography;

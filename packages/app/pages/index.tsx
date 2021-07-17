@@ -1,5 +1,7 @@
 import { GithubOutlined } from "@ant-design/icons";
-import { Card, Col, Row } from "antd";
+import {
+ Alert, Card, Col, Row,
+} from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
 import Title from "antd/lib/typography/Title";
 import Link from "antd/lib/typography/Link";
@@ -8,6 +10,16 @@ import { Hyperlink } from "../components/Hyperlink";
 const Home = () => (
   <>
     <Row justify="center" gutter={[16, 16]}>
+      <Col md={{ span: 16 }}>
+        <Alert
+          banner
+          closable
+          type="warning"
+          message="Estamos em fase de desenvolvimento. O site pode não funcionar como o esperado."
+        />
+      </Col>
+    </Row>
+    <Row justify="center" gutter={[16, 16]} className="mt-4">
       <Col md={{ span: 16 }}>
         <Card
           className="card"
