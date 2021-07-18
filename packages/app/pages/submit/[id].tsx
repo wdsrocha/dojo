@@ -1,5 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { SubmissionForm } from "../../components/SubmissionForm";
+import { OPTIONS } from "../../utils/fetchOptions";
 
 interface ProblemType {
   onlineJudgeId: string;
@@ -28,11 +29,8 @@ export const getServerSideProps: GetServerSideProps<ProblemResponse> = async ({
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/problems/${onlineJudgeId}/${remoteProblemId}`,
     {
+      ...OPTIONS,
       method: "GET",
-      credentials: "include",
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
     },
   );
 

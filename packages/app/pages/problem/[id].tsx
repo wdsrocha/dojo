@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 import {
-  Button, Card, Space, Table, Typography,
+ Button, Card, Space, Table, Typography,
 } from "antd";
 import Meta from "antd/lib/card/Meta";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
@@ -9,6 +9,7 @@ import Paragraph from "antd/lib/typography/Paragraph";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
+import { OPTIONS } from "../../utils/fetchOptions";
 
 const { Title, Link: TypographyLink } = Typography;
 
@@ -51,11 +52,8 @@ export const getServerSideProps: GetServerSideProps<ProblemResponse> = async ({
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/problems/${onlineJudgeId}/${remoteProblemId}`,
     {
+      ...OPTIONS,
       method: "GET",
-      credentials: "include",
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
     },
   );
 

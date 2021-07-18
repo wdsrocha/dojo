@@ -3,6 +3,7 @@ import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { Hyperlink } from "../../components/Hyperlink";
+import { OPTIONS } from "../../utils/fetchOptions";
 
 const { Title } = Typography;
 
@@ -13,11 +14,8 @@ interface ProblemType {
 }
 
 const fetcher = (url: string) => fetch(url, {
+    ...OPTIONS,
     method: "GET",
-    credentials: "include",
-    headers: new Headers({
-      "Content-Type": "application/json",
-    }),
   }).then((r) => r.json());
 
 // pagination will be used when the number of problems in the database gets too

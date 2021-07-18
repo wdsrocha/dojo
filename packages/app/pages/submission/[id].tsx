@@ -3,6 +3,7 @@ import { Card, Descriptions, Typography } from "antd";
 import dayjs from "dayjs";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Hyperlink } from "../../components/Hyperlink";
+import { OPTIONS } from "../../utils/fetchOptions";
 import { getLanguageById } from "../../utils/onlineJudgeData";
 
 const { Title, Text } = Typography;
@@ -44,11 +45,8 @@ export const getServerSideProps: GetServerSideProps<SubmissionResponse> = async 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/submissions/${params?.id}`,
     {
+      ...OPTIONS,
       method: "GET",
-      credentials: "include",
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
     },
   );
 

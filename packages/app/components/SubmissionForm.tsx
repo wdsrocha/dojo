@@ -8,6 +8,7 @@ import { useRouter } from "next/dist/client/router";
 import { getLanguageOptions } from "../utils/onlineJudgeData";
 import { Hyperlink } from "./Hyperlink";
 import { useSession } from "../contexts/auth";
+import { OPTIONS } from "../utils/fetchOptions";
 
 const { Item } = Form;
 const { Option } = Select;
@@ -32,7 +33,7 @@ export const SubmissionForm = ({
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { logout } = useSession()
+  const { logout } = useSession();
   const languageOptions = getLanguageOptions(onlineJudgeId);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,11 +43,8 @@ export const SubmissionForm = ({
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/submissions`,
       {
+        ...OPTIONS,
         method: "POST",
-        credentials: "include",
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
         body: JSON.stringify({
           onlineJudgeId,
           problemId: remoteProblemId,
@@ -62,7 +60,7 @@ export const SubmissionForm = ({
           title: "Permissão negada",
           content: "Entre na sua conta para submeter.",
         });
-        logout()
+        logout();
       } else {
         Modal.error({
           title: "Desculpe, um erro inesperado ocorreu",

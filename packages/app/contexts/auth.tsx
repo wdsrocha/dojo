@@ -17,6 +17,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { OPTIONS } from "../utils/fetchOptions";
 
 export interface User {
   username: string;
@@ -69,11 +70,8 @@ export const useSession = () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/authentication/login`,
         {
+          ...OPTIONS,
           method: "POST",
-          credentials: "include",
-          headers: new Headers({
-            "Content-Type": "application/json",
-          }),
           body: JSON.stringify({
             username,
             password,
@@ -104,11 +102,8 @@ export const useSession = () => {
     await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/authentication/logout`,
       {
+        ...OPTIONS,
         method: "POST",
-        credentials: "include",
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
       },
     );
     localStorage.removeItem("@App:session");
