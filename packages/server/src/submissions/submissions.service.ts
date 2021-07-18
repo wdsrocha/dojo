@@ -37,7 +37,8 @@ export class SubmissionsService {
     );
 
     await this.submissionsQueue.add(SubmissionJobs.Submit, submission, {
-      attempts: 5,
+      attempts: 24,
+      delay: 5000,
     });
 
     return submission;
