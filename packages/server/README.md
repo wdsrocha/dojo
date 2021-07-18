@@ -35,7 +35,7 @@ Just in case you want to inspect something without PG Admin. Not necessary.
 
 `docker exec -it postgres bash`
 
-`psql -d postgres -U admin`
+`psql -d dev -U admin`
 
 `\dt`
 
