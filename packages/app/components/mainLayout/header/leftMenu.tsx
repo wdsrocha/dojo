@@ -15,5 +15,10 @@ export const LeftMenu: FC<MenuProps> = (props) => (
         Problemas
       </Hyperlink>
     </Menu.Item>
+    <Menu.Item key="submissions">
+      <Hyperlink data-test="nav-problem" href="/submission">
+        Submissões
+      </Hyperlink>
+    </Menu.Item>
   </Menu>
 );
