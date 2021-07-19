@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { Hyperlink } from "../../components/Hyperlink";
 import { OPTIONS } from "../../utils/fetchOptions";
+import { displayVerdict } from "../../utils/utils";
 
 const { Title } = Typography;
 
@@ -54,34 +55,36 @@ const columns: ColumnsType<SubmissionType> = [
   {
     title: "ID",
     dataIndex: "id",
-    width: 40,
+    width: 30,
     fixed: "left",
+    render: (_, { id }) => (
+      <Hyperlink href={`/submission/${id}`}>{id}</Hyperlink>
+    ),
   },
   {
     title: "Autor",
     dataIndex: "username",
-    width: 110,
-  },
-  {
-    title: "OJ",
-    dataIndex: "onlineJudgeId",
-    width: 40,
-    render: (onlineJudgeId: string) => onlineJudgeId.toUpperCase(),
+    width: 90,
   },
   {
     title: "Problema",
-    dataIndex: "remoteProblemId",
-    width: 80,
+    width: 30,
+    render: (_, { onlineJudgeId, remoteProblemId }) => (
+      <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
+        {`${onlineJudgeId.toUpperCase()}-${remoteProblemId}`}
+      </Hyperlink>
+    ),
   },
   {
     title: "Veredito",
     dataIndex: "verdict",
-    width: 100,
+    width: 40,
+    render: (_, { verdict }) => displayVerdict(verdict),
   },
   {
     title: "Enviado em",
     dataIndex: "createdDate",
-    width: 100,
+    width: 40,
     render: (createdDate: string) => dayjs(createdDate).format("DD/MM/YYYY HH:mm"),
   },
 ];
@@ -107,7 +110,7 @@ export default () => {
       <Table<SubmissionType>
         size="middle"
         bordered
-        tableLayout="fixed"
+        tableLayout="auto"
         loading={loading}
         pagination={pagination}
         rowKey={(record) => record.id}
