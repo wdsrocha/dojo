@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 
 import { Queues, SubmissionJobs } from '../queue/queue.enum';
 import { User } from '../users/users.entity';
-import { CreateSubmissionRequestBody } from './submissions.dto';
+import { CreateSubmissionRequestBody, SubmissionList } from './submissions.dto';
 import { Submission } from './submissions.entity';
 
 @Injectable()
@@ -54,5 +54,26 @@ export class SubmissionsService {
     }
 
     return submission;
+  }
+
+  async getAll(): Promise<SubmissionList> {
+    const submissions = await this.submissionsRepository.find({ relations: ['author'] });
+    return submissions.map(
+      ({
+        onlineJudgeId,
+        id,
+        remoteProblemId,
+        verdict,
+        createdDate,
+        author,
+      }) => ({
+        onlineJudgeId,
+        id,
+        remoteProblemId,
+        verdict,
+        createdDate,
+        username: author.username,
+      }),
+    );
   }
 }

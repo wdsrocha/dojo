@@ -1,4 +1,5 @@
-import { Verdict } from './submissions.entity';
+import { User } from '../users/users.entity';
+import { Submission, Verdict } from './submissions.entity';
 
 export class CreateSubmissionRequestBody {
   onlineJudgeId: string;
@@ -16,3 +17,11 @@ export class SubmissionDto {
   verdict: Verdict;
   createdDate: Date;
 }
+
+export type SubmissionList = (
+  | User['username']
+  | Pick<
+      Submission,
+      'id' | 'createdDate' | 'onlineJudgeId' | 'remoteProblemId' | 'verdict'
+    >
+)[];

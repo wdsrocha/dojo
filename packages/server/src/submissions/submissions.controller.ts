@@ -10,7 +10,7 @@ import {
 
 import { RequestWithUser } from '../authentication/request-with-user.interface';
 import JwtAuthenticationGuard from './../authentication/jwt/jwt.guard';
-import { CreateSubmissionRequestBody } from './submissions.dto';
+import { CreateSubmissionRequestBody, SubmissionList } from './submissions.dto';
 import { Submission } from './submissions.entity';
 import { SubmissionsService } from './submissions.service';
 
@@ -32,5 +32,10 @@ export class SubmissionsController {
     @Param('id') id: string
   ): Promise<Submission> {
     return this.submissionsService.findById(id);
+  }
+
+  @Get()
+  getAll(): Promise<SubmissionList> {
+    return this.submissionsService.getAll()
   }
 }
