@@ -57,7 +57,10 @@ export class SubmissionsService {
   }
 
   async getAll(): Promise<SubmissionList> {
-    const submissions = await this.submissionsRepository.find({ relations: ['author'] });
+    const submissions = await this.submissionsRepository.find({
+      relations: ['author'],
+      order: { id: 'DESC' },
+    });
     return submissions.map(
       ({
         onlineJudgeId,
