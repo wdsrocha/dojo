@@ -24,7 +24,7 @@ const Home = () => (
         <Card
           className="card"
           title={(
-            <span className="text-center block -mb-4">
+            <span className="text-center block -mb-4 whitespace-pre-line">
               <Title level={1}>DOJO Orquestrador de Juiz Online</Title>
             </span>
           )}

@@ -85,11 +85,11 @@ const columns: ColumnsType<SubmissionType> = [
     title: "Enviado em",
     dataIndex: "createdDate",
     width: 40,
-    render: (createdDate: string) => dayjs(createdDate).format("DD/MM/YYYY HH:mm"),
+    render: (_, { createdDate }) => dayjs(createdDate).format("DD/MM/YYYY HH:mm"),
   },
 ];
 
-export default () => {
+const Page = () => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 20,
@@ -122,3 +122,5 @@ export default () => {
     </Card>
   );
 };
+
+export default Page;
