@@ -21,7 +21,11 @@ export class AuthenticationService {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
     const maxAge = this.configService.get('JWT_EXPIRATION_TIME');
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${maxAge}; SameSite=None; Secure`;
+    if (process.env.NODE_ENV === "production") {
+      return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${maxAge}; SameSite=None; Secure`;
+    } else {
+      return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${maxAge}`;
+    }
   }
 
   public async register(registrationData: RegisterDto): Promise<User> {
