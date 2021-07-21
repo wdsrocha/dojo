@@ -38,6 +38,7 @@
     "class-validator": "^0.12.2",
     "cookie-parser": "^1.4.5",
     "csstype": "^3.0.5",
+    "nest-puppeteer": "^1.1.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
