@@ -5,20 +5,31 @@ import { OnlineJudge } from './online-judge.interface';
 
 @Injectable()
 export class OnlineJudgesService {
-  constructor(private readonly uriAdapter: UriClient) {}
+  onlineJudges: { [key: string]: OnlineJudge } = {};
+
+  constructor(private readonly uriClient: UriClient) {
+    this.onlineJudges['uri'] = uriClient;
+  }
+
+  isValidOnlineJudge(onlineJudgeId: string): boolean {
+    return onlineJudgeId === 'uri';
+  }
+
+  throwIfInvalidOnlineJudge(onlineJudgeId: string): void {
+    if (!this.isValidOnlineJudge(onlineJudgeId)) {
+      throw new HttpException(
+        `Online Judge "${onlineJudgeId}" isn't supported.`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
 
   getProblem(
     onlineJudgeId: string,
     problemId: string,
   ): ReturnType<OnlineJudge['getProblem']> {
-    if (onlineJudgeId === 'uri') {
-      return this.uriAdapter.getProblem(problemId);
-    } else {
-      throw new HttpException(
-        `Online Judge "${onlineJudgeId}" was not found.`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
+    this.throwIfInvalidOnlineJudge(onlineJudgeId);
+    return this.onlineJudges[onlineJudgeId].getProblem(problemId);
   }
 
   submit(
@@ -27,27 +38,15 @@ export class OnlineJudgesService {
     languageId: string,
     code: string,
   ): ReturnType<OnlineJudge['submit']> {
-    if (onlineJudgeId === 'uri') {
-      return this.uriAdapter.submit(problemId, languageId, code);
-    } else {
-      throw new HttpException(
-        `Online Judge "${onlineJudgeId}" was not found.`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
+    this.throwIfInvalidOnlineJudge(onlineJudgeId);
+    return this.onlineJudges[onlineJudgeId].submit(problemId, languageId, code);
   }
 
   getSubmissionVerdict(
     onlineJudgeId: string,
     submissionId: string,
   ): ReturnType<OnlineJudge['getSubmissionVerdict']> {
-    if (onlineJudgeId === 'uri') {
-      return this.uriAdapter.getSubmissionVerdict(submissionId);
-    } else {
-      throw new HttpException(
-        `Online Judge "${onlineJudgeId}" was not found.`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
+    this.throwIfInvalidOnlineJudge(onlineJudgeId);
+    return this.onlineJudges[onlineJudgeId].getSubmissionVerdict(submissionId);
   }
 }

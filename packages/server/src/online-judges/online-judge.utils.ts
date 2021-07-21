@@ -1,4 +1,4 @@
-import { ClickOptions, NavigationOptions, Page, Response } from "puppeteer";
+import { ClickOptions, NavigationOptions, Page, Response } from 'puppeteer';
 
 export function clickAndWaitForNavigation(
   page: Page,
