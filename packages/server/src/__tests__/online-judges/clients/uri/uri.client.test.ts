@@ -1,9 +1,9 @@
 import fetchMock from 'jest-fetch-mock';
 
+import { UriClient } from '../../../../online-judges/clients/uri/uri.client';
 import { Problem } from '../../../../problems/problems.entity';
 import { stubBrowser, stubPage } from '../../../puppeteer.mock';
-import { UriAdapter } from './../../../../online-judges/adapters/uri/uri-adapter';
-import { problemPage } from './uri-adapter.mock';
+import { problemPage } from './uri.client.mock';
 const { Response } = jest.requireActual('node-fetch');
 
 jest.mock('puppeteer', () => ({
@@ -17,9 +17,9 @@ process.env.URI_BOT_PASSWORD = 'password';
 
 describe('getProblem', () => {
   it('should get the problem data', async () => {
-    const uriAdapter = new UriAdapter();
+    const uriClient = new UriClient();
     fetchMock.mockReturnValue(Promise.resolve(new Response(problemPage)));
-    const problem = await uriAdapter.getProblem('1001');
+    const problem = await uriClient.getProblem('1001');
 
     expect(problem).toStrictEqual<Omit<Problem, 'id'>>({
       onlineJudgeId: 'uri',
@@ -49,16 +49,16 @@ describe('getProblem', () => {
   });
 
   it('should throw 404 error when getting the problem data for an unknown problem', async () => {
-    const uriAdapter = new UriAdapter();
+    const uriClient = new UriClient();
     fetchMock.mockReturnValue(Promise.resolve(new Response(problemPage)));
-    const { title } = await uriAdapter.getProblem('999');
+    const { title } = await uriClient.getProblem('999');
     expect(title).toBeFalsy();
   });
 });
 
 describe('submit', () => {
   it('should submit a problem and receive the submission id', async () => {
-    const uriAdapter = new UriAdapter();
+    const uriClient = new UriClient();
 
     jest
       .spyOn(stubPage, 'url')
@@ -68,7 +68,7 @@ describe('submit', () => {
         ),
       );
 
-    const { submissionId } = await uriAdapter.submit(
+    const { submissionId } = await uriClient.submit(
       '1000',
       '20',
       'print("Hello World!")',

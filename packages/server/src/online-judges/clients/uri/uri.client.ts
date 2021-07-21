@@ -13,9 +13,8 @@ import { uriInfo } from './uri.info';
 const BASE_URL = 'https://www.urionlinejudge.com.br';
 const LOGIN_PAGE_PATH = '/judge/pt/login';
 
-// TODO: Verificar qual o melhor pp (adapter ta com mt responsa, ver facade)
 @Injectable()
-export class UriAdapter implements OnlineJudge {
+export class UriClient implements OnlineJudge {
   browser: Browser | undefined;
   page: Page | undefined;
   constructor() {

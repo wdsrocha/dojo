@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { UriAdapter } from './adapters/uri/uri-adapter';
+import { UriClient } from './clients/uri/uri.client';
 import { OnlineJudge } from './online-judge.interface';
 
 @Injectable()
 export class OnlineJudgesService {
-  constructor(private readonly uriAdapter: UriAdapter) {}
+  constructor(private readonly uriAdapter: UriClient) {}
 
   getProblem(
     onlineJudgeId: string,
