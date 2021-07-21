@@ -2,8 +2,9 @@ import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UriAdapter } from '../online-judges/adapters/uri/uri-adapter';
-import { OnlineJudgesService } from '../online-judges/online-judges.service';
+import { OnlineJudgesModule } from '../online-judges/online-judges.module';
+import { Problem } from '../problems/problems.entity';
+import { ProblemsModule } from '../problems/problems.module';
 import { Queues } from '../queue/queue.enum';
 import { SubmissionsConsumer } from './submissions.consumer';
 import { SubmissionsController } from './submissions.controller';
@@ -13,14 +14,14 @@ import { SubmissionsService } from './submissions.service';
 @Module({
   imports: [
     BullModule.registerQueue({ name: Queues.Submissions }),
-    TypeOrmModule.forFeature([Submission]),
+    TypeOrmModule.forFeature([Problem, Submission]),
+    ProblemsModule,
+    OnlineJudgesModule,
   ],
   controllers: [SubmissionsController],
   providers: [
     SubmissionsService,
     SubmissionsConsumer,
-    OnlineJudgesService,
-    UriAdapter,
   ],
 })
 export class SubmissionsModule {}

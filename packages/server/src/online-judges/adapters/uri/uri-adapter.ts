@@ -2,30 +2,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import * as puppeteer from 'puppeteer';
-import {
-  Browser,
-  ClickOptions,
-  NavigationOptions,
-  Page,
-  Response,
-} from 'puppeteer';
+import { Browser, Page } from 'puppeteer';
 
 import { Problem } from '../../../problems/problems.entity';
 import { Verdict } from '../../../submissions/submissions.entity';
-import { OnlineJudge } from './../online-judge.interface';
+import { OnlineJudge } from '../../online-judge.interface';
+import { clickAndWaitForNavigation } from '../../online-judge.utils';
 import { uriInfo } from './uri.info';
-
-function clickAndWaitForNavigation(
-  page: Page,
-  selector: string,
-  clickOptions?: ClickOptions,
-  waitOptions?: NavigationOptions,
-): Promise<Response> {
-  return Promise.all([
-    page.waitForNavigation(waitOptions),
-    page.click(selector, clickOptions),
-  ]).then((value: [Response, void]) => value[0]);
-}
 
 const BASE_URL = 'https://www.urionlinejudge.com.br';
 const LOGIN_PAGE_PATH = '/judge/pt/login';

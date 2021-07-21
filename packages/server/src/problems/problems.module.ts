@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UriAdapter } from '../online-judges/adapters/uri/uri-adapter';
-import { OnlineJudgesService } from '../online-judges/online-judges.service';
+import { OnlineJudgesModule } from '../online-judges/online-judges.module';
 import { ProblemsController } from './problems.controller';
 import { Problem } from './problems.entity';
 import { ProblemsService } from './problems.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Problem])],
+  imports: [TypeOrmModule.forFeature([Problem]), OnlineJudgesModule],
   controllers: [ProblemsController],
-  providers: [ProblemsService, OnlineJudgesService, UriAdapter],
+  providers: [ProblemsService],
 })
 export class ProblemsModule {}

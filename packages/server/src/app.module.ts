@@ -35,7 +35,7 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
     QueueModule,
     DatabaseModule,
     SubmissionsModule,
-    ProblemsModule
+    ProblemsModule,
   ],
   controllers: [AppController],
   providers: [

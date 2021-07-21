@@ -1,5 +1,5 @@
-import { Problem } from "../../problems/problems.entity";
-import { Verdict } from "../../submissions/submissions.entity";
+import { Problem } from "../problems/problems.entity";
+import { Verdict } from "../submissions/submissions.entity";
 
 export interface OnlineJudge {
   getProblem(problemId: string): Promise<Omit<Problem, 'id'>>;
