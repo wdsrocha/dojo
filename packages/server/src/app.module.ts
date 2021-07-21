@@ -29,6 +29,8 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
         QUEUE_PASSWORD: Joi.string().allow(''),
         QUEUE_PORT: Joi.number().required(),
         QUEUE_TLS: Joi.boolean(),
+        CODEFORCES_CLIENT_USERNAME: Joi.string().required(),
+        CODEFORCES_CLIENT_PASSWORD: Joi.string().required(),
       }),
     }),
     AuthenticationModule,

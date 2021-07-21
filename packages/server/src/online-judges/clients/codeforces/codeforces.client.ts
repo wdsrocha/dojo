@@ -7,13 +7,19 @@ import { Verdict } from '../../../submissions/submissions.entity';
 import { OnlineJudge } from '../../online-judge.interface';
 import { clickAndWaitForNavigation } from '../../online-judge.utils';
 
-const CODEFORCES_BASE_URL = 'https://codeforces.com';
+const BASE_URL = 'https://codeforces.com';
 
 const routes = {
-  login: () => `${CODEFORCES_BASE_URL}/enter`,
-  // problem: (id: string) => `${CODEFORCES_BASE_URL}/problemset/problem/${id}`,
-  submit: () => `${CODEFORCES_BASE_URL}/problemset/submit`,
-  // submission: (id: string) => `${CODEFORCES_BASE_URL}/submit/${id}`,
+  problem: (problemId: string) => {
+    const i = problemId.search(/[A-Z]/);
+    const contestId = problemId.slice(0, i);
+    const problemLetter = problemId.slice(i);
+    return `${BASE_URL}/contest/${contestId}/problem/${problemLetter}`;
+  },
+  login: () => `${BASE_URL}/enter`,
+  submit: () => `${BASE_URL}/problemset/submit`,
+  verdict: (contestId: string, submissionId: string) =>
+    `${BASE_URL}/contest/${contestId}/submission/${submissionId}`,
 };
 
 @Injectable()
@@ -41,30 +47,7 @@ export class CodeforcesClient implements OnlineJudge {
     problemId: string,
     languageId: string,
     code: string,
-    // retryCount = 2,
   ): Promise<{ submissionId: string }> {
-    await this.login();
-
-    // await this.page.setRequestInterception(true);
-    // this.page.on('request', async (request) => {
-    //   if (request.isNavigationRequest() && request.redirectChain().length)
-    //     await request.abort();
-    //   else await request.continue();
-    // });
-
-    await this.page.goto(routes.submit());
-    await this.page.waitFor(3000);
-    // await clickAndWaitForNavigation(this.page,'a:contains("submit")');
-    await this.page.type('#pageContent > form > table > tbody > tr:nth-child(1) > td:nth-child(2) > input', problemId);
-    await this.page.waitFor(3000);
-    await this.page.click('#toggleEditorCheckbox');
-    await this.page.waitFor(3000);
-    // await this.page.type('#editor', code);
-    await this.page.type('.ace_text-input', code);
-    await this.page.waitFor(3000);
-    await this.page.click('.submit');
-    await this.page.waitFor(100000);
-
     throw new Error('Method not implemented.');
   }
 
