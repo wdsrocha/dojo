@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as cheerio from 'cheerio';
 import { InjectPage } from 'nest-puppeteer';
+import fetch from 'node-fetch';
 import { Page, Request } from 'puppeteer';
 import { Repository } from 'typeorm';
 
@@ -20,12 +22,8 @@ function splitProblemId(problemId: string) {
 }
 
 const routes = {
-  problem: (problemId: string) => {
-    const i = problemId.search(/[A-Z]/);
-    const contestId = problemId.slice(0, i);
-    const problemLetter = problemId.slice(i);
-    return `${BASE_URL}/contest/${contestId}/problem/${problemLetter}`;
-  },
+  problem: (contestId: string, problemLetter: string) =>
+    `${BASE_URL}/contest/${contestId}/problem/${problemLetter}`,
   login: () => `${BASE_URL}/enter`,
   submit: () => `${BASE_URL}/problemset/submit`,
   verdict: (contestId: string, submissionId: string) =>
@@ -105,8 +103,83 @@ export class CodeforcesClient implements OnlineJudge {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getProblem(problemId: string): Promise<Omit<Problem, 'id'>> {
-    throw new Error('Method not implemented.');
+  async getProblem(problemId: string): Promise<Omit<Problem, 'id'>> {
+    const [contestId, problemLetter] = splitProblemId(problemId);
+    const url = routes.problem(contestId, problemLetter);
+    const response = await fetch(url);
+
+    if (!response.url.includes(url)) {
+      throw new HttpException(
+        `Problem ${problemId} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const $ = cheerio.load(await response.text());
+
+    let title = $(
+      '#pageContent > div.problemindexholder > div.ttypography > div > div.header > div.title',
+    ).text();
+    title = title.slice(title.search(' ') + 1);
+
+    const timelimitSelector =
+      '#pageContent > div.problemindexholder > div.ttypography > div > div.header > div.time-limit';
+    $(`${timelimitSelector} > div`).remove();
+    const timelimit = $(timelimitSelector).text();
+
+    const description = $.html(
+      $(
+        '#pageContent > div.problemindexholder > div.ttypography > div > div:nth-child(2)',
+      ).children(),
+    );
+
+    const inputSelector =
+      '#pageContent > div.problemindexholder > div.ttypography > div > div.input-specification';
+    $(`${inputSelector} > div`).remove();
+    const input = $.html($(inputSelector).children());
+
+    const outputSelector =
+      '#pageContent > div.problemindexholder > div.ttypography > div > div.output-specification';
+    $(`${outputSelector} > div`).remove();
+    const output = $.html($(outputSelector).children());
+
+    const inputExamples: string[] = [];
+    const outputExamples: string[] = [];
+
+    const examplesSelector =
+      '#pageContent > div.problemindexholder > div.ttypography > div > div.sample-tests > div.sample-test';
+    $(examplesSelector)
+      .children()
+      .each((i, x) => {
+        $(x)
+          .children()
+          .each((_, y) => {
+            if (y.name === 'pre') {
+              const exampleText = $.html(y)
+                .replace(/\<br\>/g, '\n')
+                .slice(5, -6);
+
+              if (i % 2 === 0) {
+                inputExamples.push(exampleText);
+              } else {
+                outputExamples.push(exampleText);
+              }
+            }
+          });
+      });
+
+    return {
+      onlineJudgeId: 'codeforces',
+      remoteProblemId: problemId,
+      remoteLink: url,
+      title,
+      timelimit,
+      description,
+      input,
+      output,
+      inputExamples,
+      outputExamples,
+    };
   }
 
   async submit(
@@ -186,8 +259,6 @@ export class CodeforcesClient implements OnlineJudge {
       (el) => el && el.textContent,
       verdictElement,
     );
-
-    this.logger.debug(`Submission verdict: ${rawVerdict}`);
 
     let verdict: Verdict | undefined;
     Object.keys(codeforcesInfo.verdicts).forEach((validVerdict) => {
