@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
+import { CodeforcesClient } from './clients/codeforces/codeforces.client';
 import { UriClient } from './clients/uri/uri.client';
 import { OnlineJudge } from './online-judge.interface';
 
@@ -7,12 +8,16 @@ import { OnlineJudge } from './online-judge.interface';
 export class OnlineJudgesService {
   onlineJudges: { [key: string]: OnlineJudge } = {};
 
-  constructor(private readonly uriClient: UriClient) {
+  constructor(
+    readonly uriClient: UriClient,
+    readonly codeforcesClient: CodeforcesClient,
+  ) {
     this.onlineJudges['uri'] = uriClient;
+    this.onlineJudges['codeforces'] = codeforcesClient;
   }
 
   isValidOnlineJudge(onlineJudgeId: string): boolean {
-    return onlineJudgeId === 'uri';
+    return Object.keys(this.onlineJudges).includes(onlineJudgeId);
   }
 
   throwIfInvalidOnlineJudge(onlineJudgeId: string): void {
