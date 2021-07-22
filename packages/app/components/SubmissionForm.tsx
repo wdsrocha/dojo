@@ -96,7 +96,7 @@ export const SubmissionForm = ({
           </Hyperlink>
         </Item>
         <Item name="language" label="Linguagem" wrapperCol={{ span: 8 }}>
-          <Select>
+          <Select showSearch>
             {languageOptions.map(({ value, label }) => (
               <Option key={value} value={value}>
                 {label}
