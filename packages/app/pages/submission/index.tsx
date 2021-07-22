@@ -4,8 +4,9 @@ import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { Hyperlink } from "../../components/Hyperlink";
+import { useSession } from "../../contexts/auth";
 import { OPTIONS } from "../../utils/fetchOptions";
-import { displayVerdict } from "../../utils/utils";
+import { displayVerdict, Verdict } from "../../utils/utils";
 
 const { Title } = Typography;
 
@@ -51,53 +52,70 @@ const usePreviousSubmissionList = (submissionList?: SubmissionType[]) => {
   return ref.current;
 };
 
-const columns: ColumnsType<SubmissionType> = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    width: 30,
-    fixed: "left",
-    render: (_, { id }) => (
-      <Hyperlink href={`/submission/${id}`}>{id}</Hyperlink>
-    ),
-  },
-  {
-    title: "Autor",
-    dataIndex: "username",
-    width: 90,
-  },
-  {
-    title: "Problema",
-    width: 30,
-    render: (_, { onlineJudgeId, remoteProblemId }) => (
-      <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
-        {`${onlineJudgeId.toUpperCase()}-${remoteProblemId}`}
-      </Hyperlink>
-    ),
-  },
-  {
-    title: "Veredito",
-    dataIndex: "verdict",
-    width: 40,
-    render: (_, { verdict }) => displayVerdict(verdict),
-  },
-  {
-    title: "Enviado em",
-    dataIndex: "createdDate",
-    width: 40,
-    render: (_, { createdDate }) => dayjs(createdDate).format("DD/MM/YYYY HH:mm"),
-  },
-];
-
 const Page = () => {
+  const { session } = useSession();
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 20,
   });
-
   const { submissionList, loading } = useSubmissionList(pagination);
-
   const previousSubmissionList = usePreviousSubmissionList(submissionList);
+
+  const columns: ColumnsType<SubmissionType> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      width: 30,
+      fixed: "left",
+      render: (_, { id }) => (
+        <Hyperlink href={`/submission/${id}`}>{id}</Hyperlink>
+      ),
+    },
+    {
+      title: "Autor",
+      dataIndex: "username",
+      width: 90,
+      filters: session ? [{ text: "Apenas eu", value: session.user.username }] : undefined,
+      onFilter: (value, { username }) => value === username,
+    },
+    {
+      title: "Problema",
+      width: 0,
+      render: (_, { onlineJudgeId, remoteProblemId }) => (
+        <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
+          {`${onlineJudgeId.toUpperCase()}-${remoteProblemId}`}
+        </Hyperlink>
+      ),
+      filters: [
+        {
+          text: "URI",
+          value: "uri",
+        },
+        {
+          text: "CODEFORCES",
+          value: "codeforces",
+        },
+      ],
+      onFilter: (value, { onlineJudgeId }) => value === onlineJudgeId,
+    },
+    {
+      title: "Veredito",
+      dataIndex: "verdict",
+      width: 40,
+      render: (_, { verdict }) => displayVerdict(verdict),
+      filters: Object.values(Verdict).map((value) => ({
+        text: value,
+        value,
+      })),
+      onFilter: (value, { verdict }) => value === verdict,
+    },
+    {
+      title: "Enviado em",
+      dataIndex: "createdDate",
+      width: 40,
+      render: (_, { createdDate }) => dayjs(createdDate).format("DD/MM/YYYY HH:mm"),
+    },
+  ];
 
   const handleTableChange = (currentPagination: TablePaginationConfig) => {
     if (pagination !== currentPagination) {
