@@ -46,3 +46,5 @@ export const getHljsLanguage = (
   }
   return undefined;
 };
+
+export const getProblemId = (onlineJudgeId: string, remoteProblemId: string) => `${onlineJudgeId.toUpperCase()}-${remoteProblemId}`;

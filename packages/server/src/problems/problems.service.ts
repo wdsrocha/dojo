@@ -53,7 +53,9 @@ export class ProblemsService {
   }
 
   async getAll(): Promise<ProblemList> {
-    const problems = await this.problemsRepository.find();
+    const problems = await this.problemsRepository.find({
+      order: { title: 'ASC' },
+    });
     return problems.map(({ onlineJudgeId, remoteProblemId, title }) => ({
       onlineJudgeId,
       remoteProblemId,

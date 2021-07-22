@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { Hyperlink } from "../../components/Hyperlink";
 import { OPTIONS } from "../../utils/fetchOptions";
+import { getProblemId } from "../../utils/utils";
 
 const { Title } = Typography;
 
@@ -48,15 +49,27 @@ const usePreviousProblemList = (problemList?: ProblemType[]) => {
 
 const columns: ColumnsType<ProblemType> = [
   {
-    title: "OJ",
-    dataIndex: "onlineJudgeId",
-    width: "72px",
-    render: (onlineJudgeId: string) => onlineJudgeId.toUpperCase(),
-  },
-  {
-    title: "ID",
-    dataIndex: "remoteProblemId",
-    width: "128px",
+    title: "Problema",
+    width: 200,
+    render: (_, { onlineJudgeId, remoteProblemId }) => (
+      <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
+        {getProblemId(onlineJudgeId, remoteProblemId)}
+      </Hyperlink>
+    ),
+    filters: [
+      {
+        text: "URI",
+        value: "uri",
+      },
+      {
+        text: "CODEFORCES",
+        value: "codeforces",
+      },
+    ],
+    onFilter: (value, { onlineJudgeId }) => value === onlineJudgeId,
+    sorter: (a, b) => getProblemId(a.onlineJudgeId, a.remoteProblemId).localeCompare(
+        getProblemId(b.onlineJudgeId, b.remoteProblemId),
+      ),
   },
   {
     title: "Título",
@@ -94,7 +107,7 @@ const Problem = () => {
       <Table<ProblemType>
         size="middle"
         bordered
-        tableLayout="fixed"
+        tableLayout="auto"
         loading={loading}
         pagination={pagination}
         rowKey={(record) => `${record.onlineJudgeId}-${record.remoteProblemId}`}
