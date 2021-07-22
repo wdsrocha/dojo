@@ -1,13 +1,13 @@
-import { Verdict } from "../../../submissions/submissions.entity";
+import { Verdict } from '../../../submissions/submissions.entity';
 
 interface OnlineJudgeInfo {
-  name: string
+  name: string;
   languages: {
     [key: string]: string;
-  }
+  };
   verdicts: {
-    [key: string]: Verdict
-  }
+    [key: string]: Verdict;
+  };
 }
 
 export const uriInfo: OnlineJudgeInfo = {

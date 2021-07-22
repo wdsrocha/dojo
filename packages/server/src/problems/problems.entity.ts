@@ -1,8 +1,4 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Problem {
@@ -16,6 +12,6 @@ export class Problem {
   @Column() description: string;
   @Column() input: string;
   @Column() output: string;
-  @Column('simple-array') inputExamples: string[]
-  @Column('simple-array') outputExamples: string[]
+  @Column('simple-array') inputExamples: string[];
+  @Column('simple-array') outputExamples: string[];
 }

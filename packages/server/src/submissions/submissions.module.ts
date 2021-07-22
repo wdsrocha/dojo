@@ -19,9 +19,6 @@ import { SubmissionsService } from './submissions.service';
     OnlineJudgesModule,
   ],
   controllers: [SubmissionsController],
-  providers: [
-    SubmissionsService,
-    SubmissionsConsumer,
-  ],
+  providers: [SubmissionsService, SubmissionsConsumer],
 })
 export class SubmissionsModule {}

@@ -26,6 +26,6 @@ export class ProblemsController {
 
   @Get()
   getAll(): Promise<ProblemList> {
-    return this.problemsService.getAll()
+    return this.problemsService.getAll();
   }
 }

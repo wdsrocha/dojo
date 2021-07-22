@@ -1,3 +1,6 @@
-import { Problem } from "./problems.entity";
+import { Problem } from './problems.entity';
 
-export type ProblemList = Pick<Problem, 'onlineJudgeId' | 'remoteProblemId' | 'title'>[]
+export type ProblemList = Pick<
+  Problem,
+  'onlineJudgeId' | 'remoteProblemId' | 'title'
+>[];

@@ -36,7 +36,7 @@ export class AuthenticationController {
       'Set-Cookie',
       this.authenticationService.getCookieWithJwtToken(user.id),
     );
-    return user
+    return user;
   }
 
   @HttpCode(200)

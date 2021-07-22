@@ -28,14 +28,12 @@ export class SubmissionsController {
   }
 
   @Get(':id')
-  findById(
-    @Param('id') id: string
-  ): Promise<Submission> {
+  findById(@Param('id') id: string): Promise<Submission> {
     return this.submissionsService.findById(id);
   }
 
   @Get()
   getAll(): Promise<SubmissionList> {
-    return this.submissionsService.getAll()
+    return this.submissionsService.getAll();
   }
 }
