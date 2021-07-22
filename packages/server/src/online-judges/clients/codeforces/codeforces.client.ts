@@ -1,13 +1,23 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPage } from 'nest-puppeteer';
 import { Page, Request } from 'puppeteer';
+import { Repository } from 'typeorm';
 
 import { Problem } from '../../../problems/problems.entity';
-import { Verdict } from '../../../submissions/submissions.entity';
+import { Submission, Verdict } from '../../../submissions/submissions.entity';
 import { OnlineJudge } from '../../online-judge.interface';
 import { clickAndWaitForNavigation } from '../../online-judge.utils';
+import { codeforcesInfo } from './codeforces.info';
 
 const BASE_URL = 'https://codeforces.com';
+
+function splitProblemId(problemId: string) {
+  const i = problemId.search(/[A-Z]/);
+  const contestId = problemId.slice(0, i);
+  const problemLetter = problemId.slice(i);
+  return [contestId, problemLetter];
+}
 
 const routes = {
   problem: (problemId: string) => {
@@ -71,8 +81,13 @@ export class CodeforcesClient implements OnlineJudge {
   submissionId: string | null = null;
   private readonly username = process.env.CODEFORCES_CLIENT_USERNAME;
   private readonly password = process.env.CODEFORCES_CLIENT_PASSWORD;
+  private readonly logger = new Logger(this.constructor.name);
 
-  constructor(@InjectPage('CodeforcesBrowser') private readonly page: Page) {
+  constructor(
+    @InjectPage('CodeforcesBrowser') private readonly page: Page,
+    @InjectRepository(Submission)
+    private submissionsRepository: Repository<Submission>,
+  ) {
     void this.login();
   }
 
@@ -106,7 +121,6 @@ export class CodeforcesClient implements OnlineJudge {
 
     this.page.addListener('request', async (request: Request) => {
       if (request.url().includes('/problemset/submit?csrf_token')) {
-        Logger.log(request.url());
         const formData = request.postData() ?? '';
         const data = (formToJson(formData) as unknown) as SubmissionPostData;
         data.source = encodeURIComponent(code);
@@ -114,7 +128,6 @@ export class CodeforcesClient implements OnlineJudge {
         data.programTypeId = languageId;
         await request.continue({ postData: jsonToForm(data) });
       } else if (request.url().includes('/diagnosticsResults')) {
-        Logger.log(request.url());
         const formData = request.postData() ?? '';
         const data = (formToJson(formData) as unknown) as ResultsData;
         const decodedSubmissionIds = decodeURIComponent(data.submissionIds);
@@ -148,8 +161,49 @@ export class CodeforcesClient implements OnlineJudge {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getSubmissionVerdict(submissionId: string): Promise<Verdict> {
-    throw new Error('Method not implemented.');
+  async getSubmissionVerdict(submissionId: string): Promise<Verdict> {
+    const submission = await this.submissionsRepository.findOne({
+      where: { remoteSubmissionId: submissionId },
+    });
+
+    if (!submission) {
+      throw new HttpException('Submission not found', HttpStatus.NOT_FOUND);
+    }
+
+    const problemId = submission.remoteProblemId;
+    const [contestId] = splitProblemId(problemId);
+
+    await this.page.goto(routes.verdict(contestId, submissionId));
+
+    const verdictSelector =
+      '#pageContent > div.datatable > div:nth-child(6) > table > tbody > tr.highlighted-row > td:nth-child(5) > span';
+
+    await this.page.waitForSelector(verdictSelector);
+
+    const verdictElement = await this.page.$(verdictSelector);
+
+    const rawVerdict = await this.page.evaluate(
+      (el) => el && el.textContent,
+      verdictElement,
+    );
+
+    this.logger.debug(`Submission verdict: ${rawVerdict}`);
+
+    let verdict: Verdict | undefined;
+    Object.keys(codeforcesInfo.verdicts).forEach((validVerdict) => {
+      if (rawVerdict.includes(validVerdict)) {
+        verdict = codeforcesInfo.verdicts[validVerdict];
+      }
+    });
+
+    if (!verdict) {
+      this.logger.warn({
+        message:
+          "The scrapped verdict wasn't identified and defaulted to PENDING verdict",
+        rawVerdict,
+      });
+    }
+
+    return verdict ?? Verdict.PENDING;
   }
 }

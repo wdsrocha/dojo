@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import * as puppeteer from 'puppeteer';
@@ -17,6 +17,8 @@ const LOGIN_PAGE_PATH = '/judge/pt/login';
 export class UriClient implements OnlineJudge {
   browser: Browser | undefined;
   page: Page | undefined;
+  private readonly logger = new Logger(this.constructor.name);
+
   constructor() {
     void (async () => {
       this.browser = await puppeteer.launch({
@@ -215,8 +217,7 @@ export class UriClient implements OnlineJudge {
     });
 
     if (!dojoVerdict) {
-      // eslint-disable-next-line no-console
-      console.warn({
+      this.logger.warn({
         message:
           "The scrapped verdict wasn't identified and defaulted to PENDING verdict",
         rawUriVerdict,

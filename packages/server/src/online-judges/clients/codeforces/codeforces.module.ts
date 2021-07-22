@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PuppeteerModule } from 'nest-puppeteer';
 
+import { Submission } from '../../../submissions/submissions.entity';
 import { CodeforcesClient } from './codeforces.client';
 
 @Module({
@@ -17,6 +19,9 @@ import { CodeforcesClient } from './codeforces.client';
       },
       'CodeforcesBrowser',
     ),
+    // TODO: Find a way to don't depend on contestId to retrieve the submission
+    // verdict 😕 *
+    TypeOrmModule.forFeature([Submission]),
   ],
   providers: [CodeforcesClient],
   exports: [CodeforcesClient],
