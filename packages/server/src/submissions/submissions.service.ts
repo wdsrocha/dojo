@@ -75,7 +75,7 @@ export class SubmissionsService {
         remoteProblemId,
         verdict,
         createdDate,
-        username: author.username,
+        username: author?.username,
       }),
     );
   }

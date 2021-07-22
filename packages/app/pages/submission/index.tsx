@@ -32,7 +32,7 @@ const useSubmissionList = (pagination: TablePaginationConfig) => {
     fetcher,
   );
 
-  const submissionList: SubmissionType[] = data ?? [];
+  const submissionList: SubmissionType[] = Array.isArray(data) ? data : [];
 
   return {
     submissionList,
@@ -116,7 +116,7 @@ const Page = () => {
         rowKey={(record) => record.id}
         columns={columns}
         scroll={{ x: "100%" }}
-        dataSource={submissionList ?? previousSubmissionList}
+        dataSource={submissionList ?? previousSubmissionList ?? []}
         onChange={handleTableChange}
       />
     </Card>

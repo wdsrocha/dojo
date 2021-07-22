@@ -102,7 +102,6 @@ export class CodeforcesClient implements OnlineJudge {
     await clickAndWaitForNavigation(this.page, '.submit');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getProblem(problemId: string): Promise<Omit<Problem, 'id'>> {
     const [contestId, problemLetter] = splitProblemId(problemId);
     const url = routes.problem(contestId, problemLetter);
