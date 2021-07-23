@@ -94,7 +94,21 @@ export class CodeforcesClient implements OnlineJudge {
       return;
     }
 
-    const { CODEFORCES_CLIENT_USERNAME, CODEFORCES_CLIENT_PASSWORD } = process.env
+    const {
+      CODEFORCES_CLIENT_USERNAME,
+      CODEFORCES_CLIENT_PASSWORD,
+    } = process.env;
+
+    if (!CODEFORCES_CLIENT_USERNAME || !CODEFORCES_CLIENT_PASSWORD) {
+      throw new HttpException(
+        {
+          message: `At least one bot related environment variables was not found.`,
+          CODEFORCES_CLIENT_USERNAME,
+          CODEFORCES_CLIENT_PASSWORD,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     await this.page.type('#handleOrEmail', CODEFORCES_CLIENT_USERNAME);
     await this.page.type('#password', CODEFORCES_CLIENT_PASSWORD);
