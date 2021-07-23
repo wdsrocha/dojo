@@ -4,6 +4,7 @@ import { Card, Descriptions, Typography } from "antd";
 import dayjs from "dayjs";
 import { github } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useRouter } from "next/dist/client/router";
 import { Hyperlink } from "../../components/Hyperlink";
 import { OPTIONS } from "../../utils/fetchOptions";
 import { getLanguageById } from "../../utils/onlineJudgeData";
@@ -42,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<SubmissionResponse> = async 
     },
   );
 
-  const data = await response.json();
+  const data: Submission = await response.json();
 
   if (response.status === 404) {
     return {
@@ -59,6 +60,8 @@ const Submission = ({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const language = getLanguageById(data.onlineJudgeId, data.remoteLanguageId);
+  const router = useRouter();
+
   return (
     <Card
       className="card"
@@ -73,7 +76,14 @@ const Submission = ({
           </Hyperlink>
         </Descriptions.Item>
         <Descriptions.Item label="Veredito">
-          {displayVerdict(data.verdict)}
+          <div className="flex justify-between">
+            {displayVerdict(data.verdict)}
+            {data.verdict === "Pending" ? (
+              <Typography.Link onClick={() => router.reload()}>
+                Recarregar
+              </Typography.Link>
+            ) : null}
+          </div>
         </Descriptions.Item>
         <Descriptions.Item label="Linguagem">{language}</Descriptions.Item>
         <Descriptions.Item label="Autor">
