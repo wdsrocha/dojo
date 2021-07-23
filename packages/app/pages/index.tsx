@@ -50,6 +50,11 @@ const Home = () => (
                   URI Online Judge
                 </Link>
               </li>
+              <li>
+                <Link href="https://codeforces.com/">
+                  Codeforces
+                </Link>
+              </li>
             </ul>
             <p>Em breve...</p>
             <ul>
