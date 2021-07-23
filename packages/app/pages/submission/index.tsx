@@ -6,7 +6,12 @@ import useSWR from "swr";
 import { Hyperlink } from "../../components/Hyperlink";
 import { useSession } from "../../contexts/auth";
 import { OPTIONS } from "../../utils/fetchOptions";
-import { displayVerdict, Verdict } from "../../utils/utils";
+import {
+  displayVerdict,
+  getProblemId,
+  tableColumnTextFilterConfig,
+  Verdict,
+} from "../../utils/utils";
 
 const { Title } = Typography;
 
@@ -75,7 +80,9 @@ const Page = () => {
       title: "Autor",
       dataIndex: "username",
       width: 90,
-      filters: session ? [{ text: "Apenas eu", value: session.user.username }] : undefined,
+      filters: session
+        ? [{ text: "Apenas eu", value: session.user.username }]
+        : undefined,
       onFilter: (value, { username }) => value === username,
     },
     {
@@ -86,17 +93,12 @@ const Page = () => {
           {`${onlineJudgeId.toUpperCase()}-${remoteProblemId}`}
         </Hyperlink>
       ),
-      filters: [
-        {
-          text: "URI",
-          value: "uri",
-        },
-        {
-          text: "CODEFORCES",
-          value: "codeforces",
-        },
-      ],
-      onFilter: (value, { onlineJudgeId }) => value === onlineJudgeId,
+      ...tableColumnTextFilterConfig<SubmissionType>(),
+      onFilter: (value, { onlineJudgeId, remoteProblemId }) =>
+        // eslint-disable-next-line implicit-arrow-linebreak
+        getProblemId(onlineJudgeId, remoteProblemId)
+          .toLowerCase()
+          .includes(value.toString().toLowerCase()),
     },
     {
       title: "Veredito",

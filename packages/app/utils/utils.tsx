@@ -1,4 +1,6 @@
-import { Typography } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, Typography } from "antd";
+import { ColumnType } from "antd/lib/table";
 
 const { Text } = Typography;
 
@@ -48,3 +50,48 @@ export const getHljsLanguage = (
 };
 
 export const getProblemId = (onlineJudgeId: string, remoteProblemId: string) => `${onlineJudgeId.toUpperCase()}-${remoteProblemId}`;
+
+export function tableColumnTextFilterConfig<T>(): ColumnType<T> {
+  const searchInputHolder: { current: Input | null } = { current: null };
+
+  return {
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            searchInputHolder.current = node;
+          }}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => confirm()}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Button
+          type="primary"
+          onClick={() => confirm()}
+          icon={<SearchOutlined />}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Procurar
+        </Button>
+        <Button size="small" style={{ width: 90 }} onClick={clearFilters}>
+          Resetar
+        </Button>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInputHolder.current?.select());
+      }
+    },
+  };
+}

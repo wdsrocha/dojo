@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { Hyperlink } from "../../components/Hyperlink";
 import { OPTIONS } from "../../utils/fetchOptions";
-import { getProblemId } from "../../utils/utils";
+import { getProblemId, tableColumnTextFilterConfig } from "../../utils/utils";
 
 const { Title } = Typography;
 
@@ -83,6 +83,8 @@ const columns: ColumnsType<ProblemType> = [
       </Hyperlink>
     ),
     align: "left",
+    ...tableColumnTextFilterConfig<ProblemType>(),
+    onFilter: (value, { title }) => title.toLowerCase().includes(value.toString().toLowerCase()),
   },
 ];
 
@@ -91,9 +93,7 @@ const Problem = () => {
     current: 1,
     pageSize: 20,
   });
-
   const { problemList, loading } = useProblemList(pagination);
-
   const previousProblemList = usePreviousProblemList(problemList);
 
   const handleTableChange = (currentPagination: TablePaginationConfig) => {
