@@ -77,8 +77,6 @@ export class CodeforcesClient implements OnlineJudge {
   // - Make this property an object instead, where the key is an unique hash and
   //   the value is the corresponding `submissionId` *
   submissionId: string | null = null;
-  private readonly username = process.env.CODEFORCES_CLIENT_USERNAME;
-  private readonly password = process.env.CODEFORCES_CLIENT_PASSWORD;
   private readonly logger = new Logger(this.constructor.name);
 
   constructor(
@@ -96,8 +94,10 @@ export class CodeforcesClient implements OnlineJudge {
       return;
     }
 
-    await this.page.type('#handleOrEmail', this.username);
-    await this.page.type('#password', this.password);
+    const { CODEFORCES_CLIENT_USERNAME, CODEFORCES_CLIENT_PASSWORD } = process.env
+
+    await this.page.type('#handleOrEmail', CODEFORCES_CLIENT_USERNAME);
+    await this.page.type('#password', CODEFORCES_CLIENT_PASSWORD);
     await this.page.click('#remember');
     await clickAndWaitForNavigation(this.page, '.submit');
   }
