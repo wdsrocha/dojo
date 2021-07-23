@@ -87,7 +87,7 @@ export const SubmissionForm = ({
         validateMessages={{ required: "Campo obrigatório" }}
         onFinish={handleFinish}
         initialValues={{
-          language: languageOptions[0].value,
+          language: languageOptions[0]?.value,
         }}
       >
         <Item label="Problema">
@@ -96,7 +96,12 @@ export const SubmissionForm = ({
           </Hyperlink>
         </Item>
         <Item name="language" label="Linguagem" wrapperCol={{ span: 8 }}>
-          <Select showSearch>
+          <Select
+            optionFilterProp="children"
+            // eslint-disable-next-line max-len
+            filterOption={(input, option) => option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            showSearch
+          >
             {languageOptions.map(({ value, label }) => (
               <Option key={value} value={value}>
                 {label}
