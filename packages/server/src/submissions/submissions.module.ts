@@ -3,8 +3,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { OnlineJudgesModule } from '../online-judges/online-judges.module';
-import { Problem } from '../problems/problems.entity';
-import { ProblemsModule } from '../problems/problems.module';
 import { Queues } from '../queue/queue.enum';
 import { SubmissionsConsumer } from './submissions.consumer';
 import { SubmissionsController } from './submissions.controller';
@@ -14,8 +12,7 @@ import { SubmissionsService } from './submissions.service';
 @Module({
   imports: [
     BullModule.registerQueue({ name: Queues.Submissions }),
-    TypeOrmModule.forFeature([Problem, Submission]),
-    ProblemsModule,
+    TypeOrmModule.forFeature([Submission]),
     OnlineJudgesModule,
   ],
   controllers: [SubmissionsController],

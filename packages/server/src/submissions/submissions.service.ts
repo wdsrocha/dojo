@@ -37,8 +37,11 @@ export class SubmissionsService {
     );
 
     await this.submissionsQueue.add(SubmissionJobs.Submit, submission, {
-      attempts: 24,
-      delay: 5000,
+      attempts: 17,
+      backoff: {
+        delay: 2000,
+        type: 'exponential',
+      },
     });
 
     return submission;

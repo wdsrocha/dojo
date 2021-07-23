@@ -69,10 +69,11 @@ export class SubmissionsConsumer {
       updatedSubmission,
       {
         // TODO: Think in a better strategy
+        attempts: 17,
         backoff: {
           delay: 2000,
-          type: 'exponential'
-        }
+          type: 'exponential',
+        },
       },
     );
 
