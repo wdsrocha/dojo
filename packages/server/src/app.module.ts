@@ -17,9 +17,10 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
+        CORS_ORIGIN: Joi.string().default('*'),
         JWT_EXPIRATION_TIME: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
-        PORT: Joi.number(),
+        PORT: Joi.number().default(2000),
         POSTGRES_DB: Joi.string().required(),
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
@@ -28,7 +29,9 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
         QUEUE_HOST: Joi.string().required(),
         QUEUE_PASSWORD: Joi.string().allow(''),
         QUEUE_PORT: Joi.number().required(),
-        QUEUE_TLS: Joi.boolean(),
+        QUEUE_TLS: Joi.boolean().default(false),
+        URI_CLIENT_EMAIL: Joi.string().required(),
+        URI_CLIENT_PASSWORD: Joi.string().required(),
         CODEFORCES_CLIENT_USERNAME: Joi.string().required(),
         CODEFORCES_CLIENT_PASSWORD: Joi.string().required(),
       }),
