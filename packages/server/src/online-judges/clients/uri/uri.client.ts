@@ -52,10 +52,10 @@ export class UriClient implements OnlineJudge {
   }
 
   async login() {
-    const { URI_BOT_EMAIL, URI_BOT_PASSWORD } = process.env;
-    if (!URI_BOT_EMAIL || !URI_BOT_PASSWORD) {
+    const { URI_CLIENT_EMAIL, URI_CLIENT_PASSWORD } = process.env;
+    if (!URI_CLIENT_EMAIL || !URI_CLIENT_PASSWORD) {
       throw new HttpException(
-        `At least one bot related environment variables was not found. URI_BOT_EMAIL: '${URI_BOT_EMAIL}'. URI_BOT_PASSWORD: '${URI_BOT_PASSWORD}'.`,
+        `At least one bot related environment variables was not found. URI_CLIENT_EMAIL: '${URI_CLIENT_EMAIL}'. URI_CLIENT_PASSWORD: '${URI_CLIENT_PASSWORD}'.`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -63,8 +63,8 @@ export class UriClient implements OnlineJudge {
     const page = await this.getPage();
 
     await page.goto(`${BASE_URL}/${LOGIN_PAGE_PATH}`);
-    await page.type('#email', URI_BOT_EMAIL);
-    await page.type('#password', URI_BOT_PASSWORD);
+    await page.type('#email', URI_CLIENT_EMAIL);
+    await page.type('#password', URI_CLIENT_PASSWORD);
     await page.click('#remember-me');
     await clickAndWaitForNavigation(page, 'input.send-green');
   }

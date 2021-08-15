@@ -12,8 +12,8 @@ jest.mock('puppeteer', () => ({
   },
 }));
 
-process.env.URI_BOT_EMAIL = 'email';
-process.env.URI_BOT_PASSWORD = 'password';
+process.env.URI_CLIENT_EMAIL = 'email';
+process.env.URI_CLIENT_PASSWORD = 'password';
 
 describe('getProblem', () => {
   it('should get the problem data', async () => {
