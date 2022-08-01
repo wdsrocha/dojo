@@ -3,8 +3,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DatabaseModule } from './database/database.module';
 import { ProblemsModule } from './problems/problems.module';
@@ -26,10 +24,8 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_PORT: Joi.number().required(),
         POSTGRES_USER: Joi.string().required(),
-        QUEUE_HOST: Joi.string().required(),
-        QUEUE_PASSWORD: Joi.string().allow(''),
-        QUEUE_PORT: Joi.number().required(),
-        QUEUE_TLS: Joi.boolean().default(false),
+        REDIS_TLS: Joi.boolean().default(false),
+        REDIS_URL: Joi.string().required(),
         URI_CLIENT_EMAIL: Joi.string().required(),
         URI_CLIENT_PASSWORD: Joi.string().required(),
         CODEFORCES_CLIENT_USERNAME: Joi.string().required(),
@@ -42,10 +38,6 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
     SubmissionsModule,
     ProblemsModule,
   ],
-  controllers: [AppController],
-  providers: [
-    AppService,
-    { provide: APP_FILTER, useClass: ExceptionsLoggerFilter },
-  ],
+  providers: [{ provide: APP_FILTER, useClass: ExceptionsLoggerFilter }],
 })
 export class AppModule {}
