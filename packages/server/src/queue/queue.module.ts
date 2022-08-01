@@ -7,18 +7,24 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        redis: {
-          tls: configService.get('QUEUE_TLS')
-            ? {
-                rejectUnauthorized: false,
-              }
-            : undefined,
-          host: configService.get('QUEUE_HOST'),
-          port: configService.get('QUEUE_PORT'),
-          password: configService.get('QUEUE_PASSWORD'),
-        },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const { hostname, port, password } = new URL(
+          configService.get('REDIS_URL') ?? '',
+        );
+
+        return {
+          redis: {
+            tls: configService.get('QUEUE_TLS')
+              ? {
+                  rejectUnauthorized: false,
+                }
+              : undefined,
+            host: hostname,
+            port: Number(port),
+            password,
+          },
+        };
+      },
     }),
   ],
 })
