@@ -5,8 +5,8 @@ Table of contents:
 - [Development](#development)
   - [Set environment variables](#set-environment-variables)
   - [Run the development server](#run-the-development-server)
-  - [Troubleshooting](#troubleshooting)
-    - [[WSL] Nothing shows up on <http://localhost:3000>](#wsl-nothing-shows-up-on-httplocalhost3000)
+- [Troubleshooting](#troubleshooting)
+  - [[WSL] Nothing shows up on <http://localhost:3000>](#wsl-nothing-shows-up-on-httplocalhost3000)
 
 ## Development
 
@@ -18,9 +18,9 @@ Check the development section in the [main README file](../../README.md#developm
 
 Create a `.env` file and set the following environment variables:
 
-| Variable                 | Description                      |
-| ------------------------ | -------------------------------- |
-| NEXT_PUBLIC_API_BASE_URL | Base URL of your back-end server |
+| Variable                   | Description                      |
+| -------------------------- | -------------------------------- |
+| `NEXT_PUBLIC_API_BASE_URL` | Base URL of your back-end server |
 
 All variables without a default value are **required**.
 

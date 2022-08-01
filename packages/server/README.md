@@ -10,8 +10,9 @@ Table of contents:
     - [Accessing Redisinsight (optional)](#accessing-redisinsight-optional)
   - [Run the server](#run-the-server)
   - [Troubleshooting](#troubleshooting)
-    - [Permission error during `docker compose up`](#permission-error-during--docker-compose-up-)
-    - [Browser error during `yarn start:dev`](#browser-error-during--yarn-startdev)
+    - [Permission error during `docker compose up`](#permission-error-during-docker-compose-up)
+  - [Browser error during `yarn start:dev`](#browser-error-during-yarn-startdev)
+  - [TypeOrm cannot find `dev` database on application startup](#typeorm-cannot-find-dev-database-on-application-startup)
 
 ## Development
 
@@ -23,25 +24,25 @@ Check the development section in the [main README file](../../README.md#developm
 
 Create a `.env` file and set the following environment variables:
 
-| Variable                   | Description                                               |
-| -------------------------- | --------------------------------------------------------- |
-| CORS_ORIGIN                | Base URL of your front-end app. Defaults to `*` (any URL) |
-| JWT_EXPIRATION_TIME        | JSON Web Token expiration time in seconds                 |
-| JWT_SECRET                 | JSON Web Token private key                                |
-| PORT                       | NestJS application port. Defaults to `2000`               |
-| POSTGRES_DB                | PostgreSQL database name                                  |
-| POSTGRES_HOST              | PostgreSQL host                                           |
-| POSTGRES_PASSWORD          | PostgreSQL password                                       |
-| POSTGRES_PORT              | PostgreSQL port                                           |
-| POSTGRES_USER              | PostgreSQL username                                       |
-| QUEUE_HOST                 | Redis host                                                |
-| QUEUE_PASSWORD             | Redis password                                            |
-| QUEUE_PORT                 | Redis port                                                |
-| QUEUE_TLS                  | SSL/TLS support. Defaults to `false`                      |
-| URI_CLIENT_EMAIL           | E-mail for URI Online Judge account                       |
-| URI_CLIENT_PASSWORD        | Password for URI Online Judge account                     |
-| CODEFORCES_CLIENT_USERNAME | Username for Codeforces account                           |
-| CODEFORCES_CLIENT_PASSWORD | Password for Codeforces account                           |
+| Variable                     | Description                                               |
+| ---------------------------- | --------------------------------------------------------- |
+| `CORS_ORIGIN`                | Base URL of your front-end app. Defaults to `*` (any URL) |
+| `JWT_EXPIRATION_TIME`        | JSON Web Token expiration time in seconds                 |
+| `JWT_SECRET`                 | JSON Web Token private key                                |
+| `PORT`                       | NestJS application port. Defaults to `2000`               |
+| `POSTGRES_DB`                | PostgreSQL database name                                  |
+| `POSTGRES_HOST`              | PostgreSQL host                                           |
+| `POSTGRES_PASSWORD`          | PostgreSQL password                                       |
+| `POSTGRES_PORT`              | PostgreSQL port                                           |
+| `POSTGRES_USER`              | PostgreSQL username                                       |
+| `REDIS_TLS`                  | SSL/TLS support. Defaults to `false`                      |
+| `REDIS_URL`                  | Redis URL with host, password and port¹                   |
+| `URI_CLIENT_EMAIL`           | E-mail for URI Online Judge account                       |
+| `URI_CLIENT_PASSWORD`        | Password for URI Online Judge account                     |
+| `CODEFORCES_CLIENT_USERNAME` | Username for Codeforces account                           |
+| `CODEFORCES_CLIENT_PASSWORD` | Password for Codeforces account                           |
+
+1: If using Heroku, `REDIS_URL` will be updated automatically sometimes. [See more](https://help.heroku.com/VN3D085X/why-have-my-heroku-redis-credentials-changed).
 
 All variables without a default value are **required**.
 
@@ -56,8 +57,8 @@ POSTGRES_HOST=localhost
 POSTGRES_PASSWORD=admin
 POSTGRES_PORT=5432
 POSTGRES_USER=admin
-QUEUE_HOST=localhost
-QUEUE_PORT=6379
+REDIS_TLS=false
+REDIS_URL='http://localhost:6379/'
 URI_CLIENT_EMAIL="fake.email@gmail.com"
 URI_CLIENT_PASSWORD="12345678"
 CODEFORCES_CLIENT_USERNAME="fake_username"
@@ -119,3 +120,15 @@ For a quick-term solution, run `sudo docker compose up`. Otherwise, follow those
 Error message: `error while loading shared libraries: libnss3.so: cannot open shared object file: No such file or directory`
 
 Run `apt install libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev` to fix. [Related issue](https://github.com/wdsrocha/dojo/issues/22).
+
+### TypeOrm cannot find `dev` database on application startup
+
+Make sure that there is no other Postgres instance running on port 5432. You can check that by running `sudo lsof -i :5432` on the terminal. If the output is something like:
+
+```
+COMMAND  PID     USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+postgres 587 postgres    4u  IPv6 0x218f97e9af5d0303      0t0  TCP *:postgresql (LISTEN)
+postgres 587 postgres    5u  IPv4 0x218f97e9ae0f6c63      0t0  TCP *:postgresql (LISTEN)
+```
+
+It means that the port is already being used. Terminate this Postgres instance or change the port exposed by Docker.
