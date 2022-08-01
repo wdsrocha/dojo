@@ -31,7 +31,7 @@ export class UriClient implements OnlineJudge {
         ],
       });
       this.page = (await this.browser.pages())[0];
-      await this.login();
+      // await this.login();
     })();
   }
 
