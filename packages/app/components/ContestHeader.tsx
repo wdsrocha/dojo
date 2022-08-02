@@ -1,11 +1,8 @@
 import { Card, Progress, Typography } from "antd";
 import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 import { useState } from "react";
 import { useInterval } from "../hooks/useInterval";
 import { useTwoPassRendering } from "../hooks/useTwoPassRendering";
-
-dayjs.extend(duration);
 
 const { Title, Text } = Typography;
 

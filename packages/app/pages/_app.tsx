@@ -4,6 +4,7 @@ import ptBR from "antd/lib/locale/pt_BR";
 import { start, done } from "nprogress";
 import "nprogress/nprogress.css";
 import { Router } from "next/dist/client/router";
+import './../utils/dayjs'
 
 import { MainLayout } from "../components/mainLayout/MainLayout";
 import "../styles/globals.css";
