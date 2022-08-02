@@ -5,9 +5,12 @@ import {
 } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Queue } from 'bull';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
+import { bullBoard } from './bullBoard';
+import { Queues } from './queue/queue.enum';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,6 +31,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.use(cookieParser());
+
+  const submissionsQueue = app.get<Queue>(`BullQueue_${Queues.Submissions}`);
+  app.use(...bullBoard(submissionsQueue))
 
   const port = process.env.PORT ?? 2000;
   Logger.log(`Listening port ${port}`, 'Bootstrap');

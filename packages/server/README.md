@@ -9,6 +9,7 @@ Table of contents:
     - [Accessing the Postgres database (optional)](#accessing-the-postgres-database-optional)
     - [Accessing Redisinsight (optional)](#accessing-redisinsight-optional)
   - [Run the server](#run-the-server)
+  - [Manage queues](#manage-queues)
   - [Troubleshooting](#troubleshooting)
     - [Permission error during `docker compose up`](#permission-error-during-docker-compose-up)
   - [Browser error during `yarn start:dev`](#browser-error-during-yarn-startdev)
@@ -30,6 +31,7 @@ Create a `.env` file and set the following environment variables:
 | `JWT_EXPIRATION_TIME`        | JSON Web Token expiration time in seconds                 |
 | `JWT_SECRET`                 | JSON Web Token private key                                |
 | `PORT`                       | NestJS application port. Defaults to `2000`               |
+| `ADMIN_PASSWORD`             | Password required for `/admin` route
 | `POSTGRES_DB`                | PostgreSQL database name                                  |
 | `POSTGRES_HOST`              | PostgreSQL host                                           |
 | `POSTGRES_PASSWORD`          | PostgreSQL password                                       |
@@ -52,6 +54,8 @@ You can use the following `.env` sample as a starting point for local developmen
 CORS_ORIGIN=http://localhost:3000
 JWT_EXPIRATION_TIME=604800017
 JWT_SECRET=4A5ECE5C9068EB654FA690CDC575E3B4345ED0FEA87D8BBC680C336821A741BB
+PORT=2000
+ADMIN_PASSWORD=admin
 POSTGRES_DB=dev
 POSTGRES_HOST=localhost
 POSTGRES_PASSWORD=admin
@@ -106,6 +110,10 @@ Open [Redisinsight](http://localhost:8001/), click on "Connect to a Redis Databa
 ```bash
 yarn start:dev
 ```
+
+### Manage queues
+
+Access `/admin/queue`
 
 ### Troubleshooting
 

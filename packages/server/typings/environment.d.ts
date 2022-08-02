@@ -1,6 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      ADMIN_PASSWORD: string;
       CODEFORCES_CLIENT_PASSWORD: string;
       CODEFORCES_CLIENT_USERNAME: string;
       NODE_ENV: 'development' | 'production';

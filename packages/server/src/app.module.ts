@@ -19,6 +19,7 @@ import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
         JWT_EXPIRATION_TIME: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         PORT: Joi.number().default(2000),
+        ADMIN_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),

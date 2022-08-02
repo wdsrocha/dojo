@@ -20,6 +20,8 @@
     "typeorm": "ts-node ./node_modules/.bin/typeorm -f ./src/ormconfig.ts"
   },
   "dependencies": {
+    "@bull-board/api": "^4.1.1",
+    "@bull-board/express": "^4.1.1",
     "@hapi/joi": "^17.1.1",
     "@nestjs/bull": "^0.3.1",
     "@nestjs/common": "^7.1.1",
@@ -38,6 +40,7 @@
     "class-validator": "^0.12.2",
     "cookie-parser": "^1.4.5",
     "csstype": "^3.0.5",
+    "express-basic-auth": "^1.2.1",
     "nest-puppeteer": "^1.1.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
