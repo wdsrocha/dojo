@@ -1,11 +1,5 @@
 {
-  "root": true,
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "extends": ["airbnb-typescript", "prettier/@typescript-eslint"],
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
+  "extends": "next/core-web-vitals",
   "rules": {
     "import/no-default-export": "error",
     "import/prefer-default-export": "off",
@@ -19,6 +13,7 @@
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
+    "react/display-name": "off",
     "jsx-a11y/anchor-is-valid": "off"
   }
 }

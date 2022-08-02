@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --ext js,jsx,ts,tsx .",
+    "lint": "next lint",
     "test": "echo 'not implemented'",
     "format": "prettier --write ."
   },
