@@ -24,18 +24,18 @@ interface SubmissionType {
   username: string;
 }
 
-const fetcher = (url: string) => fetch(url, {
+const fetcher = (url: string) =>
+  fetch(url, {
     ...OPTIONS,
     method: "GET",
   }).then((r) => r.json());
 
 // pagination will be used when the number of submissions in the database gets too
 // big
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useSubmissionList = (pagination: TablePaginationConfig) => {
   const { data, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/submissions/`,
-    fetcher,
+    fetcher
   );
 
   const submissionList: SubmissionType[] = Array.isArray(data) ? data : [];
@@ -72,9 +72,9 @@ const Page = () => {
       dataIndex: "id",
       width: 30,
       fixed: "left",
-      render: (_, { id }) => (
-        <Hyperlink href={`/submission/${id}`}>{id}</Hyperlink>
-      ),
+      render: function SubmissionId(_, { id }) {
+        return <Hyperlink href={`/submission/${id}`}>{id}</Hyperlink>;
+      },
     },
     {
       title: "Autor",
@@ -88,11 +88,16 @@ const Page = () => {
     {
       title: "Problema",
       width: 0,
-      render: (_, { onlineJudgeId, remoteProblemId }) => (
-        <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
-          {`${onlineJudgeId.toUpperCase()}-${remoteProblemId}`}
-        </Hyperlink>
-      ),
+      render: function SubmissionProblemId(
+        _,
+        { onlineJudgeId, remoteProblemId }
+      ) {
+        return (
+          <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
+            {`${onlineJudgeId.toUpperCase()}-${remoteProblemId}`}
+          </Hyperlink>
+        );
+      },
       ...tableColumnTextFilterConfig<SubmissionType>(),
       onFilter: (value, { onlineJudgeId, remoteProblemId }) =>
         // eslint-disable-next-line implicit-arrow-linebreak
@@ -115,7 +120,8 @@ const Page = () => {
       title: "Enviado em",
       dataIndex: "createdDate",
       width: 40,
-      render: (_, { createdDate }) => dayjs(createdDate).format("DD/MM/YYYY HH:mm"),
+      render: (_, { createdDate }) =>
+        dayjs(createdDate).format("DD/MM/YYYY HH:mm"),
     },
   ];
 

@@ -76,7 +76,7 @@ export const useSession = () => {
             username,
             password,
           }),
-        },
+        }
       );
 
       if (!response.ok) {
@@ -92,7 +92,7 @@ export const useSession = () => {
         console.error(error);
       }
       return response.status;
-    } catch (error) {
+    } catch (error: any) {
       return error?.statusCode ?? 500;
     }
   };
@@ -104,7 +104,7 @@ export const useSession = () => {
       {
         ...OPTIONS,
         method: "POST",
-      },
+      }
     );
     localStorage.removeItem("@App:session");
     setSession(null);

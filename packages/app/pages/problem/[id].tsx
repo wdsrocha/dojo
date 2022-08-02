@@ -1,7 +1,5 @@
 /* eslint-disable react/no-danger */
-import {
- Button, Card, Space, Table, Typography,
-} from "antd";
+import { Button, Card, Space, Table, Typography } from "antd";
 import Meta from "antd/lib/card/Meta";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 import { ColumnsType } from "antd/lib/table";
@@ -54,7 +52,7 @@ export const getServerSideProps: GetServerSideProps<ProblemResponse> = async ({
     {
       ...OPTIONS,
       method: "GET",
-    },
+    }
   );
 
   const data = await response.json();
@@ -93,17 +91,17 @@ const Problem = ({
       title: "Exemplos de Entrada",
       dataIndex: "input",
       onCell: () => ({ className: "align-top" }),
-      render: (input: string) => (
-        <pre dangerouslySetInnerHTML={{ __html: input }} />
-      ),
+      render: function InputExample(input: string) {
+        return <pre dangerouslySetInnerHTML={{ __html: input }} />;
+      },
     },
     {
       title: "Exemplos de Saída",
       dataIndex: "output",
       onCell: () => ({ className: "align-top" }),
-      render: (output: string) => (
-        <pre dangerouslySetInnerHTML={{ __html: output }} />
-      ),
+      render: function OutputExample(output: string) {
+        return <pre dangerouslySetInnerHTML={{ __html: output }} />;
+      },
     },
   ];
 
@@ -121,7 +119,7 @@ const Problem = ({
         ) : null
       }
       actions={[
-        <Link href={`/submit/${id}`} passHref>
+        <Link key="submit" href={`/submit/${id}`} passHref>
           <Button data-test="problem-footer-submit" size="large" type="primary">
             Submeter
           </Button>
@@ -129,7 +127,7 @@ const Problem = ({
       ]}
     >
       <Meta
-        description={(
+        description={
           <Paragraph className="px-6">
             Link original:{" "}
             <TypographyLink href={data.remoteLink} target="_blank">
@@ -138,7 +136,7 @@ const Problem = ({
             <br />
             Timelimit: {data.timelimit}
           </Paragraph>
-        )}
+        }
       />
       <Space direction="vertical">
         <Card type="inner" bordered={false} title="Descrição">

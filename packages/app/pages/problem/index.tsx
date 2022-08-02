@@ -14,18 +14,18 @@ interface ProblemType {
   title: string;
 }
 
-const fetcher = (url: string) => fetch(url, {
+const fetcher = (url: string) =>
+  fetch(url, {
     ...OPTIONS,
     method: "GET",
   }).then((r) => r.json());
 
 // pagination will be used when the number of problems in the database gets too
 // big
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useProblemList = (pagination: TablePaginationConfig) => {
   const { data, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/problems/`,
-    fetcher,
+    fetcher
   );
 
   const problemList: ProblemType[] = data ?? [];
@@ -51,11 +51,13 @@ const columns: ColumnsType<ProblemType> = [
   {
     title: "Problema",
     width: 200,
-    render: (_, { onlineJudgeId, remoteProblemId }) => (
-      <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
-        {getProblemId(onlineJudgeId, remoteProblemId)}
-      </Hyperlink>
-    ),
+    render: function ProblemId(_, { onlineJudgeId, remoteProblemId }) {
+      return (
+        <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
+          {getProblemId(onlineJudgeId, remoteProblemId)}
+        </Hyperlink>
+      );
+    },
     filters: [
       {
         text: "URI",
@@ -67,24 +69,28 @@ const columns: ColumnsType<ProblemType> = [
       },
     ],
     onFilter: (value, { onlineJudgeId }) => value === onlineJudgeId,
-    sorter: (a, b) => getProblemId(a.onlineJudgeId, a.remoteProblemId).localeCompare(
-        getProblemId(b.onlineJudgeId, b.remoteProblemId),
+    sorter: (a, b) =>
+      getProblemId(a.onlineJudgeId, a.remoteProblemId).localeCompare(
+        getProblemId(b.onlineJudgeId, b.remoteProblemId)
       ),
   },
   {
     title: "Título",
     dataIndex: "title",
-    render: (
+    render: function ProblemTitle(
       title: string,
-      { onlineJudgeId, remoteProblemId }: ProblemType,
-    ) => (
-      <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
-        {title}
-      </Hyperlink>
-    ),
+      { onlineJudgeId, remoteProblemId }: ProblemType
+    ) {
+      return (
+        <Hyperlink href={`/problem/${onlineJudgeId}-${remoteProblemId}`}>
+          {title}
+        </Hyperlink>
+      );
+    },
     align: "left",
     ...tableColumnTextFilterConfig<ProblemType>(),
-    onFilter: (value, { title }) => title.toLowerCase().includes(value.toString().toLowerCase()),
+    onFilter: (value, { title }) =>
+      title.toLowerCase().includes(value.toString().toLowerCase()),
   },
 ];
 

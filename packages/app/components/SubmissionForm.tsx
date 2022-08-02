@@ -1,7 +1,5 @@
 import { useState } from "react";
-import {
- Form, Button, Select, Input, Card, Modal,
-} from "antd";
+import { Form, Button, Select, Input, Card, Modal } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import Title from "antd/lib/typography/Title";
 import { useRouter } from "next/dist/client/router";
@@ -25,7 +23,6 @@ interface Props {
   title: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const SubmissionForm = ({
   onlineJudgeId,
   remoteProblemId,
@@ -36,7 +33,6 @@ export const SubmissionForm = ({
   const { logout } = useSession();
   const languageOptions = getLanguageOptions(onlineJudgeId);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleFinish = async ({ language, code }: FormTypes) => {
     setLoading(true);
 
@@ -51,7 +47,7 @@ export const SubmissionForm = ({
           languageId: language,
           code,
         }),
-      },
+      }
     );
 
     if (!response.ok) {
@@ -99,7 +95,11 @@ export const SubmissionForm = ({
           <Select
             optionFilterProp="children"
             // eslint-disable-next-line max-len
-            filterOption={(input, option) => option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            filterOption={(input, option) =>
+              ((option?.children as unknown) as string)
+                .toLowerCase()
+                .indexOf(input.toLowerCase()) >= 0
+            }
             showSearch
           >
             {languageOptions.map(({ value, label }) => (

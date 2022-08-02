@@ -17,7 +17,8 @@ export enum Verdict {
 
 export const displayVerdict = (verdict: string) => {
   // eslint-disable-next-line no-nested-ternary
-  const type = verdict === Verdict.PENDING
+  const type =
+    verdict === Verdict.PENDING
       ? "secondary"
       : verdict === Verdict.ACCEPTED
       ? "success"
@@ -31,7 +32,7 @@ export const displayVerdict = (verdict: string) => {
 
 // TODO: Improve this mapping. This is only a temporary solution.
 export const getHljsLanguage = (
-  onlineJudgeLanguage: string,
+  onlineJudgeLanguage: string
 ): string | undefined => {
   const normalizedLanguage = onlineJudgeLanguage.toLowerCase();
   if (normalizedLanguage.includes("python")) {
@@ -49,10 +50,11 @@ export const getHljsLanguage = (
   return undefined;
 };
 
-export const getProblemId = (onlineJudgeId: string, remoteProblemId: string) => `${onlineJudgeId.toUpperCase()}-${remoteProblemId}`;
+export const getProblemId = (onlineJudgeId: string, remoteProblemId: string) =>
+  `${onlineJudgeId.toUpperCase()}-${remoteProblemId}`;
 
 export function tableColumnTextFilterConfig<T>(): ColumnType<T> {
-  const searchInputHolder: { current: Input | null } = { current: null };
+  const searchInputHolder: { current: any } = { current: null };
 
   return {
     filterDropdown: ({
@@ -67,7 +69,9 @@ export function tableColumnTextFilterConfig<T>(): ColumnType<T> {
             searchInputHolder.current = node;
           }}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           onPressEnter={() => confirm()}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />

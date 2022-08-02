@@ -22,8 +22,8 @@ export const ContestProblems = ({ problems }: ContestProblemsProps) => {
       title: "#",
       dataIndex: "id",
       render: (_, { id }) => (
-        <Hyperlink href="/" strong>
-          {id}
+        <Hyperlink href="/">
+          <strong>{id}</strong>
         </Hyperlink>
       ),
       width: 50,
