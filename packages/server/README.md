@@ -113,7 +113,7 @@ yarn start:dev
 
 ### Manage queues
 
-Access `/admin/queue`
+Access `/admin/bull` and log in with user `admin` and the password defined in the environment variable `ADMIN_PASSWORD`.
 
 ### Troubleshooting
 
