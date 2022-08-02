@@ -1,7 +1,5 @@
 import { useState } from "react";
-import {
- Avatar, Dropdown, Menu, Modal,
-} from "antd";
+import { Avatar, Dropdown, Menu, Modal } from "antd";
 import { MenuProps } from "antd/lib/menu";
 import {
   LogoutOutlined,

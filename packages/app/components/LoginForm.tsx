@@ -1,6 +1,4 @@
-import {
- Form, Input, Button, Alert,
-} from "antd";
+import { Form, Input, Button, Alert } from "antd";
 import { useState } from "react";
 import { useSession } from "../contexts/auth";
 

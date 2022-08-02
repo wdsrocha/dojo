@@ -96,7 +96,7 @@ export const SubmissionForm = ({
             optionFilterProp="children"
             // eslint-disable-next-line max-len
             filterOption={(input, option) =>
-              ((option?.children as unknown) as string)
+              (option?.children as unknown as string)
                 .toLowerCase()
                 .indexOf(input.toLowerCase()) >= 0
             }

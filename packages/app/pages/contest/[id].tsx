@@ -11,7 +11,9 @@ interface ContestResponse {
   data: Contest;
 }
 
-export const getServerSideProps: GetServerSideProps<ContestResponse> = async () => ({
+export const getServerSideProps: GetServerSideProps<
+  ContestResponse
+> = async () => ({
   props: {
     data: {
       title: "III Maratona de Programação do Norte",

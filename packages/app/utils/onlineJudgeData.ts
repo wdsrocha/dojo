@@ -89,7 +89,7 @@ export function getLanguageOptions(onlineJudgeId: string): Option[] {
         label: key,
         value,
       });
-    },
+    }
   );
 
   return languageOptions;
@@ -97,7 +97,7 @@ export function getLanguageOptions(onlineJudgeId: string): Option[] {
 
 export function getLanguageById(
   onlineJudgeId: string,
-  languageId: string,
+  languageId: string
 ): string | undefined {
   if (!(onlineJudgeId in onlineJudgeData)) {
     return undefined;
@@ -109,7 +109,7 @@ export function getLanguageById(
       if (languageId === value) {
         language = key;
       }
-    },
+    }
   );
   return language;
 }

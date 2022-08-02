@@ -7,7 +7,7 @@ const getByTestId = <E extends Node = HTMLElement>(
   selector: string,
   options?: Partial<
     Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow
-  >,
+  >
 ): Cypress.Chainable<JQuery<E>> => cy.get(`[data-test=${selector}]`, options);
 
 declare namespace Cypress {

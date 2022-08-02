@@ -1,7 +1,5 @@
 import { GithubOutlined } from "@ant-design/icons";
-import {
- Alert, Card, Col, Row,
-} from "antd";
+import { Alert, Card, Col, Row } from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
 import Title from "antd/lib/typography/Title";
 import Link from "antd/lib/typography/Link";
@@ -23,11 +21,11 @@ const Home = () => (
       <Col md={{ span: 16 }}>
         <Card
           className="card"
-          title={(
+          title={
             <span className="text-center block -mb-4 whitespace-pre-line">
               <Title level={1}>DOJO Orquestrador de Juiz Online</Title>
             </span>
-          )}
+          }
         >
           <Paragraph>
             O DOJO facilita o treinamento para competições de programação ao
@@ -51,9 +49,7 @@ const Home = () => (
                 </Link>
               </li>
               <li>
-                <Link href="https://codeforces.com/">
-                  Codeforces
-                </Link>
+                <Link href="https://codeforces.com/">Codeforces</Link>
               </li>
             </ul>
             <p>Em breve...</p>
@@ -72,11 +68,11 @@ const Home = () => (
         <Card
           className="card min-h-full"
           title={<i>Open-source software</i>}
-          extra={(
+          extra={
             <a aria-label="GitHub icon" href="https://github.com/wdsrocha/dojo">
               <GithubOutlined style={{ fontSize: 22 }} />
             </a>
-          )}
+          }
         >
           <Paragraph>
             DOJO é <i>OSS</i>! Acompanhe e contribua com o projeto{" "}

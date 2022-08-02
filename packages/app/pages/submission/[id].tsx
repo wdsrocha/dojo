@@ -32,15 +32,15 @@ interface SubmissionResponse {
   data: Submission;
 }
 
-export const getServerSideProps: GetServerSideProps<SubmissionResponse> = async ({
-  params,
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  SubmissionResponse
+> = async ({ params }) => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/submissions/${params?.id}`,
     {
       ...OPTIONS,
       method: "GET",
-    },
+    }
   );
 
   const data: Submission = await response.json();

@@ -39,7 +39,7 @@ describe("Auth", () => {
     cy.getByTestId("login-submit").click();
     cy.getByTestId("login-alert").should(
       "contain",
-      "Nome de usuário ou senha inválidos",
+      "Nome de usuário ou senha inválidos"
     );
   });
 
@@ -50,7 +50,7 @@ describe("Auth", () => {
     cy.getByTestId("login-submit").click();
     cy.getByTestId("login-alert").should(
       "contain",
-      "Nome de usuário ou senha inválidos",
+      "Nome de usuário ou senha inválidos"
     );
   });
 
@@ -60,7 +60,7 @@ describe("Auth", () => {
         method: "POST",
         url: "**/authentication/login",
       },
-      { statusCode: 500 },
+      { statusCode: 500 }
     );
     cy.getByTestId("login-open").click();
     cy.getByTestId("login-username").type(VALID_USERNAME);
@@ -68,7 +68,7 @@ describe("Auth", () => {
     cy.getByTestId("login-submit").click();
     cy.getByTestId("login-alert").should(
       "contain",
-      "Um erro inesperado ocorreu. Por favor, tente novamente",
+      "Um erro inesperado ocorreu. Por favor, tente novamente"
     );
   });
 });

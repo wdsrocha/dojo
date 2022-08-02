@@ -19,7 +19,7 @@ body {
   white-space: pre-line;
 }
 
-@media  (min-width: 768px) {
+@media (min-width: 768px) {
   .card {
     @apply rounded-md;
     @apply shadow-md;
@@ -27,7 +27,9 @@ body {
 }
 
 /* https://github.com/ant-design/ant-design/issues/13074#issuecomment-671093258 */
-svg { vertical-align: baseline; }
+svg {
+  vertical-align: baseline;
+}
 
 #__next {
   min-height: 100vh;

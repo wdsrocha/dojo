@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps<ProblemResponse> = async ({
     {
       ...OPTIONS,
       method: "GET",
-    },
+    }
   );
 
   const data = await response.json();

@@ -11,7 +11,7 @@ const { Title, Text } = Typography;
 
 const getTimeDifferenceFrom = (now: dayjs.Dayjs, target: dayjs.Dayjs) => {
   const timeDifference = dayjs.duration(
-    target.isBefore(now) ? now.diff(target) : target.diff(now),
+    target.isBefore(now) ? now.diff(target) : target.diff(now)
   );
   const days = timeDifference.days();
 
