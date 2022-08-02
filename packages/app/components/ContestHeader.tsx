@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useInterval } from "../hooks/useInterval";
 import { useTwoPassRendering } from "../hooks/useTwoPassRendering";
 
+dayjs.extend(require('dayjs/plugin/duration'))
+
 const { Title, Text } = Typography;
 
 const getTimeDifferenceFrom = (now: dayjs.Dayjs, target: dayjs.Dayjs) => {
