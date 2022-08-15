@@ -1,10 +1,7 @@
-import { Typography } from "antd";
-import NextLink from "next/link";
+import Link from "next/link";
 import { ComponentProps, PropsWithChildren } from "react";
 
-const { Link: TypographyLink } = Typography;
-
-type NextLinkProps = ComponentProps<typeof NextLink>;
+type Props = PropsWithChildren<ComponentProps<typeof Link>>;
 
 /**
  * Next.js Link functionalities + Ant Design Link visuals
@@ -16,12 +13,8 @@ type NextLinkProps = ComponentProps<typeof NextLink>;
  * </Hyperlink>
  * ```
  */
-export const Hyperlink = ({
-  children,
-  href,
-  ...props
-}: PropsWithChildren<NextLinkProps>) => (
-  <NextLink href={href} passHref {...props}>
-    <TypographyLink>{children}</TypographyLink>
-  </NextLink>
+export const Hyperlink = ({ children, href, ...props }: Props) => (
+  <Link href={href} passHref {...props}>
+    <a className="text-link">{children}</a>
+  </Link>
 );
