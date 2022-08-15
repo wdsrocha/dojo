@@ -4,10 +4,6 @@ import { useState } from "react";
 import { useInterval } from "../hooks/useInterval";
 import { useTwoPassRendering } from "../hooks/useTwoPassRendering";
 
-dayjs.extend(require('dayjs/plugin/duration'))
-
-const { Title, Text } = Typography;
-
 const getTimeDifferenceFrom = (now: dayjs.Dayjs, target: dayjs.Dayjs) => {
   const timeDifference = dayjs.duration(
     target.isBefore(now) ? now.diff(target) : target.diff(now)
@@ -16,7 +12,16 @@ const getTimeDifferenceFrom = (now: dayjs.Dayjs, target: dayjs.Dayjs) => {
 
   if (days > 1) return `${days} dias`;
   if (days === 1) return `${Math.floor(timeDifference.asHours())} horas`;
-  return timeDifference.format("HH:mm:ss");
+
+  // Why the fuck the following does not work??????
+  // return timeDifference.format("HH:mm:ss");
+  // Workaround ahead.
+
+  const hours = timeDifference.hours().toFixed(2);
+  const minutes = timeDifference.minutes().toFixed(2);
+  const seconds = timeDifference.seconds().toFixed(2);
+
+  return `${hours}:${minutes}:${seconds}`;
 };
 
 type ContestHeaderProps = Pick<Contest, "startDate" | "endDate" | "title">;
@@ -42,13 +47,20 @@ export const ContestHeader = ({
   })();
 
   const relativeTimeInfo = (() => {
+    if (!isClient) {
+      return <span>...</span>;
+    }
     if (contestStatus === "scheduled") {
-      return `Iniciará em ${getTimeDifferenceFrom(now, startDate)}`;
+      const timeToStart = getTimeDifferenceFrom(now, startDate);
+      return <span className="font-bold">{`Iniciará em ${timeToStart}`}</span>;
     }
     if (contestStatus === "running") {
-      return `Tempo restante: ${getTimeDifferenceFrom(now, endDate)}`;
+      const remainingTime = getTimeDifferenceFrom(now, endDate);
+      return (
+        <span className="font-bold">{`Tempo restante: ${remainingTime}`}</span>
+      );
     }
-    return <Text type="success">Acabou</Text>;
+    return <span className="text-green-700 font-bold">Acabou</span>;
   })();
 
   const percentage = (() => {
@@ -63,7 +75,7 @@ export const ContestHeader = ({
     <Card
       className="card"
       bodyStyle={{ paddingTop: 16 }}
-      title={<Title level={1}>{title}</Title>}
+      title={<h1 className="text-4xl whitespace-pre-wrap">{title}</h1>}
     >
       <Progress
         percent={isClient ? percentage : 0}
@@ -72,14 +84,14 @@ export const ContestHeader = ({
       />
       <div className="flex flex-col md:flex-row md:justify-between md:items-center">
         <div>
-          <Text strong>Início: </Text>
+          <span className="font-bold">Início: </span>
           {formattedStartDate}
         </div>
-        <div className="order-first md:order-none">
-          <Title level={5}>{isClient ? relativeTimeInfo : "..."}</Title>
+        <div className="order-first md:order-none text-base">
+          {relativeTimeInfo}
         </div>
         <div>
-          <Text strong>Término: </Text>
+          <span className="font-bold">Término: </span>
           {formattedEndDate}
         </div>
       </div>
