@@ -166,7 +166,7 @@ export class CodeforcesClient implements OnlineJudge {
       .each((i, x) => {
         $(x)
           .children()
-          .each((_, y) => {
+          .each((_, y: any) => {
             if (y.name === 'pre') {
               const exampleText = $.html(y)
                 .replace(/\<br\>/g, '\n')
